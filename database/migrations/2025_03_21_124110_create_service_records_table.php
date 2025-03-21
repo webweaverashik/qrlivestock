@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('history_of_disease')->nullable();
             $table->text('microscopic_result')->nullable();
             $table->foreignId('disease_id')->nullable();
-            $table->foreignId('prescription_id');
+            $table->foreignId('prescription_id')->nullable();
             $table->foreignId('created_by');
             $table->timestamps();
             $table->softDeletes();

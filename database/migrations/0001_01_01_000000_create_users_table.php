@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'staff']);
+            $table->enum('role', ['admin', 'staff'])->defaultValue('staff');
             $table->boolean('is_active')->default(true);
+            $table->string('photo_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('message');
             $table->enum('status', ['sent', 'failed'])->default('sent');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
