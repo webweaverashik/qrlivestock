@@ -108,7 +108,7 @@
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-icon">
-                                <i class="fa-solid fa-book-open fs-2"></i>
+                                <i class="fa-solid fa-notes-medical fs-2"></i>
                             </span>
                             <span class="menu-title">চিকিৎসা রেজিস্টার</span>
                             <span class="menu-arrow"></span>
