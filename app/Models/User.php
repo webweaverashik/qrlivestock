@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -43,6 +45,37 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    // Get all the farms created by this user
+    public function farmsCreated()
+    {
+        return $this->hasMany(Farm::class, 'created_by');
+    }
+
+    // Get all the farms approved by this user
+    public function farmsApproved()
+    {
+        return $this->hasMany(Farm::class, 'approved_by');
+    }
+
+    // Get all the services record entered by this user
+    public function serviceRecords()
+    {
+        return $this->hasMany(ServiceRecord::class, 'created_by');
+    }
+
+    // Get all the prescriptions entered by this user
+    public function prescriptionsCreated()
+    {
+        return $this->hasMany(Prescription::class, 'created_by');
+    }
+
+    // Get all the prescriptions approved by this user
+    public function prescriptionsApproved()
+    {
+        return $this->hasMany(Prescription::class, 'approved_by');
     }
 }
