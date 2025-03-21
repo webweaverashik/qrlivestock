@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     {
         // Create one admin user
         User::factory()->create([
-            'name' => 'Admin User',
+            'name' => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
             'email' => 'admin@mail.com',
             'password' => bcrypt('password'),
             'role' => 'admin',
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         // Create one staff user
         User::factory()->create([
-            'name' => 'Staff User',
+            'name' => 'এ এম ইউনুস আলী',
             'email' => 'staff@mail.com',
             'password' => bcrypt('password'),
             'role' => 'staff',

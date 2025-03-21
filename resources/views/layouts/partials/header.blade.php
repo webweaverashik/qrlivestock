@@ -11,15 +11,15 @@
             </div>
         </div>
         <!--end::Sidebar mobile toggle-->
-        
+
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-            <a href="?page=index" class="d-lg-none">
+            <a href="{{ route('dashboard') }}" class="d-lg-none">
                 <img alt="Logo" src="{{ asset('assets/img/icon.png') }}" class="h-30px" />
             </a>
         </div>
         <!--end::Mobile logo-->
-        
+
         <!--begin::Header wrapper-->
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
 
@@ -30,7 +30,7 @@
 
             <!--begin::Navbar-->
             <div class="app-navbar flex-shrink-0">
-                <!--begin::Search-->
+                {{-- <!--begin::Search-->
                 <div class="app-navbar-item align-items-stretch ms-1 ms-md-4">
                     <!--begin::Search-->
                     <div id="kt_header_search" class="header-search d-flex align-items-stretch"
@@ -114,7 +114,8 @@
                                             class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                             <!--begin::Symbol-->
                                             <div class="symbol symbol-40px me-4">
-                                                <img src="{{ asset('assets/media/avatars/300-6.jpg') }}" alt="" />
+                                                <img src="{{ asset('assets/media/avatars/300-6.jpg') }}"
+                                                    alt="" />
                                             </div>
                                             <!--end::Symbol-->
                                             <!--begin::Title-->
@@ -131,7 +132,8 @@
                                             class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                             <!--begin::Symbol-->
                                             <div class="symbol symbol-40px me-4">
-                                                <img src="{{ asset('assets/media/avatars/300-2.jpg') }}" alt="" />
+                                                <img src="{{ asset('assets/media/avatars/300-2.jpg') }}"
+                                                    alt="" />
                                             </div>
                                             <!--end::Symbol-->
                                             <!--begin::Title-->
@@ -148,7 +150,8 @@
                                             class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                             <!--begin::Symbol-->
                                             <div class="symbol symbol-40px me-4">
-                                                <img src="{{ asset('assets/media/avatars/300-9.jpg') }}" alt="" />
+                                                <img src="{{ asset('assets/media/avatars/300-9.jpg') }}"
+                                                    alt="" />
                                             </div>
                                             <!--end::Symbol-->
                                             <!--begin::Title-->
@@ -165,7 +168,8 @@
                                             class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                             <!--begin::Symbol-->
                                             <div class="symbol symbol-40px me-4">
-                                                <img src="{{ asset('assets/media/avatars/300-14.jpg') }}" alt="" />
+                                                <img src="{{ asset('assets/media/avatars/300-14.jpg') }}"
+                                                    alt="" />
                                             </div>
                                             <!--end::Symbol-->
                                             <!--begin::Title-->
@@ -182,7 +186,8 @@
                                             class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                             <!--begin::Symbol-->
                                             <div class="symbol symbol-40px me-4">
-                                                <img src="{{ asset('assets/media/avatars/300-11.jpg') }}" alt="" />
+                                                <img src="{{ asset('assets/media/avatars/300-11.jpg') }}"
+                                                    alt="" />
                                             </div>
                                             <!--end::Symbol-->
                                             <!--begin::Title-->
@@ -226,7 +231,8 @@
                                             <div class="symbol symbol-40px me-4">
                                                 <span class="symbol-label bg-light">
                                                     <img class="w-20px h-20px"
-                                                        src="{{ asset('assets/media/svg/brand-logos/tvit.svg') }}" alt="" />
+                                                        src="{{ asset('assets/media/svg/brand-logos/tvit.svg') }}"
+                                                        alt="" />
                                                 </span>
                                             </div>
                                             <!--end::Symbol-->
@@ -246,7 +252,8 @@
                                             <div class="symbol symbol-40px me-4">
                                                 <span class="symbol-label bg-light">
                                                     <img class="w-20px h-20px"
-                                                        src="{{ asset('assets/media/svg/misc/infography.svg') }}" alt="" />
+                                                        src="{{ asset('assets/media/svg/misc/infography.svg') }}"
+                                                        alt="" />
                                                 </span>
                                             </div>
                                             <!--end::Symbol-->
@@ -266,7 +273,8 @@
                                             <div class="symbol symbol-40px me-4">
                                                 <span class="symbol-label bg-light">
                                                     <img class="w-20px h-20px"
-                                                        src="{{ asset('assets/media/svg/brand-logos/leaf.svg') }}" alt="" />
+                                                        src="{{ asset('assets/media/svg/brand-logos/leaf.svg') }}"
+                                                        alt="" />
                                                 </span>
                                             </div>
                                             <!--end::Symbol-->
@@ -285,7 +293,8 @@
                                             <div class="symbol symbol-40px me-4">
                                                 <span class="symbol-label bg-light">
                                                     <img class="w-20px h-20px"
-                                                        src="{{ asset('assets/media/svg/brand-logos/tower.svg') }}" alt="" />
+                                                        src="{{ asset('assets/media/svg/brand-logos/tower.svg') }}"
+                                                        alt="" />
                                                 </span>
                                             </div>
                                             <!--end::Symbol-->
@@ -777,6 +786,7 @@
                     <!--end::Search-->
                 </div>
                 <!--end::Search-->
+
                 <!--begin::Activities-->
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <!--begin::Drawer toggle-->
@@ -787,6 +797,7 @@
                     <!--end::Drawer toggle-->
                 </div>
                 <!--end::Activities-->
+
                 <!--begin::Notifications-->
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <!--begin::Menu- wrapper-->
@@ -1326,6 +1337,7 @@
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::Notifications-->
+
                 <!--begin::Chat-->
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <!--begin::Menu wrapper-->
@@ -1339,6 +1351,7 @@
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::Chat-->
+
                 <!--begin::My apps links-->
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <!--begin::Menu wrapper-->
@@ -1648,7 +1661,7 @@
 
                     <!--end::Menu wrapper-->
                 </div>
-                <!--end::My apps links-->
+                <!--end::My apps links--> --}}
 
                 <!--begin::Theme mode-->
                 <div class="app-navbar-item ms-1 ms-md-4">
@@ -1710,7 +1723,8 @@
                     <div class="cursor-pointer symbol symbol-35px"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                         data-kt-menu-placement="bottom-end">
-                        <img src="{{ auth()->user()->photo_url ?? asset('assets/img/dummy.png') }}" class="rounded-3" alt="user" />
+                        <img src="{{ auth()->user()->photo_url ?? asset('assets/img/dummy.png') }}" class="rounded-3"
+                            alt="user" />
                     </div>
                     <!--begin::User account menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
@@ -1720,36 +1734,46 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
-                                    <img alt="Logo" src="{{ auth()->user()->photo_url ?? asset('assets/img/dummy.png') }}" />
+                                    <img alt="Logo"
+                                        src="{{ auth()->user()->photo_url ?? asset('assets/img/dummy.png') }}" />
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5">
-                                        {{ auth()->user()->name }} <span
-                                            class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Manager</span>
+                                        {{ auth()->user()->name }}
+                                        @if (auth()->user()->role == 'admin')
+                                            <span
+                                                class="badge badge-light-primary fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
+                                        @elseif (auth()->user()->role == 'staff')
+                                            <span
+                                                class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
+                                        @endif
                                     </div>
-                                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">
-                                        robert@kt.com </a>
+                                    <a href="#"
+                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ auth()->user()->email }}</a>
                                 </div>
                                 <!--end::Username-->
                             </div>
                         </div>
                         <!--end::Menu item-->
+
                         <!--begin::Menu separator-->
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
+
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="?page=account/overview" class="menu-link px-5">
-                                My Profile
+                            <a href="#" class="menu-link px-5">
+                                আমার প্রোফাইল
                             </a>
                         </div>
                         <!--end::Menu item-->
+
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="?page=apps/projects/list" class="menu-link px-5">
-                                <span class="menu-text">My Projects</span>
+                            <a href="#" class="menu-link px-5">
+                                <span class="menu-text">অপেক্ষমান প্রেস্ক্রিপশন</span>
                                 <span class="menu-badge">
                                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
                                 </span>
@@ -1760,10 +1784,11 @@
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="#" class="menu-link px-5">
-                                My Activity
+                                আমার এক্টিভিটি
                             </a>
                         </div>
                         <!--end::Menu item-->
+
                         <!--begin::Menu separator-->
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
@@ -1771,15 +1796,16 @@
                         <!--begin::Menu item-->
                         <div class="menu-item px-5 my-1">
                             <a href="#" class="menu-link px-5">
-                                Settings
+                                সেটিংস
                             </a>
                         </div>
                         <!--end::Menu item-->
+
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="{{ route('logout') }}" class="menu-link px-5"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Sign Out
+                                লগ আউট
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST"

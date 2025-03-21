@@ -53,7 +53,7 @@
     <!--end::App-->
 
     <!--begin::Drawers-->
-    @include('layouts.partials.drawers')
+    {{-- @include('layouts.partials.drawers') --}}
     <!--end::Drawers-->
 
 
@@ -64,7 +64,7 @@
     <!--end::Scrolltop-->
 
     <!--begin::Modals-->
-    @include('layouts.partials.modals')
+    {{-- @include('layouts.partials.modals') --}}
     <!--end::Modals-->
 
     <!--begin::Javascript-->
