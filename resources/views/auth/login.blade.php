@@ -161,8 +161,9 @@
                             <!--end::Form-->
                         </div>
                         <!--end::Wrapper-->
+
                         <!--begin::Footer-->
-                        <div class="d-flex flex-stack">
+                        {{-- <div class="d-flex flex-stack">
                             <!--begin::Languages-->
                             <div class="me-10">
                                 <!--begin::Toggle-->
@@ -245,8 +246,9 @@
                                 <a href="pages/contact.html" target="_blank">Contact Us</a>
                             </div>
                             <!--end::Links-->
-                        </div>
+                        </div> --}}
                         <!--end::Footer-->
+
                     </div>
                     <!--end::Content-->
                 </div>

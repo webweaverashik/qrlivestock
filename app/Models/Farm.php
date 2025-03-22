@@ -16,6 +16,7 @@ class Farm extends Model
         'address',
         'unique_id',
         'status',
+        'is_active',
         'created_by',
         'approved_by',
         'approved_at',

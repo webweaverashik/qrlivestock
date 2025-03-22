@@ -21,7 +21,7 @@ class SMSLogFactory extends Factory
     public function definition()
     {
         return [
-            'farm_id' => Farm::factory(),
+            'farm_id' => Farm::inRandomOrder()->value('id') ?? Farm::factory(),
             'phone_number' => $this->faker->phoneNumber(),
             'message' => $this->faker->sentence(),
             'status' => $this->faker->randomElement(['sent', 'failed']),

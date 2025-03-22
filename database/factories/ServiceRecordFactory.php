@@ -25,8 +25,8 @@ class ServiceRecordFactory extends Factory
     public function definition(): array
     {
         return [
-            'farm_id' => Farm::factory(),
-            'service_category_id' => ServiceCategory::factory(),
+            'farm_id' => Farm::inRandomOrder()->value('id') ?? Farm::factory(),
+            'service_category_id' => ServiceCategory::inRandomOrder()->value('id') ?? ServiceCategory::factory(),
             'species_number_flock' => $this->faker->randomNumber(),
             'species_number_infected' => $this->faker->randomNumber(),
             'species_number_dead' => $this->faker->randomNumber(),
@@ -36,8 +36,8 @@ class ServiceRecordFactory extends Factory
             'species_type_age' => $this->faker->randomNumber(2),
             'history_of_disease' => $this->faker->sentence(),
             'microscopic_result' => $this->faker->sentence(),
-            'disease_id' => Disease::factory(),
-            'prescription_id' => $this->faker->boolean(70) ? Prescription::factory() : null, // 70% chance to have a prescription
+            'disease_id' => Disease::inRandomOrder()->value('id') ?? Disease::factory(),
+            'prescription_id' => $this->faker->boolean(70) ? Prescription::inRandomOrder()->value('id') : null, // 70% chance to assign an existing prescription
             'created_by' => 2, // Staff user
         ];
     }

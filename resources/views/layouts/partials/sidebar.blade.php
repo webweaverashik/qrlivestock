@@ -84,7 +84,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="all_students_link"
-                                    href="{{ route('dashboard') }}"><span class="menu-bullet"><span
+                                    href="{{ route('farms.index') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">সকল খামার</span></a>
                                 <!--end:Menu link-->
                             </div>
@@ -92,7 +92,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="subjects_assign_link"
-                                    href="?page=pages/user-profile/projects"><span class="menu-bullet"><span
+                                    href="{{ route('farms.create') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">নতুন নিবন্ধন</span></a>
                                 <!--end:Menu link-->
                             </div>

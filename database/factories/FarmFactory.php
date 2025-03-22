@@ -21,15 +21,19 @@ class FarmFactory extends Factory
     
     public function definition(): array
     {
+        $status = $this->faker->randomElement(['pending', 'approved']);
+
         return [
             'owner_name' => $this->faker->name(),
             'phone_number' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
-            'unique_id' => Str::uuid(),
-            'status' => $this->faker->randomElement(['pending', 'approved']),
+            'unique_id' => strtoupper(implode('', array_map(fn() => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[rand(0, 35)], range(1, 7)))),
+            'status' => $status,
+            'is_active' => $this->faker->boolean(5) ? false : true,
             'created_by' => 2, // Staff user
-            'approved_by' => 1, // Admin user
-            'approved_at' => now(),
+            'approved_by' => $status === 'approved' ? 1 : null, // Set only if approved
+            'approved_at' => $status === 'approved' ? now() : null, // Set only if approved
+            'deleted_at' => $this->faker->boolean(15) ? now() : null,
         ];
     }
 }

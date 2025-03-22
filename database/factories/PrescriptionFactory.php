@@ -22,7 +22,7 @@ class PrescriptionFactory extends Factory
     public function definition()
     {
         return [
-            'farm_id' => Farm::factory(),
+            'farm_id' => Farm::inRandomOrder()->value('id') ?? Farm::factory(),
             'diagnosis' => $this->faker->sentence(),
             'medication' => $this->faker->sentence(),
             'dosage' => $this->faker->word(),

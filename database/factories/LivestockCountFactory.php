@@ -22,9 +22,9 @@ class LivestockCountFactory extends Factory
     public function definition(): array
     {
         return [
-            'farm_id' => Farm::factory(),
-            'livestock_type_id' => LivestockType::factory(),
-            'total' => $this->faker->numberBetween(1, 100),
+            'farm_id' => Farm::inRandomOrder()->value('id') ?? Farm::factory(),
+            'livestock_type_id' => LivestockType::inRandomOrder()->value('id') ?? LivestockType::factory(),
+            'total' => $this->faker->numberBetween(50, 200),
         ];
     }
 }

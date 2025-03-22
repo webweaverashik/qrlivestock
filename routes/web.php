@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FarmController;
 
 Route::get('/', function() {
     return view('welcome');
@@ -23,6 +24,9 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::get('/logout', function () {
         return redirect()->back();
     })->name('logout.get');
+
+    // Route for farms
+    Route::resource('farms', FarmController::class);
 });
 
 // Handle GET /logout for logged-out users (redirect to login)

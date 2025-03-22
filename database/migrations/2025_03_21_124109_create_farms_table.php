@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('phone_number');
             $table->text('address');
             $table->string('unique_id')->unique();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved'])->default('pending');
+            $table->boolean('is_active')->default(true);
             $table->foreignId('created_by');
             $table->foreignId('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
