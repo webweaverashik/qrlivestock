@@ -14,7 +14,7 @@ class FarmController extends Controller
     public function index()
     {
         // $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
-        $farms = Farm::withoutTrashed()->get();
+        $farms = Farm::withoutTrashed()->orderby('id', 'desc')->get();
 
         // return response()->json($farms);
         // return count($farms);
@@ -42,8 +42,10 @@ class FarmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Farm $farm)
-    {   
+    public function show(string $id)
+    {
+        $farm = Farm::with('serviceRecords')->findOrFail($id);
+
         return response()->json($farm);
         // return view('farms.show', compact('farm'));
     }
@@ -62,6 +64,23 @@ class FarmController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    /**
+     * Toggle active and inactive farms
+     */
+    public function toggleActive(Request $request)
+    {
+        $farm = Farm::find($request->farm_id);
+
+        if (!$farm) {
+            return response()->json(['success' => false, 'message' => 'খামারের তথ্য খুঁজে পাওয়া যায়নি।']);
+        }
+
+        $farm->is_active = $request->is_active;
+        $farm->save();
+
+        return response()->json(['success' => true, 'message' => 'খামারের তথ্য আপডেট করা হয়েছে।']);
     }
 
     /**

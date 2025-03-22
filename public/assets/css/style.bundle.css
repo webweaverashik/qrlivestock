@@ -48244,7 +48244,8 @@ body {
   font-size: 13px !important;
   font-weight: 400;
   /* font-family: Inter, Helvetica, "sans-serif"; */
-  font-family: "Hind Siliguri", sans-serif;
+  /* font-family: "Hind Siliguri", sans-serif; */
+  font-family: "Baloo Da 2", sans-serif;
 }
 @media (max-width: 991.98px) {
   html,

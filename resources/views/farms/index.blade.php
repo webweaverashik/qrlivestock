@@ -13,9 +13,7 @@
         class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
         <!--begin::Title-->
         <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 align-items-center my-0">
-            @if (session('success'))
-                {{ session('success') }}
-            @endif
+            সকল খামারের তালিকা
         </h1>
         <!--end::Title-->
         <!--begin::Separator-->
@@ -59,7 +57,7 @@
                             <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
                             </i>
                             <input type="text" data-kt-user-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
+                                class="form-control form-control-solid w-250px ps-13" placeholder="খামার অনুসন্ধান করুন" />
                         </div>
                         <!--end::Search-->
                     </div>
@@ -150,32 +148,33 @@
                 <!--begin::Card body-->
                 <div class="card-body py-4">
                     <!--begin::Table-->
-                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                    <table class="table table-hover table-row-bordered align-middle fs-6 gy-5" id="kt_table_farms">
                         <thead>
-                            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                <th class="w-10px pe-2">
-                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                        <input class="form-check-input" type="checkbox" data-kt-check="true"
-                                            data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                                    </div>
-                                </th>
+                            <tr class="fw-bold fs-5 text-uppercase gs-0">
+                                <th class="w-50px text-center">ক্রঃ</th>
                                 <th class="min-w-125px">খামারের নাম</th>
                                 <th class="min-w-125px">খামারির তথ্য</th>
                                 <th class="min-w-125px">নিবন্ধনের তারিখ</th>
                                 <th class="min-w-125px">সর্বশেষ সেবা নিয়েছে</th>
                                 <th class="min-w-125px">অনুমোদনের অবস্থা</th>
-                                <th class="text-end min-w-100px">Actions</th>
+                                <th class="min-w-125px">একটিভ/ডিএকটিভ</th>
+                                <th class="text-center min-w-100px">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600 fw-semibold">
+                        <tbody class="text-gray-600 fw-semibold fs-5">
                             @foreach ($farms as $farm)
-                                <tr>
+                                <tr @if ($farm->is_active == 0) class="bg-light-danger" @endif>
+                                    <td class=" text-center">{{ $loop->index + 1 }}</td>
                                     <td>
-                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                            <input class="form-check-input" type="checkbox" value="1" />
+                                        <!--begin::User details-->
+                                        <div class="d-flex flex-column">
+                                            <a href="{{ route('farms.show', $farm->id) }}"
+                                                class="text-gray-800 text-hover-primary mb-1">{{ $farm->farm_name }}</a>
+                                            <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
                                         </div>
+                                        <!--begin::User details-->
+
                                     </td>
-                                    <td>{{ $farm->farm_name }}</td>
                                     <td class="d-flex align-items-center">
                                         <!--begin:: Avatar -->
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
@@ -191,7 +190,6 @@
                                         <div class="d-flex flex-column">
                                             <a href="{{ route('farms.show', $farm->id) }}"
                                                 class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                            <span>{{ $farm->unique_id }}</span>
                                         </div>
                                         <!--begin::User details-->
                                     </td>
@@ -206,15 +204,30 @@
                                     </td>
                                     <td>
                                         @if ($farm->status == 'pending')
-                                            <div class="badge badge-warning fw-bold">Pending</div>
-                                        @elseif($farm->status == 'approved')
-                                            <div class="badge badge-success fw-bold">Approved</div>
+                                            <div class="badge badge-warning fw-bold">অপেক্ষমাণ</div>
+                                        @elseif ($farm->status == 'approved')
+                                            <div class="badge badge-success fw-bold">অনুমোদিত</div>
                                         @endif
                                     </td>
-                                    <td class="text-end">
+                                    <td>
+                                        @if ($farm->status == 'pending')
+                                            -
+                                        @elseif ($farm->status == 'approved')
+                                            <div class="form-check form-switch form-check-solid form-check-success">
+                                                <input class="form-check-input toggle-active" type="checkbox"
+                                                    value="{{ $farm->id }}"
+                                                    @if ($farm->is_active == 1) checked @endif />
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
                                         <a href="{{ route('farms.show', $farm->id) }}"
                                             class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
                                             <i class="ki-outline ki-eye fs-3"></i>
+                                        </a>
+                                        <a href="{{ route('farms.edit', $farm->id) }}"
+                                            class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                            <i class="ki-outline ki-pencil fs-3"></i>
                                         </a>
                                         <a href="#"
                                             class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-farm"
@@ -246,12 +259,18 @@
     {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/table.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/export-users.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/add.js') }}"></script> --}}
+    <script>
+        $(document).ready(function() {
+            $('#kt_table_farms').DataTable();
+        });
+    </script>
 
     <script>
         document.getElementById("farms_info_menu").classList.add("here", "show");
         document.getElementById("all_farms_link").classList.add("active");
     </script>
 
+    {{-- Delete button alert modal dialog --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-farm');
@@ -301,10 +320,68 @@
                                 })
                                 .catch(error => {
                                     console.error('Error:', error);
-                                    Swal.fire('ব্যর্থ!', 'একটি ত্রুটি ঘটেছে।', 'error');
+                                    Swal.fire('ব্যর্থ!', 'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।', 'error');
                                 });
                         }
                     });
+                });
+            });
+        });
+    </script>
+
+    {{-- Toggle active/inactive button --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleInputs = document.querySelectorAll('.toggle-active');
+
+            toggleInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const farmId = this.value;
+                    const isActive = this.checked ? 1 : 0;
+
+                    fetch("{{ route('farms.toggleActive') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                farm_id: farmId,
+                                is_active: isActive
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'সফল!',
+                                    text: data.message,
+                                    confirmButtonText: 'ঠিক আছে।'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'ব্যর্থ!',
+                                    text: data.message,
+                                    confirmButtonText: 'ঠিক আছে।'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ব্যর্থ!',
+                                text: 'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।',
+                                confirmButtonText: 'ঠিক আছে।'
+                            });
+                        });
                 });
             });
         });

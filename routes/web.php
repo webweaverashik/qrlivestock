@@ -25,8 +25,12 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
         return redirect()->back();
     })->name('logout.get');
 
+
     // Route for farms
     Route::resource('farms', FarmController::class);
+    Route::post('/farms/toggle-active', [FarmController::class, 'toggleActive'])->name('farms.toggleActive');
+
+    
 });
 
 // Handle GET /logout for logged-out users (redirect to login)
