@@ -19,6 +19,7 @@ class Farm extends Model
         'status',
         'is_active',
         'photo_url',
+        'qr_code',
         'created_by',
         'approved_by',
         'approved_at',
