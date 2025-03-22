@@ -15,8 +15,8 @@ class FarmController extends Controller
         $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
 
         // return response()->json($farms);
-        return count($farms);
-        // return view('farms.index', compact('farms'));
+        // return count($farms);
+        return view('farms.index', compact('farms'));
     }
 
     /**

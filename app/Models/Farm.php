@@ -11,12 +11,14 @@ class Farm extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'farm_name',
         'owner_name',
         'phone_number',
         'address',
         'unique_id',
         'status',
         'is_active',
+        'photo_url',
         'created_by',
         'approved_by',
         'approved_at',

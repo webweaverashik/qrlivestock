@@ -24,6 +24,7 @@ class FarmFactory extends Factory
         $status = $this->faker->randomElement(['pending', 'approved']);
 
         return [
+            'farm_name' => $this->faker->name(),
             'owner_name' => $this->faker->name(),
             'phone_number' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),

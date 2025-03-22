@@ -89,11 +89,21 @@
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
+
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="subjects_assign_link"
                                     href="{{ route('farms.create') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">নতুন নিবন্ধন</span></a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link--><a class="menu-link" id="subjects_assign_link"
+                                    href="{{ route('farms.index') }}"><span class="menu-bullet"><span
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের অপেক্ষায়</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->

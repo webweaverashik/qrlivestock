@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
+            $table->string('farm_name');
             $table->string('owner_name');
             $table->string('phone_number');
             $table->text('address');
             $table->string('unique_id')->unique();
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->boolean('is_active')->default(true);
+            $table->string('photo_url')->nullable();
             $table->foreignId('created_by');
             $table->foreignId('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
