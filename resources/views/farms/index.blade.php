@@ -75,7 +75,7 @@
                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                 <!--begin::Header-->
                                 <div class="px-7 py-5">
-                                    <div class="fs-5 text-gray-900 fw-bold">Filter Options</div>
+                                    <div class="fs-5 text-gray-900 fw-bold">ফিল্টার অপশন</div>
                                 </div>
                                 <!--end::Header-->
                                 <!--begin::Separator-->
@@ -85,27 +85,25 @@
                                 <div class="px-7 py-5" data-kt-user-table-filter="form">
                                     <!--begin::Input group-->
                                     <div class="mb-10">
-                                        <label class="form-label fs-6 fw-semibold">Role:</label>
+                                        <label class="form-label fs-6 fw-semibold">অনুমোদনের অবস্থা:</label>
                                         <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
-                                            data-placeholder="Select option" data-allow-clear="true"
+                                            data-placeholder="অবস্থা সিলেক্ট করুন" data-allow-clear="true"
                                             data-kt-user-table-filter="role" data-hide-search="true">
                                             <option></option>
-                                            <option value="Administrator">Administrator</option>
-                                            <option value="Analyst">Analyst</option>
-                                            <option value="Developer">Developer</option>
-                                            <option value="Support">Support</option>
-                                            <option value="Trial">Trial</option>
+                                            <option value="pending">অপেক্ষমান</option>
+                                            <option value="approved">অনুমোদিত</option>
                                         </select>
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10">
-                                        <label class="form-label fs-6 fw-semibold">Two Step Verification:</label>
+                                        <label class="form-label fs-6 fw-semibold">একটিভেশন অবস্থা:</label>
                                         <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
-                                            data-placeholder="Select option" data-allow-clear="true"
+                                            data-placeholder="সক্রিয়তা সিলেক্ট করুন" data-allow-clear="true"
                                             data-kt-user-table-filter="two-step" data-hide-search="true">
                                             <option></option>
-                                            <option value="Enabled">Enabled</option>
+                                            <option value="1">সক্রিয়</option>
+                                            <option value="0">নিষ্ক্রিয়</option>
                                         </select>
                                     </div>
                                     <!--end::Input group-->
@@ -113,9 +111,9 @@
                                     <div class="d-flex justify-content-end">
                                         <button type="reset"
                                             class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
-                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">রিসেট করুন</button>
                                         <button type="submit" class="btn btn-primary fw-semibold px-6"
-                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
+                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">এপ্লাই করুন</button>
                                     </div>
                                     <!--end::Actions-->
                                 </div>
@@ -154,25 +152,25 @@
                                 <th class="w-50px text-center">ক্রঃ</th>
                                 <th class="min-w-125px">খামারের নাম</th>
                                 <th class="min-w-125px">খামারির তথ্য</th>
-                                <th class="min-w-125px">নিবন্ধনের তারিখ</th>
-                                <th class="min-w-125px">সর্বশেষ সেবা নিয়েছে</th>
-                                <th class="min-w-125px">অনুমোদনের অবস্থা</th>
-                                <th class="min-w-125px">একটিভ/ডিএকটিভ</th>
-                                <th class="text-center min-w-100px">Actions</th>
+                                <th class="min-w-125px text-center">নিবন্ধনের তারিখ</th>
+                                <th class="min-w-125px text-center">সর্বশেষ সেবা নিয়েছে</th>
+                                <th class="min-w-125px text-center">অনুমোদনের অবস্থা</th>
+                                <th class="min-w-125px text-center">সক্রিয়/নিষ্ক্রিয়</th>
+                                <th class="min-w-100px text-center">কার্যক্রম</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 fw-semibold fs-5">
                             @foreach ($farms as $farm)
                                 <tr @if ($farm->is_active == 0) class="bg-light-danger" @endif>
-                                    <td class=" text-center">{{ $loop->index + 1 }}</td>
-                                    <td>
-                                        <!--begin::User details-->
+                                    <td class="text-center">{{ $loop->index + 1 }}</td>
+                                    <td class="text-start">
+                                        <!--begin::Farm details-->
                                         <div class="d-flex flex-column">
                                             <a href="{{ route('farms.show', $farm->id) }}"
                                                 class="text-gray-800 text-hover-primary mb-1">{{ $farm->farm_name }}</a>
                                             <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
                                         </div>
-                                        <!--begin::User details-->
+                                        <!--begin::Farm details-->
 
                                     </td>
                                     <td class="d-flex align-items-center">
@@ -186,34 +184,33 @@
                                             </a>
                                         </div>
                                         <!--end::Avatar-->
-                                        <!--begin::User details-->
+                                        <!--begin::Owner details-->
                                         <div class="d-flex flex-column">
                                             <a href="{{ route('farms.show', $farm->id) }}"
                                                 class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
                                         </div>
-                                        <!--begin::User details-->
+                                        <!--begin::Owner details-->
                                     </td>
-                                    {{-- <td>{{ $farm->farm_name }}</td> --}}
-                                    <td>{{ $farm->created_at }}</td>
-                                    <td>
+                                    <td class="text-center">{{ $farm->created_at->format('d-M-Y') }}</td>
+                                    <td class="text-center">
                                         @if (count($farm->serviceRecords) > 1)
                                             {{ $farm->serviceRecords()->latest()->value('created_at')->diffForHumans() }}
                                         @else
                                             -
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($farm->status == 'pending')
-                                            <div class="badge badge-warning fw-bold">অপেক্ষমাণ</div>
+                                            <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
                                         @elseif ($farm->status == 'approved')
-                                            <div class="badge badge-success fw-bold">অনুমোদিত</div>
+                                            <div class="badge badge-light-success fw-bold">অনুমোদিত</div>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($farm->status == 'pending')
                                             -
                                         @elseif ($farm->status == 'approved')
-                                            <div class="form-check form-switch form-check-solid form-check-success">
+                                            <div class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
                                                 <input class="form-check-input toggle-active" type="checkbox"
                                                     value="{{ $farm->id }}"
                                                     @if ($farm->is_active == 1) checked @endif />
@@ -221,18 +218,18 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ route('farms.show', $farm->id) }}"
-                                            class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
-                                            <i class="ki-outline ki-eye fs-3"></i>
+                                        <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}" title="QR Card Download"
+                                            class="btn btn-icon btn-active-light-primary w-30px h-30px me-3" target="_blank">
+                                            <i class="las la-download fs-2"></i>
                                         </a>
-                                        <a href="{{ route('farms.edit', $farm->id) }}"
+                                        <a href="{{ route('farms.edit', $farm->id) }}" title="সংশোধন"
                                             class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
-                                            <i class="ki-outline ki-pencil fs-3"></i>
+                                            <i class="ki-outline ki-pencil fs-2"></i>
                                         </a>
-                                        <a href="#"
+                                        <a href="#" title="ডিলিট"
                                             class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-farm"
                                             data-farm-id="{{ $farm->id }}">
-                                            <i class="ki-outline ki-trash fs-3"></i>
+                                            <i class="ki-outline ki-trash fs-2"></i>
                                         </a>
                                     </td>
                                 </tr>

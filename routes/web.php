@@ -30,6 +30,8 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::resource('farms', FarmController::class);
     Route::post('/farms/toggle-active', [FarmController::class, 'toggleActive'])->name('farms.toggleActive');
 
+    Route::get('/farms/{farm}/qr-code', [FarmController::class, 'downloadQrCode'])->name('farms.qrCode.download');
+
     
 });
 

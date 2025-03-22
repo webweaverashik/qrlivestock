@@ -44,8 +44,8 @@ class DatabaseSeeder extends Seeder
             ->sequence(['name' => 'cattle'], ['name' => 'chicken'], ['name' => 'buffalo'], ['name' => 'duck'], ['name' => 'goat'])
             ->create();
         LivestockCount::factory(10)->create();
-        ServiceCategory::factory(5)->create();
-        Disease::factory(5)->create();
+        ServiceCategory::factory(10)->create();
+        Disease::factory(15)->create();
         ServiceRecord::factory(20)->create(['created_by' => 2]);
         Prescription::factory(10)->create(['created_by' => 2, 'approved_by' => 1]);
         SMSLog::factory(10)->create();
