@@ -67,7 +67,7 @@
                     <!--end:Student Menu Heading-->
 
                     <!--begin:Student Info Menu item-->
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="student_info_menu">
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="farms_info_menu">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-icon">
@@ -83,7 +83,7 @@
                         <div class="menu-sub menu-sub-accordion">
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="all_students_link"
+                                <!--begin:Menu link--><a class="menu-link" id="all_farms_link"
                                     href="{{ route('farms.index') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">সকল খামার</span></a>
                                 <!--end:Menu link-->
@@ -92,7 +92,7 @@
 
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="subjects_assign_link"
+                                <!--begin:Menu link--><a class="menu-link" id="farm_registration_link"
                                     href="{{ route('farms.create') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">নতুন নিবন্ধন</span></a>
                                 <!--end:Menu link-->
@@ -101,7 +101,7 @@
                             
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="subjects_assign_link"
+                                <!--begin:Menu link--><a class="menu-link" id="farm_pending_approval_link"
                                     href="{{ route('farms.index') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের অপেক্ষায়</span></a>
                                 <!--end:Menu link-->

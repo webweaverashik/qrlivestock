@@ -22,11 +22,21 @@ class ServiceRecordFactory extends Factory
      */
     protected $model = ServiceRecord::class;
     
-    public function definition(): array
+    public function definition()
     {
+        $farm = Farm::inRandomOrder()->where('status', '!=', 'pending')->first();
+
+        if (!$farm) {
+            $farm = Farm::factory()->create(['status' => 'approved']); // Create a new approved farm if none exist
+        }
+
+        $serviceCategory = ServiceCategory::inRandomOrder()->first() ?? ServiceCategory::factory()->create();
+        $disease = Disease::inRandomOrder()->first() ?? Disease::factory()->create();
+        $prescriptionId = $this->faker->boolean(70) ? Prescription::inRandomOrder()->value('id') : null;
+
         return [
-            'farm_id' => Farm::inRandomOrder()->value('id') ?? Farm::factory(),
-            'service_category_id' => ServiceCategory::inRandomOrder()->value('id') ?? ServiceCategory::factory(),
+            'farm_id' => $farm->id,
+            'service_category_id' => $serviceCategory->id,
             'species_number_flock' => $this->faker->randomNumber(),
             'species_number_infected' => $this->faker->randomNumber(),
             'species_number_dead' => $this->faker->randomNumber(),
@@ -36,8 +46,8 @@ class ServiceRecordFactory extends Factory
             'species_type_age' => $this->faker->randomNumber(2),
             'history_of_disease' => $this->faker->sentence(),
             'microscopic_result' => $this->faker->sentence(),
-            'disease_id' => Disease::inRandomOrder()->value('id') ?? Disease::factory(),
-            'prescription_id' => $this->faker->boolean(70) ? Prescription::inRandomOrder()->value('id') : null, // 70% chance to assign an existing prescription
+            'disease_id' => $disease->id,
+            'prescription_id' => $prescriptionId,
             'created_by' => 2, // Staff user
         ];
     }

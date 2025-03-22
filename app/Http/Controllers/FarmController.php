@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Farm;
 use Illuminate\Http\Request;
+use App\Models\LivestockType;
 
 class FarmController extends Controller
 {
@@ -12,7 +13,8 @@ class FarmController extends Controller
      */
     public function index()
     {
-        $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
+        // $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
+        $farms = Farm::withoutTrashed()->get();
 
         // return response()->json($farms);
         // return count($farms);
@@ -24,7 +26,9 @@ class FarmController extends Controller
      */
     public function create()
     {
-        //
+        $livestock_types = LivestockType::withoutTrashed()->get();
+
+        return view('farms.create', compact('livestock_types'));
     }
 
     /**
@@ -38,17 +42,18 @@ class FarmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(Farm $farm)
+    {   
+        return response()->json($farm);
+        // return view('farms.show', compact('farm'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Farm $farm)
     {
-        //
+        return view('farms.edit', compact('farm'));
     }
 
     /**
@@ -62,8 +67,9 @@ class FarmController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Farm $farm)
     {
-        //
+        $farm->delete();
+        return response()->json(['success' => true]);
     }
 }

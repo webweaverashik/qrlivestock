@@ -4,7 +4,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'নতুন নিবন্ধন')
+@section('title', $farm->farm_name)
 
 @section('header-title')
     <div data-kt-swapper="true" data-kt-swapper-mode="{default: 'prepend', lg: 'prepend'}"
@@ -12,7 +12,7 @@
         class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
         <!--begin::Title-->
         <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 align-items-center my-0">
-            খামার নিবন্ধন ফর্ম
+            {{ $farm->farm_name }}
         </h1>
         <!--end::Title-->
         <!--begin::Separator-->
@@ -33,7 +33,7 @@
             <!--end::Item-->
             <!--begin::Item-->
             <li class="breadcrumb-item text-muted">
-                খামার নিবন্ধন </li>
+               সার্চ </li>
             <!--end::Item-->
         </ul>
         <!--end::Breadcrumb-->
@@ -49,8 +49,4 @@
 @endpush
 
 @push('page-js')
-    <script>
-        document.getElementById("farms_info_menu").classList.add("here", "show");
-        document.getElementById("farm_registration_link").classList.add("active");
-    </script>
 @endpush
