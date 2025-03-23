@@ -181,7 +181,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="{{ route('farms.show', $farm->id) }}">
                                                 <div class="symbol-label">
-                                                    <img src="{{ $farm->photo_url ?? asset('assets/media/avatars/300-5.jpg') }}"
+                                                    <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
                                                         alt="{{ $farm->owner_name }}" class="w-100" />
                                                 </div>
                                             </a>
@@ -191,6 +191,7 @@
                                         <div class="d-flex flex-column">
                                             <a href="{{ route('farms.show', $farm->id) }}"
                                                 class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
+                                            <span>মোবাইল: <strong>{{ $farm->phone_number }}</strong></span>
                                         </div>
                                         <!--begin::Owner details-->
                                     </td>
@@ -223,14 +224,15 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($farm->status == 'approved')
-                                        <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
-                                            title="QR Card Download" data-bs-toggle="tooltip"
-                                            class="btn btn-icon btn-active-light-primary w-30px h-30px me-3"
-                                            target="_blank">
-                                            <i class="las la-download fs-2"></i>
-                                        </a>
+                                            <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
+                                                title="QR Card Download" data-bs-toggle="tooltip"
+                                                class="btn btn-icon btn-active-light-primary w-30px h-30px me-3"
+                                                target="_blank">
+                                                <i class="las la-download fs-2"></i>
+                                            </a>
                                         @endif
-                                        <a href="{{ route('farms.edit', $farm->id) }}" title="সংশোধন" data-bs-toggle="tooltip"
+                                        <a href="{{ route('farms.edit', $farm->id) }}" title="সংশোধন"
+                                            data-bs-toggle="tooltip"
                                             class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
                                             <i class="ki-outline ki-pencil fs-2"></i>
                                         </a>

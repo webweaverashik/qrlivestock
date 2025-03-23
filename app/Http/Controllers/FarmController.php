@@ -15,11 +15,21 @@ class FarmController extends Controller
     public function index()
     {
         // $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
-        $farms = Farm::withoutTrashed()->orderby('id', 'desc')->get();
+        $farms = Farm::withoutTrashed()->orderby('updated_at', 'desc')->get();
 
         // return response()->json($farms);
         // return count($farms);
         return view('farms.index', compact('farms'));
+    }
+
+    /**
+     * Pending farms approval page
+     */
+    public function pendingFarm()
+    {
+        $farms = Farm::withoutTrashed()->where('status', 'pending')->orderby('id', 'desc')->get();
+
+        return view('farms.pending', compact('farms'));
     }
 
     /**
@@ -59,9 +69,9 @@ class FarmController extends Controller
             $photoPath = 'uploads/photos/';
             $file->move($photoPath, $filename);
 
-            $imageURL = $photoPath.$filename;
+            $imageURL = $photoPath . $filename;
         } else {
-            $imageURL = NULL;
+            $imageURL = null;
         }
 
         // ✅ Create the Farm record
@@ -132,5 +142,23 @@ class FarmController extends Controller
         $farm->save();
 
         return response()->json(['success' => true, 'message' => 'খামারের তথ্য আপডেট করা হয়েছে।']);
+    }
+
+    /**
+     * Farm approve
+     */
+    public function approveFarm($id)
+    {
+        try {
+            $farm = Farm::findOrFail($id); // Find farm by ID
+            $farm->status = 'approved'; // Update the farm status
+            $farm->save(); // Save changes
+
+            // Redirect with success message
+            return redirect()->route('farms.index')->with('success', 'খামারটি সফলভাবে অনুমোদিত হয়েছে।');
+        } catch (\Exception $e) {
+            // Handle any errors
+            return redirect()->route('farms.pending')->with('error', 'খামারটি অনুমোদন করা যায়নি।');
+        }
     }
 }

@@ -56,17 +56,15 @@
                     <div class="card card-flush py-4">
                         <!--begin::Card header-->
                         <div class="card-header">
-                            <!--begin::Card title-->
                             <div class="card-title">
                                 <h2>খামারির ছবি</h2>
                             </div>
-                            <!--end::Card title-->
                         </div>
                         <!--end::Card header-->
+
                         <!--begin::Card body-->
                         <div class="card-body text-center pt-0">
                             <!--begin::Image input-->
-                            <!--begin::Image input placeholder-->
                             <style>
                                 .image-input-placeholder {
                                     background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
@@ -76,44 +74,48 @@
                                     background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
                                 }
                             </style>
-                            <!--end::Image input placeholder-->
 
-                            <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
-                                data-kt-image-input="true">
+                            <div class="image-input image-input-outline {{ $farm->photo_url ? '' : 'image-input-empty image-input-placeholder' }}"
+                                data-kt-image-input="true"
+                                style="background-image: url('{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/svg/files/blank-image.svg') }}');">
+
                                 <!--begin::Preview existing avatar-->
-                                <div class="image-input-wrapper w-150px h-150px"></div>
+                                <div class="image-input-wrapper w-150px h-150px"
+                                    style="background-image: url('{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/svg/files/blank-image.svg') }}');">
+                                </div>
                                 <!--end::Preview existing avatar-->
+
                                 <!--begin::Label-->
                                 <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                     data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                    <i class="ki-outline ki-pencil fs-7">
-                                    </i>
-                                    <!--begin::Inputs-->
+                                    <i class="ki-outline ki-pencil fs-7"></i>
                                     <input type="file" name="photo_url" accept=".png, .jpg, .jpeg" />
                                     <input type="hidden" name="avatar_remove" />
-                                    <!--end::Inputs-->
                                 </label>
                                 <!--end::Label-->
+
                                 <!--begin::Cancel-->
                                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                     data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                    <i class="ki-outline ki-cross fs-2">
-                                    </i>
+                                    <i class="ki-outline ki-cross fs-2"></i>
                                 </span>
                                 <!--end::Cancel-->
+
                                 <!--begin::Remove-->
                                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                     data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                    <i class="ki-outline ki-cross fs-2">
-                                    </i>
+                                    <i class="ki-outline ki-cross fs-2"></i>
                                 </span>
                                 <!--end::Remove-->
                             </div>
                             <!--end::Image input-->
 
                             <!--begin::Description-->
-                            <div class="text-muted fs-6">খামার মালিকের ছবি আপলোড করুন। শুধুমাত্র *.png, *.jpg and *.jpeg
-                                ফরম্যাট গ্রহণযোগ্য এবং সর্বোচ্চ ফাইল সাইজ ২০০ কিলোবাইট।</div>
+                            <div class="text-muted fs-6">
+                                খামার মালিকের ছবি আপলোড করুন। শুধুমাত্র *.png, *.jpg and *.jpeg ফরম্যাট গ্রহণযোগ্য এবং
+                                সর্বোচ্চ ফাইল সাইজ ২০০ কিলোবাইট।
+                            </div>
+
                             @error('photo_url')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -123,51 +125,6 @@
                     </div>
                     <!--end::Thumbnail settings-->
 
-                    <!--begin::Status-->
-                    <div class="card card-flush py-4">
-                        <!--begin::Card header-->
-                        <div class="card-header">
-                            <!--begin::Card title-->
-                            <div class="card-title">
-                                <h2>Status</h2>
-                            </div>
-                            <!--end::Card title-->
-                            <!--begin::Card toolbar-->
-                            <div class="card-toolbar">
-                                <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_product_status">
-                                </div>
-                            </div>
-                            <!--begin::Card toolbar-->
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Select2-->
-                            <select class="form-select mb-2" data-control="select2" data-hide-search="true"
-                                data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select"
-                                name="status">
-                                <option></option>
-                                <option value="published" selected="selected">Published</option>
-                                <option value="draft">Draft</option>
-                                <option value="scheduled">Scheduled</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                            <!--end::Select2-->
-                            <!--begin::Description-->
-                            <div class="text-muted fs-7">Set the product status.</div>
-                            <!--end::Description-->
-                            <!--begin::Datepicker-->
-                            <div class="d-none mt-10">
-                                <label for="kt_ecommerce_add_product_status_datepicker" class="form-label">Select publishing
-                                    date and time</label>
-                                <input class="form-control" id="kt_ecommerce_add_product_status_datepicker"
-                                    placeholder="Pick date & time" />
-                            </div>
-                            <!--end::Datepicker-->
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <!--end::Status-->
                 </div>
                 <!--end::Aside column-->
 
@@ -196,7 +153,7 @@
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" name="farm_name" class="form-control mb-2"
-                                    placeholder="যেমন: সাহাদ জাহান ডেইরি ফার্ম" value="{{ old('farm_name') }}" required />
+                                    placeholder="যেমন: সাহাদ জাহান ডেইরি ফার্ম" value="{{ $farm->farm_name }}" required />
                                 @error('farm_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -208,14 +165,13 @@
                             <div class="mb-8 fv-row">
                                 <!--begin::Label-->
                                 <label class="required form-label fs-4">খামার মালিকের নাম</label>
-                                <span class="ms-1" data-bs-toggle="tooltip"
-                                    title="খামার মালিকের নাম এখানে এন্ট্রি দিন।">
+                                <span class="ms-1" data-bs-toggle="tooltip" title="খামার মালিকের নাম এখানে এন্ট্রি দিন।">
                                     <i class="ki-outline ki-information fs-7"></i>
                                 </span>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" name="owner_name" class="form-control mb-2"
-                                    placeholder="যেমন: আবু সায়েম" value="{{ old('owner_name') }}" required />
+                                    placeholder="যেমন: আবু সায়েম" value="{{ $farm->owner_name }}" required />
                                 @error('owner_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -230,7 +186,7 @@
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" name="phone_number" class="form-control mb-2" id="phone_number"
-                                    placeholder="যেমন: ০১৯১২-৩৪৫৬৭৮" value="{{ old('phone_number') }}" required />
+                                    placeholder="যেমন: ০১৯১২-৩৪৫৬৭৮" value="{{ $farm->phone_number }}" required />
                                 @error('phone_number')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -242,15 +198,14 @@
                             <div class="fv-row">
                                 <!--begin::Label-->
                                 <label class="form-label">খামারের ঠিকানা</label>
-                                <span class="ms-1" data-bs-toggle="tooltip"
-                                    title="খামারের পরিপূর্ণ ঠিকানা এন্ট্রি দিন">
+                                <span class="ms-1" data-bs-toggle="tooltip" title="খামারের পরিপূর্ণ ঠিকানা এন্ট্রি দিন">
                                     <i class="ki-outline ki-information fs-7"></i>
                                 </span>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" name="address" class="form-control mb-2"
                                     placeholder="যেমন: রাস্তা, গ্রাম, ইউনিয়ন, উপজেলা, জেলা"
-                                    value="{{ old('address') }}" />
+                                    value="{{ $farm->address }}" />
                                 @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

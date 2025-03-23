@@ -102,7 +102,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="farm_pending_approval_link"
-                                    href="{{ route('farms.index') }}"><span class="menu-bullet"><span
+                                    href="{{ route('farms.pending') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের অপেক্ষায়</span></a>
                                 <!--end:Menu link-->
                             </div>
