@@ -27,6 +27,7 @@ class Farm extends Model
 
     protected $casts = [
         'approved_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     public function createdBy()

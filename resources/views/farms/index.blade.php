@@ -111,9 +111,11 @@
                                     <div class="d-flex justify-content-end">
                                         <button type="reset"
                                             class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
-                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">রিসেট করুন</button>
+                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">রিসেট
+                                            করুন</button>
                                         <button type="submit" class="btn btn-primary fw-semibold px-6"
-                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">এপ্লাই করুন</button>
+                                            data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">এপ্লাই
+                                            করুন</button>
                                     </div>
                                     <!--end::Actions-->
                                 </div>
@@ -146,7 +148,7 @@
                 <!--begin::Card body-->
                 <div class="card-body py-4">
                     <!--begin::Table-->
-                    <table class="table table-hover table-row-bordered align-middle fs-6 gy-5" id="kt_table_farms">
+                    <table class="table table-hover align-middle fs-6 gy-5" id="kt_table_farms">
                         <thead>
                             <tr class="fw-bold fs-5 text-uppercase gs-0">
                                 <th class="w-50px text-center">ক্রঃ</th>
@@ -161,7 +163,8 @@
                         </thead>
                         <tbody class="text-gray-600 fw-semibold fs-5">
                             @foreach ($farms as $farm)
-                                <tr @if ($farm->is_active == 0) class="bg-light-danger" @endif>
+                                {{-- <tr @if ($farm->is_active == 0) class="bg-light-warning" @endif> --}}
+                                <tr>
                                     <td class="text-center">{{ $loop->index + 1 }}</td>
                                     <td class="text-start">
                                         <!--begin::Farm details-->
@@ -210,7 +213,8 @@
                                         @if ($farm->status == 'pending')
                                             -
                                         @elseif ($farm->status == 'approved')
-                                            <div class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
+                                            <div
+                                                class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
                                                 <input class="form-check-input toggle-active" type="checkbox"
                                                     value="{{ $farm->id }}"
                                                     @if ($farm->is_active == 1) checked @endif />
@@ -218,15 +222,19 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}" title="QR Card Download"
-                                            class="btn btn-icon btn-active-light-primary w-30px h-30px me-3" target="_blank">
+                                        @if ($farm->status == 'approved')
+                                        <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
+                                            title="QR Card Download" data-bs-toggle="tooltip"
+                                            class="btn btn-icon btn-active-light-primary w-30px h-30px me-3"
+                                            target="_blank">
                                             <i class="las la-download fs-2"></i>
                                         </a>
-                                        <a href="{{ route('farms.edit', $farm->id) }}" title="সংশোধন"
+                                        @endif
+                                        <a href="{{ route('farms.edit', $farm->id) }}" title="সংশোধন" data-bs-toggle="tooltip"
                                             class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
                                             <i class="ki-outline ki-pencil fs-2"></i>
                                         </a>
-                                        <a href="#" title="ডিলিট"
+                                        <a href="#" title="ডিলিট" data-bs-toggle="tooltip"
                                             class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-farm"
                                             data-farm-id="{{ $farm->id }}">
                                             <i class="ki-outline ki-trash fs-2"></i>
@@ -317,7 +325,9 @@
                                 })
                                 .catch(error => {
                                     console.error('Error:', error);
-                                    Swal.fire('ব্যর্থ!', 'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।', 'error');
+                                    Swal.fire('ব্যর্থ!',
+                                        'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।',
+                                        'error');
                                 });
                         }
                     });
@@ -335,6 +345,7 @@
                 input.addEventListener('change', function() {
                     const farmId = this.value;
                     const isActive = this.checked ? 1 : 0;
+                    const row = this.closest('tr'); // Get the parent <tr> element
 
                     fetch("{{ route('farms.toggleActive') }}", {
                             method: 'POST',
@@ -355,29 +366,21 @@
                         })
                         .then(data => {
                             if (data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'সফল!',
-                                    text: data.message,
-                                    confirmButtonText: 'ঠিক আছে।'
-                                });
+                                toastr.success(data.message);
+
+                                // Update the row's class based on is_active
+                                // if (isActive === 0) {
+                                //     row.classList.add('bg-light-warning');
+                                // } else {
+                                //     row.classList.remove('bg-light-warning');
+                                // }
                             } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'ব্যর্থ!',
-                                    text: data.message,
-                                    confirmButtonText: 'ঠিক আছে।'
-                                });
+                                toastr.error(data.message);
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'ব্যর্থ!',
-                                text: 'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।',
-                                confirmButtonText: 'ঠিক আছে।'
-                            });
+                            toastr.error('Error occurred while toggling farm status');
                         });
                 });
             });

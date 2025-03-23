@@ -18,7 +18,7 @@
         <!--begin::Page-->
         <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
             <!--begin::Header-->
-                @include('layouts.partials.header')
+            @include('layouts.partials.header')
             <!--end::Header-->
 
             <!--begin::Wrapper-->
@@ -32,6 +32,9 @@
                 <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
+                        <!--begin::Toolbar-->
+                        <!--end::Toolbar-->
+
                         <!--begin::Content-->
                         @yield('content')
                         <!--end::Content-->

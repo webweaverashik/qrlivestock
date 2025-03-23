@@ -20,7 +20,7 @@ class LivestockTypeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->randomElement(['cattle', 'chicken', 'buffalo', 'duck', 'goat']),
+            'name' => $this->faker->randomElement(['গরু', 'মুরগি', 'মহিষ', 'হাঁস', 'ছাগল' , 'ভেড়া']),
             'description' => $this->faker->sentence(),
         ];
     }

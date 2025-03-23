@@ -40,8 +40,8 @@ class DatabaseSeeder extends Seeder
         // Now populate all other tables with 'created_by' = 2 (staff user)
         Farm::factory(30)->create(['created_by' => 2]);
         LivestockType::factory()
-            ->count(5)
-            ->sequence(['name' => 'cattle'], ['name' => 'chicken'], ['name' => 'buffalo'], ['name' => 'duck'], ['name' => 'goat'])
+            ->count(6)
+            ->sequence(['name' => 'গরু'], ['name' => 'মুরগি'], ['name' => 'মহিষ'], ['name' => 'হাঁস'], ['name' => 'ছাগল'], ['name' => 'ভেড়া'])
             ->create();
         LivestockCount::factory(10)->create();
         ServiceCategory::factory(10)->create();
