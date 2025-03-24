@@ -124,7 +124,7 @@
                                 <!--end::Image input-->
 
                                 <!--begin::Description-->
-                                <div class="text-muted fs-6">খামার মালিকের ছবি আপলোড করুন। শুধুমাত্র *.png, *.jpg and *.jpeg
+                                <div class="text-muted fs-6">শুধুমাত্র *.png, *.jpg and *.jpeg
                                     ফরম্যাট গ্রহণযোগ্য এবং সর্বোচ্চ ফাইল সাইজ ২০০ কিলোবাইট।</div>
                                 @error('photo_url')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -148,6 +148,7 @@
                                 </div>
                             </div>
                             <!--end::Card header-->
+
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
                                 <div class="row">
@@ -231,13 +232,6 @@
                                         <!--end::Input group-->
                                     </div>
                                 </div>
-
-
-
-
-
-
-
                             </div>
                             <!--end::Card header-->
                         </div>
@@ -259,27 +253,24 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
                                 <!--begin::Input group-->
-                                <div>
-                                    <!--begin::Repeater-->
-                                    <div class="row">
-                                        @foreach ($livestock_types as $livestock_type)
-                                            <div class="col-4 col-sm-3 col-md mb-3">
-                                                <!--begin::Label-->
-                                                <label class="form-label fs-4"
-                                                    for="livestock_counts[{{ $livestock_type->id }}]">{{ $livestock_type->name }}
-                                                    (সংখ্যা)</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="number" name="livestock_counts[{{ $livestock_type->id }}]"
-                                                    class="form-control mb-2"
-                                                    id="livestock_counts[{{ $livestock_type->id }}]"
-                                                    value="{{ old('livestock_counts.' . $livestock_type->id) }}"
-                                                    min="1" step="1" />
-                                                <!--end::Input-->
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <!--end::Repeater-->
+                                <div class="row">
+                                    @foreach ($livestock_types as $livestock_type)
+                                        <div class="col-4 col-xl-3 mb-3">
+                                            <!--begin::Label-->
+                                            <label class="form-label fs-4"
+                                                for="livestock_counts[{{ $livestock_type->id }}]">{{ $livestock_type->name }}
+                                                (সংখ্যা)
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="number" name="livestock_counts[{{ $livestock_type->id }}]"
+                                                class="form-control mb-2"
+                                                id="livestock_counts[{{ $livestock_type->id }}]"
+                                                value="{{ old('livestock_counts.' . $livestock_type->id) }}"
+                                                min="1" step="1" />
+                                            <!--end::Input-->
+                                        </div>
+                                    @endforeach
                                 </div>
                                 <!--end::Input group-->
                             </div>
