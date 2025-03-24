@@ -15,7 +15,6 @@ class FarmController extends Controller
      */
     public function index()
     {
-        // $farms = Farm::where('is_active', 1)->withoutTrashed()->get();
         $farms = Farm::withoutTrashed()->orderby('updated_at', 'desc')->get();
 
         // return response()->json($farms);
@@ -71,7 +70,7 @@ class FarmController extends Controller
 
             $filename = 'photo_' . $uniqueId . '.' . $extension;
 
-            $photoPath = 'uploads/photos/';
+            $photoPath = 'uploads/farms/';
             $file->move($photoPath, $filename);
 
             $imageURL = $photoPath . $filename;

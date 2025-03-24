@@ -60,13 +60,14 @@
                     <!--begin:Student Menu Heading-->
                     <div class="menu-item pt-5">
                         <!--begin:Menu content-->
-                        <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">খামার ও গবাদিপ্রাণি</span>
+                        <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">খামার ও
+                                গবাদিপ্রাণি</span>
                         </div>
                         <!--end:Menu content-->
                     </div>
                     <!--end:Student Menu Heading-->
 
-                    <!--begin:Student Info Menu item-->
+                    <!--begin:খামারের তথ্য Menu item-->
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="farms_info_menu">
                         <!--begin:Menu link-->
                         <span class="menu-link">
@@ -85,7 +86,8 @@
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="all_farms_link"
                                     href="{{ route('farms.index') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">সকল খামার</span></a>
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">সকল
+                                        খামার</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
@@ -94,26 +96,30 @@
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="farm_registration_link"
                                     href="{{ route('farms.create') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">নতুন নিবন্ধন</span></a>
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">নতুন
+                                        নিবন্ধন</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
-                            
+
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="farm_pending_approval_link"
                                     href="{{ route('farms.pending') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের অপেক্ষায়</span></a>
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের
+                                        অপেক্ষায়<span class="menu-badge">
+                                            <span class="badge badge-danger badge-circle fw-bold fs-7">{{ \App\Models\Farm::where('status', 'pending')->count() }}</span>
+                                        </span></span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
                     </div>
-                    <!--end: Student Info Menu item-->
+                    <!--end: খামারের তথ্য Menu item-->
 
 
-                    <!--begin:Admission Menu item-->
+                    <!--begin:চিকিৎসা রেজিস্টার Menu item-->
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="admission_menu">
                         <!--begin:Menu link-->
                         <span class="menu-link">
@@ -131,7 +137,8 @@
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="new_admission_link"
                                     href="{{ route('dashboard') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">সকল সেবা</span></a>
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">সকল
+                                        সেবা</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
@@ -140,14 +147,15 @@
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="pending_approval_link"
                                     href="?page=pages/user-profile/projects"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের অপেক্ষায়</span></a>
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের
+                                        অপেক্ষায়</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
                     </div>
-                    <!--end: Admission Menu item-->
+                    <!--end: চিকিৎসা রেজিস্টার Menu item-->
 
 
 
@@ -155,7 +163,8 @@
                     <!--begin:Systems Info Menu Heading-->
                     <div class="menu-item pt-5">
                         <!--begin:Menu content-->
-                        <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">সিস্টেম</span>
+                        <div class="menu-content"><span
+                                class="menu-heading fw-bold text-uppercase fs-7">সিস্টেম</span>
                         </div>
                         <!--end:Menu content-->
                     </div>
@@ -164,7 +173,7 @@
                     <!--begin:Users Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{ route('dashboard') }}" id="users_link">
+                        <a class="menu-link" href="{{ route('users.index') }}" id="users_link">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-user fs-2"></i>
                             </span>
@@ -178,7 +187,7 @@
                     <!--begin:Settings Tracking Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{ route('dashboard') }}" id="settings_link">
+                        <a class="menu-link" href="#" id="settings_link">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-setting-2 fs-2"></i>
                             </span>
@@ -201,7 +210,8 @@
 
     <!--begin::Footer-->
     <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        <a href="{{ route('logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
             class="btn btn-flex flex-center btn-custom btn-danger overflow-hidden text-nowrap px-0 h-40px w-100"
             data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="Logout">
             <span class="btn-label">

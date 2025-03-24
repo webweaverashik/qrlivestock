@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FarmController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function() {
     return view('welcome');
@@ -34,23 +35,12 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::resource('farms', FarmController::class);
 
 
-    
+    // Route for users
+    Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
+    Route::resource('users', UserController::class);
 });
 
 // Handle GET /logout for logged-out users (redirect to login)
 Route::get('/logout', function () {
     return redirect()->route('login');
 })->name('logout.get');
-
-
-
-
-// Testing mail server
-Route::get('/send-test-email', function () {
-    Mail::raw('This is a test email from Laravel 12!', function ($message) {
-        $message->to('ashik.ane.doict@gmail.com')
-                ->subject('Laravel 12 Gmail SMTP Test');
-    });
-
-    return 'Test email sent successfully!';
-});

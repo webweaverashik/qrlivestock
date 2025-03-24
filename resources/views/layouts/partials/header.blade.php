@@ -1744,10 +1744,10 @@
                                         {{ auth()->user()->name }}
                                         @if (auth()->user()->role == 'admin')
                                             <span
-                                                class="badge badge-light-primary fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
+                                                class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
                                         @elseif (auth()->user()->role == 'staff')
                                             <span
-                                                class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
+                                                class="badge badge-light-warning fw-bold fs-8 px-2 py-1 ms-2">{{ ucfirst(auth()->user()->role) }}</span>
                                         @endif
                                     </div>
                                     <a href="#"
@@ -1773,7 +1773,7 @@
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="#" class="menu-link px-5">
-                                <span class="menu-text">অপেক্ষমান প্রেস্ক্রিপশন</span>
+                                <span class="menu-text">অপেক্ষমাণ প্রেসক্রিপশন</span>
                                 <span class="menu-badge">
                                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
                                 </span>

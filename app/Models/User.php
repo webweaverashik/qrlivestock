@@ -80,4 +80,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Prescription::class, 'approved_by');
     }
+
+    /**
+     * Get the login activities for the user.
+     */
+    public function loginActivities()
+    {
+        return $this->hasMany(LoginActivity::class);
+    }
 }
