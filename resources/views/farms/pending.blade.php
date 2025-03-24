@@ -95,32 +95,33 @@
                                         <!--begin::Farm details-->
 
                                     </td>
-                                    <td class="d-flex align-items-center">
-                                        <!--begin:: Avatar -->
-                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                            <a href="{{ route('farms.show', $farm->id) }}">
-                                                <div class="symbol-label">
-                                                    <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
-                                                        alt="{{ $farm->owner_name }}" class="w-100" />
-                                                </div>
-                                            </a>
+                                    <td class="">
+                                        <div class="d-flex align-items-center">
+                                            <!--begin:: Avatar -->
+                                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                                <a href="{{ route('farms.show', $farm->id) }}">
+                                                    <div class="symbol-label">
+                                                        <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
+                                                            alt="{{ $farm->owner_name }}" class="w-100" />
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <!--end::Avatar-->
+                                            <!--begin::Owner details-->
+                                            <div class="d-flex flex-column ">
+                                                <a href="{{ route('farms.show', $farm->id) }}"
+                                                    class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
+                                                <span>ফোন: {{ $farm->phone_number }}</span>
+                                            </div>
+                                            <!--begin::Owner details-->
                                         </div>
-                                        <!--end::Avatar-->
-                                        <!--begin::Owner details-->
-                                        <div class="d-flex flex-column">
-                                            <a href="{{ route('farms.show', $farm->id) }}"
-                                                class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                            <span>ফোন: {{ $farm->phone_number }}</span>
-                                        </div>
-                                        <!--begin::Owner details-->
                                     </td>
                                     <td class="text-center text-wrap">{{ $farm->address }}</td>
                                     <td class="text-center">
-                                        @if (count($farm->serviceRecords) > 1)
-                                            {{ $farm->serviceRecords()->latest()->value('created_at')->diffForHumans() }}
-                                        @else
-                                            -
-                                        @endif
+                                        @foreach ($farm->livestockCounts as $livestockCount)
+                                            {{ $livestockCount->livestockType->name }}: {{ $livestockCount->total }}টি
+                                            <br>
+                                        @endforeach
                                     </td>
                                     <td class="text-center">{{ $farm->created_at->format('d-M-Y') }}</td>
                                     <td class="text-center">
@@ -134,7 +135,9 @@
                                         </a> --}}
                                         <form action="{{ route('farms.approve', $farm->id) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-icon btn-active-success w-30px h-30px me-3" title="অনুমোদন করুন" data-bs-toggle="tooltip">
+                                            <button type="submit"
+                                                class="btn btn-icon btn-active-success w-30px h-30px me-3"
+                                                title="অনুমোদন করুন" data-bs-toggle="tooltip">
                                                 <i class="ki-outline ki-double-check fs-2"></i>
                                             </button>
                                         </form>

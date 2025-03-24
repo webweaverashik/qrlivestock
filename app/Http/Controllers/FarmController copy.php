@@ -6,7 +6,6 @@ use App\Models\Farm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\LivestockType;
-use App\Models\LivestockCount;
 
 class FarmController extends Controller
 {
@@ -28,7 +27,7 @@ class FarmController extends Controller
      */
     public function pendingFarm()
     {
-        $farms = Farm::with('livestockCounts.livestockType')->withoutTrashed()->where('status', 'pending')->orderby('id', 'desc')->get();
+        $farms = Farm::withoutTrashed()->where('status', 'pending')->orderby('id', 'desc')->get();
 
         return view('farms.pending', compact('farms'));
     }
@@ -48,8 +47,6 @@ class FarmController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
-
         // ✅ Validate request
         $request->validate([
             'farm_name' => 'required|string|max:255',
@@ -57,8 +54,6 @@ class FarmController extends Controller
             'phone_number' => 'required|string|max:20',
             'address' => 'nullable|string|max:500',
             'photo_url' => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
-            'livestock_counts' => 'array',
-            'livestock_counts.*' => 'nullable|integer|min:1',
         ]);
 
         // ✅ Generate Unique ID
@@ -90,18 +85,6 @@ class FarmController extends Controller
             'qr_code' => null, // Will generate later
             'created_by' => auth()->id(),
         ]);
-
-        // Insert livestock counts
-        foreach ($request->livestock_counts as $livestock_type_id => $count) {
-            if ($count > 0) {
-                // Ensure it's a valid number
-                LivestockCount::create([
-                    'farm_id' => $farm->id,
-                    'livestock_type_id' => $livestock_type_id,
-                    'total' => $count,
-                ]);
-            }
-        }
 
         return redirect()->route('farms.index')->with('success', 'খামারটি সফলভাবে নিবন্ধন হয়েছে এবং অনুমোদনের অপেক্ষায় রয়েছে।');
     }
