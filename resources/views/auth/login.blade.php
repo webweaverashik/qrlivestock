@@ -33,15 +33,15 @@
                     <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
                         src="{{ asset('assets/img/icon.png') }}" alt="" />
                     <img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
-                        src="{{ asset('assets/media/auth/agency-dark.png') }}" alt="" />
+                        src="{{ asset('assets/img/icon.png') }}" alt="" />
                     <!--end::Image-->
                     <!--begin::Title-->
                     <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">QR Livestock Service Tracking System
                     </h1>
                     <!--end::Title-->
                     <!--begin::Text-->
-                    <div class="text-gray-600 fs-base text-center fw-semibold">
-                        এটি একটি স্মার্ট ডিজিটাল সিস্টেম, যেখানে প্রাণিসম্পদ অফিস সহজেই খামারের তথ্য, চিকিৎসা ও সেবার রেকর্ড সংরক্ষণ <br>করতে পারবে QR কোড ব্যবহার করে। খামার মালিকরাও মোবাইল অ্যাপে QR কোড স্ক্যান করে নিজেদের সেবার তথ্য জানতে পারবেন।
+                    <div class="text-gray-600 fs-4 text-center fw-semibold w-lg-50">
+                        এটি একটি স্মার্ট ডিজিটাল সিস্টেম, যেখানে প্রাণিসম্পদ অফিস সহজেই খামারের তথ্য, চিকিৎসা ও সেবার রেকর্ড সংরক্ষণ করতে পারবে QR কোড ব্যবহার করে। খামার মালিকরাও মোবাইল অ্যাপে QR কোড স্ক্যান করে নিজেদের সেবার তথ্য জানতে পারবেন।
                     </div>
                     <!--end::Text-->
                 </div>
@@ -64,10 +64,10 @@
                                 <!--begin::Heading-->
                                 <div class="text-center mb-11">
                                     <!--begin::Title-->
-                                    <h1 class="text-gray-900 fw-bolder mb-3">Sign In</h1>
+                                    <h1 class="text-gray-900 fw-bolder mb-3">লগইন করুন</h1>
                                     <!--end::Title-->
                                     <!--begin::Subtitle-->
-                                    <div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
+                                    <div class="text-gray-500 fw-semibold fs-6">অনুগ্রহ করে ইমেইল ও পাসওয়ার্ড ইনপুট দিন</div>
                                     <!--end::Subtitle=-->
                                 </div>
                                 <!--begin::Heading-->
