@@ -14,7 +14,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::withoutTrashed()->orderby('id', 'desc')->get();
-
         return view('users.index', compact('users'));
     }
 

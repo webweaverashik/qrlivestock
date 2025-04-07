@@ -15,7 +15,7 @@ class FarmController extends Controller
      */
     public function index()
     {
-        $farms = Farm::withoutTrashed()->orderby('updated_at', 'desc')->get();
+        $farms = Farm::where('status', 'approved')->withoutTrashed()->orderby('updated_at', 'desc')->get();
 
         // return response()->json($farms);
         // return count($farms);

@@ -56,7 +56,7 @@
                         <div class="d-flex align-items-center position-relative my-1">
                             <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
                             </i>
-                            <input type="text" data-kt-user-table-filter="search"
+                            <input type="text" data-kt-farm-table-filter="search"
                                 class="form-control form-control-solid w-250px ps-13" placeholder="খামার অনুসন্ধান করুন" />
                         </div>
                         <!--end::Search-->
@@ -67,13 +67,13 @@
                 <!--begin::Card body-->
                 <div class="card-body py-4">
                     <!--begin::Table-->
-                    <table class="table table-hover align-middle fs-6 gy-5" id="kt_table_farms_pending">
+                    <table class="table table-hover table-row-dashed align-middle fs-6 gy-5" id="kt_pending_farms_table">
                         <thead>
                             <tr class="fw-bold fs-5 text-uppercase gs-0">
                                 <th class="w-50px text-center">ক্রঃ</th>
                                 <th class="">খামারের নাম</th>
                                 <th class="">খামারির তথ্য</th>
-                                <th class="text-center">ঠিকানা</th>
+                                <th class="text-center">খামারের ঠিকানা</th>
                                 <th class="text-center">গবাদি প্রাণির তথ্য</th>
                                 <th class="text-center">নিবন্ধনের তারিখ</th>
                                 <th class="text-center">অবস্থা</th>
@@ -84,7 +84,7 @@
                             @foreach ($farms as $farm)
                                 {{-- <tr @if ($farm->is_active == 0) class="bg-light-warning" @endif> --}}
                                 <tr>
-                                    <td class="text-center">{{ $loop->index + 1 }}</td>
+                                    <td class="text-center">{{ en2bn($loop->index + 1) }}</td>
                                     <td class="text-start">
                                         <!--begin::Farm details-->
                                         <div class="d-flex flex-column">
@@ -111,7 +111,8 @@
                                             <div class="d-flex flex-column ">
                                                 <a href="{{ route('farms.show', $farm->id) }}"
                                                     class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                                <span>ফোন: {{ $farm->phone_number }}</span>
+                                                    <span><i class="las la-phone"></i><strong>
+                                                        {{ en2bn($farm->phone_number) }}</strong></span>
                                             </div>
                                             <!--begin::Owner details-->
                                         </div>
@@ -119,28 +120,24 @@
                                     <td class="text-center text-wrap">{{ $farm->address }}</td>
                                     <td class="text-center">
                                         @foreach ($farm->livestockCounts as $livestockCount)
-                                            {{ $livestockCount->livestockType->name }}: {{ $livestockCount->total }}টি
+                                            {{ $livestockCount->livestockType->name }}: {{ en2bn($livestockCount->total) }}টি
                                             <br>
                                         @endforeach
                                     </td>
-                                    <td class="text-center">{{ $farm->created_at->format('d-M-Y') }}</td>
+                                    <td class="text-center">
+                                        {{ en2bn($farm->created_at->format('d-M-Y')) }}
+                                        <span class="ms-1" data-bs-toggle="tooltip"
+                                        title="{{ en2bn($farm->created_at->format('d-M-Y h:m:s A')) }}">
+                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                    </span></td>
                                     <td class="text-center">
                                         <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
                                     </td>
                                     <td class="text-center">
-                                        {{-- <a href="#" title="অনুমোদন করুন" data-bs-toggle="tooltip"
-                                            class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm"
-                                            data-farm-id="{{ $farm->id }}">
-                                            <i class="ki-outline ki-double-check fs-2"></i>
-                                        </a> --}}
-                                        <form action="{{ route('farms.approve', $farm->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit"
-                                                class="btn btn-icon btn-active-success w-30px h-30px me-3"
-                                                title="অনুমোদন করুন" data-bs-toggle="tooltip">
+                                            <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm" 
+                                                title="অনুমোদন করুন" data-bs-toggle="tooltip" data-farm-id="{{ $farm->id }}">
                                                 <i class="ki-outline ki-double-check fs-2"></i>
                                             </button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -163,70 +160,10 @@
 @endpush
 
 @push('page-js')
-    {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/table.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/export-users.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/js/custom/apps/user-management/users/list/add.js') }}"></script> --}}
-    <script>
-        $(document).ready(function() {
-            $('#kt_table_farms_pending').DataTable();
-        });
-    </script>
+    <script src="{{ asset('js/farms/pending.js') }}"></script>
 
     <script>
         document.getElementById("farms_info_menu").classList.add("here", "show");
         document.getElementById("farm_pending_approval_link").classList.add("active");
-    </script>
-
-    {{-- Farm approval alert modal dialog --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const approveButtons = document.querySelectorAll('.approve-farm');
-
-            approveButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevent the default action of the link
-
-                    const farmId = this.dataset.farmId; // Get the farm ID
-
-                    // Show SweetAlert confirmation
-                    Swal.fire({
-                        title: 'আপনি কি নিশ্চিত এই খামার অনুমোদন করতে চান?',
-                        text: "আপনি কি নিশ্চিত এই খামার অনুমোদন করতে চান?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'হ্যাঁ, অনুমোদন করবো।',
-                        cancelButtonText: 'ক্যানসেল',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Create a hidden form element dynamically
-                            const form = document.createElement('form');
-                            form.method = 'POST';
-                            form.action = `/farms/${farmId}/approve`;
-
-                            // Add CSRF token input
-                            const csrfTokenInput = document.createElement('input');
-                            csrfTokenInput.type = 'hidden';
-                            csrfTokenInput.name = '_token';
-                            csrfTokenInput.value = document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute('content');
-                            form.appendChild(csrfTokenInput);
-
-                            // Add method field for POST (since we are using resource routes)
-                            const methodInput = document.createElement('input');
-                            methodInput.type = 'hidden';
-                            methodInput.name = '_method';
-                            methodInput.value = 'POST';
-                            form.appendChild(methodInput);
-
-                            // Append the form to the body and submit it
-                            document.body.appendChild(form);
-                            form.submit();
-                        }
-                    });
-                });
-            });
-        });
     </script>
 @endpush

@@ -1,5 +1,6 @@
 <head>
     <title>@yield('title', 'Dashboard') - QR Livestock</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8" />
     <meta name="description" content="Unique Coaching Management System (UCMS) is an all-in-one solution for academic coaching centers, streamlining student admissions, attendance tracking, tuition and notes payment management, teacher scheduling, and sheet distribution. Designed for efficiency, UCMS ensures seamless operations with role-based access for Super Admins, Branch Managers, Accountants, Teachers, Guardians, and Students." />
     <meta name="keywords" content="coaching management system, academic management software, student management system, tuition management system, coaching center software, attendance tracking, payment management, teacher scheduling, notes distribution, sheet distribution system, role-based access, education ERP, UCMS, coaching automation, student fee management, guardian portal, online coaching management, school management system" />
@@ -13,9 +14,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.ico') }}" />
 
     <!--begin::Fonts(mandatory for all pages)-->
-    {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" /> --}}
-    {{-- <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"> --}}
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet">
     <!--end::Fonts-->
 
     <!--begin::Vendor Stylesheets(used for this page only)-->

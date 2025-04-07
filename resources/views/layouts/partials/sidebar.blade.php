@@ -108,7 +108,7 @@
                                     href="{{ route('farms.pending') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের
                                         অপেক্ষায়<span class="menu-badge">
-                                            <span class="badge badge-danger badge-circle fw-bold fs-7">{{ \App\Models\Farm::where('status', 'pending')->count() }}</span>
+                                            <span class="badge badge-danger badge-circle fw-bold fs-7">{{ en2bn(\App\Models\Farm::where('status', 'pending')->count()) }}</span>
                                         </span></span></a>
                                 <!--end:Menu link-->
                             </div>
