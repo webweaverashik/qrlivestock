@@ -36,7 +36,7 @@
                         src="{{ asset('assets/img/icon.png') }}" alt="" />
                     <!--end::Image-->
                     <!--begin::Title-->
-                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">QR Livestock Service Tracking System
+                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">প্রাণি-সেবা সারথী
                     </h1>
                     <!--end::Title-->
                     <!--begin::Text-->
@@ -76,7 +76,7 @@
                                 <!--begin::Input group=-->
                                 <div class="fv-row mb-8">
                                     <!--begin::Email-->
-                                    <input type="email" placeholder="Email" name="email" autocomplete="off"
+                                    <input type="email" placeholder="ইমেইল" name="email" autocomplete="off"
                                         class="form-control bg-transparent" required/>
                                     <!--end::Email-->
                                 </div>
@@ -85,7 +85,7 @@
                                 <!--begin::Input group=-->
                                 <div class="fv-row mb-3">
                                     <!--begin::Password-->
-                                    <input type="password" placeholder="Password" name="password" autocomplete="off"
+                                    <input type="password" placeholder="পাসওয়ার্ড" name="password" autocomplete="off"
                                         class="form-control bg-transparent" required/>
                                     <!--end::Password-->
                                 </div>
@@ -95,7 +95,7 @@
                                 <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
                                     <div></div>
                                     <!--begin::Link-->
-                                    <a href="#" class="link-primary">Forgot Password ?</a>
+                                    <a href="#" class="link-primary">পাসওয়ার্ড ভুলে গিয়েছেন?</a>
                                     <!--end::Link-->
                                 </div>
                                 <!--end::Wrapper-->
@@ -104,26 +104,20 @@
                                 <div class="d-grid mb-10">
                                     <button type="submit" id="" class="btn btn-primary">
                                         <!--begin::Indicator label-->
-                                        <span class="indicator-label">Sign In</span>
+                                        <span class="indicator-label">লগইন করুন</span>
                                         <!--end::Indicator label-->
                                         <!--begin::Indicator progress-->
-                                        <span class="indicator-progress">Please wait...
+                                        <span class="indicator-progress">একটু অপেক্ষা করুন...
                                             <span
                                                 class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         <!--end::Indicator progress-->
                                     </button>
                                 </div>
                                 <!--end::Submit button-->
-                                <!--begin::Sign up-->
-                                <div class="text-gray-500 text-center fw-semibold fs-6">Not a Member yet?
-                                    <a href="#" class="link-primary">Sign
-                                        up</a>
-                                </div>
-                                <!--end::Sign up-->
 
                                 <!--begin::Separator-->
                                 <div class="separator separator-content my-14">
-                                    <span class="w-125px text-gray-500 fw-semibold fs-7">Download App</span>
+                                    <span class="w-125px text-gray-500 fw-semibold fs-7">ডাউনলোড করুন</span>
                                 </div>
                                 <!--end::Separator-->
 

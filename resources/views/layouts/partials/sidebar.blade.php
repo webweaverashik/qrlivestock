@@ -106,8 +106,7 @@
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="farm_pending_approval_link"
                                     href="{{ route('farms.pending') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের
-                                        অপেক্ষায়<span class="menu-badge">
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">@if (auth()->user()->role == 'admin')খামার অনুমোদন @else অনুমোদনের অপেক্ষায় @endif<span class="menu-badge">
                                             <span class="badge badge-danger badge-circle fw-bold fs-7">{{ en2bn(\App\Models\Farm::where('status', 'pending')->count()) }}</span>
                                         </span></span></a>
                                 <!--end:Menu link-->
@@ -146,9 +145,8 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link--><a class="menu-link" id="pending_approval_link"
-                                    href="?page=pages/user-profile/projects"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">অনুমোদনের
-                                        অপেক্ষায়</span></a>
+                                    href="#"><span class="menu-bullet"><span
+                                            class="bullet bullet-dot"></span></span><span class="menu-title">@if (auth()->user()->role == 'admin')প্রেসক্রিপশন অনুমোদন @else অনুমোদনের অপেক্ষায় @endif</span></a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
@@ -158,7 +156,7 @@
                     <!--end: চিকিৎসা রেজিস্টার Menu item-->
 
 
-
+                    @if (auth()->user()->role == 'admin')
                     {{-- ----------------- Settings Modules ----------------- --}}
                     <!--begin:Systems Info Menu Heading-->
                     <div class="menu-item pt-5">
@@ -197,7 +195,7 @@
                     </div>
                     <!--end:Settings Tracking Menu item-->
 
-
+                    @endif
 
                 </div>
                 <!--end::Menu-->

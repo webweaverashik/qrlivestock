@@ -15,7 +15,7 @@ var KTPendingFarmsList = function () {
                "pageLength": 10,
                "lengthChange": true,
                "autoWidth": false,  // Disable auto width
-               'columnDefs': [{ orderable: false, targets: [3, 4, 6, 7] }]
+               'columnDefs': [{ orderable: false, targets: [3, 4, 6] }]
           });
 
           // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw
@@ -45,13 +45,13 @@ var KTPendingFarmsList = function () {
 
                     // Show SweetAlert confirmation
                     Swal.fire({
-                         title: 'আপনি কি নিশ্চিত এই খামার অনুমোদন করতে চান?',
+                         title: 'নিশ্চিত?',
                          text: "আপনি কি নিশ্চিত এই খামার অনুমোদন করতে চান?",
                          icon: 'warning',
                          showCancelButton: true,
                          confirmButtonColor: '#3085d6',
                          cancelButtonColor: '#d33',
-                         confirmButtonText: 'হ্যাঁ, অনুমোদন করবো।',
+                         confirmButtonText: 'হ্যাঁ, অনুমোদন করবো',
                          cancelButtonText: 'ক্যানসেল',
                     }).then((result) => {
                          if (result.isConfirmed) {

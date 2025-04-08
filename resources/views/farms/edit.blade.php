@@ -45,261 +45,274 @@
 @section('content')
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div id="kt_app_content_container" class="app-container container-xxl">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+            @if ($errors->any())
+                <div
+                    class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                    <!--begin::Icon-->
+                    <i class="ki-duotone ki-information fs-2hx text-danger me-4 mb-5 mb-sm-0">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                    </i>
+                    <!--end::Icon-->
+
+                    <!--begin::Content-->
+                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                        <h5 class="mb-1 text-danger">নিম্নোক্ত এররগুলো চেক করুন।</h5>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-danger">{{ $error }}</li>
+                        @endforeach
+                    </div>
+                    <!--end::Content-->
+
+                    <!--begin::Close-->
+                    <button type="button"
+                        class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                        data-bs-dismiss="alert">
+                        <i class="ki-outline ki-cross fs-1 text-danger"></i>
+                    </button>
+                    <!--end::Close-->
+                </div>
+            @endif
             <!--begin::Form-->
-            <form action="{{ route('farms.store') }}" class="form d-flex flex-column flex-lg-row" method="POST"
+            <form action="{{ route('farms.update', $farm->id) }}" class="form d-flex flex-column flex-lg-row" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <!--begin::Aside column-->
-                <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                    <!--begin::Thumbnail settings-->
-                    <div class="card card-flush py-4">
-                        <!--begin::Card header-->
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h2>খামারির ছবি</h2>
-                            </div>
-                        </div>
-                        <!--end::Card header-->
-
-                        <!--begin::Card body-->
-                        <div class="card-body text-center pt-0">
-                            <!--begin::Image input-->
-                            <style>
-                                .image-input-placeholder {
-                                    background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
-                                }
-
-                                [data-bs-theme="dark"] .image-input-placeholder {
-                                    background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
-                                }
-                            </style>
-
-                            <div class="image-input image-input-outline {{ $farm->photo_url ? '' : 'image-input-empty image-input-placeholder' }}"
-                                data-kt-image-input="true"
-                                style="background-image: url('{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/svg/files/blank-image.svg') }}');">
-
-                                <!--begin::Preview existing avatar-->
-                                <div class="image-input-wrapper w-150px h-150px"
-                                    style="background-image: url('{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/svg/files/blank-image.svg') }}');">
+                @method('PUT')
+                <div class="d-flex flex-wrap">
+                    <!--begin::Aside column-->
+                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-400px mb-7 me-lg-7">
+                        <!--begin::Thumbnail settings-->
+                        <div class="card card-flush py-4">
+                            <!--begin::Card header-->
+                            <div class="card-header">
+                                <!--begin::Card title-->
+                                <div class="card-title">
+                                    <h2>খামার মালিকের ছবি</h2>
                                 </div>
-                                <!--end::Preview existing avatar-->
-
-                                <!--begin::Label-->
-                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                    <i class="ki-outline ki-pencil fs-7"></i>
-                                    <input type="file" name="photo_url" accept=".png, .jpg, .jpeg" />
-                                    <input type="hidden" name="avatar_remove" />
-                                </label>
-                                <!--end::Label-->
-
-                                <!--begin::Cancel-->
-                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                    <i class="ki-outline ki-cross fs-2"></i>
-                                </span>
-                                <!--end::Cancel-->
-
-                                <!--begin::Remove-->
-                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                    <i class="ki-outline ki-cross fs-2"></i>
-                                </span>
-                                <!--end::Remove-->
+                                <!--end::Card title-->
                             </div>
-                            <!--end::Image input-->
+                            <!--end::Card header-->
+                            <!--begin::Card body-->
+                            <div class="card-body text-center pt-0">
+                                <!--begin::Image input-->
+                                <div class="image-input image-input-circle image-input-outline mb-3 {{ $farm->photo_url ? '' : 'image-input-empty image-input-placeholder' }}"
+                                    data-kt-image-input="true">
+                                    <!--begin::Preview existing avatar-->
+                                    <div class="image-input-wrapper w-150px h-150px"
+                                        style="background-image: url('{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/svg/files/blank-image.svg') }}');">
+                                    </div>
+                                    <!--end::Preview existing avatar-->
 
-                            <!--begin::Description-->
-                            <div class="text-muted fs-6">
-                                খামার মালিকের ছবি আপলোড করুন। শুধুমাত্র *.png, *.jpg and *.jpeg ফরম্যাট গ্রহণযোগ্য এবং
-                                সর্বোচ্চ ফাইল সাইজ ২০০ কিলোবাইট।
+                                    <!--begin::Label-->
+                                    <label
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                        <i class="ki-outline ki-pencil fs-7">
+                                        </i>
+                                        <!--begin::Inputs-->
+                                        <input type="file" name="photo_url" accept=".png, .jpg, .jpeg" />
+                                        <input type="hidden" name="avatar_remove" />
+                                        <!--end::Inputs-->
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Cancel-->
+                                    <span
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                        <i class="ki-outline ki-cross fs-2">
+                                        </i>
+                                    </span>
+                                    <!--end::Cancel-->
+                                    <!--begin::Remove-->
+                                    <span
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                        <i class="ki-outline ki-cross fs-2">
+                                        </i>
+                                    </span>
+                                    <!--end::Remove-->
+                                </div>
+                                <!--end::Image input-->
+
+                                <!--begin::Description-->
+                                <div class="text-muted fs-6">শুধুমাত্র *.png, *.jpg and *.jpeg
+                                    ফরম্যাট গ্রহণযোগ্য এবং সর্বোচ্চ ফাইল সাইজ ২০০ কিলোবাইট।</div>
+                                @error('photo_url')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <!--end::Description-->
                             </div>
-
-                            @error('photo_url')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <!--end::Description-->
+                            <!--end::Card body-->
                         </div>
-                        <!--end::Card body-->
+                        <!--end::Thumbnail settings-->
                     </div>
-                    <!--end::Thumbnail settings-->
+                    <!--end::Aside column-->
 
-                </div>
-                <!--end::Aside column-->
-
-                <!--begin::Main column-->
-                <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-
-                    <!--begin::খামারের তথ্য-->
-                    <div class="card card-flush py-4">
-                        <!--begin::Card header-->
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h2>খামারের তথ্য</h2>
+                    <!--begin::Right column-->
+                    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10 mb-7">
+                        <!--begin::খামারের তথ্য-->
+                        <div class="card card-flush py-4">
+                            <!--begin::Card header-->
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h2>খামারের তথ্য</h2>
+                                </div>
                             </div>
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="mb-8 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label fs-4">খামারের নাম</label>
-                                <span class="ms-1" data-bs-toggle="tooltip"
-                                    title="খামারের সম্পূর্ণ নাম এখানে এন্ট্রি দিন।">
-                                    <i class="ki-outline ki-information fs-7"></i>
-                                </span>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="farm_name" class="form-control mb-2"
-                                    placeholder="যেমন: সাহাদ জাহান ডেইরি ফার্ম" value="{{ $farm->farm_name }}" required />
-                                @error('farm_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
+                            <!--end::Card header-->
 
-                            <!--begin::Input group-->
-                            <div class="mb-8 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label fs-4">খামার মালিকের নাম</label>
-                                <span class="ms-1" data-bs-toggle="tooltip" title="খামার মালিকের নাম এখানে এন্ট্রি দিন।">
-                                    <i class="ki-outline ki-information fs-7"></i>
-                                </span>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="owner_name" class="form-control mb-2"
-                                    placeholder="যেমন: আবু সায়েম" value="{{ $farm->owner_name }}" required />
-                                @error('owner_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-8 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label fs-4">মোবাইল নং</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="phone_number" class="form-control mb-2" id="phone_number"
-                                    placeholder="যেমন: ০১৯১২-৩৪৫৬৭৮" value="{{ $farm->phone_number }}" required />
-                                @error('phone_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="fv-row">
-                                <!--begin::Label-->
-                                <label class="form-label">খামারের ঠিকানা</label>
-                                <span class="ms-1" data-bs-toggle="tooltip" title="খামারের পরিপূর্ণ ঠিকানা এন্ট্রি দিন">
-                                    <i class="ki-outline ki-information fs-7"></i>
-                                </span>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="address" class="form-control mb-2"
-                                    placeholder="যেমন: রাস্তা, গ্রাম, ইউনিয়ন, উপজেলা, জেলা"
-                                    value="{{ $farm->address }}" />
-                                @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                    <!--end::খামারের তথ্য-->
-
-                    <!--begin::Variations-->
-                    <div class="card card-flush py-4">
-                        <!--begin::Card header-->
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h2>পশুপাখির বিবরণ</h2>
-                            </div>
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="" data-kt-add-farm-repeater="auto-options">
-                                <!--begin::Label-->
-                                <label class="form-label fs-4">পশুপাখির সংখ্যা</label>
-                                <!--end::Label-->
-
-                                <!--begin::Repeater-->
-                                <div id="livestock_count_options">
-                                    <!--begin::Form group-->
-                                    <div class="form-group">
-                                        <div data-repeater-list="livestock_count_options"
-                                            class="d-flex flex-column gap-3">
-                                            <div data-repeater-item=""
-                                                class="form-group d-flex flex-wrap align-items-center gap-5">
-                                                <!--begin::Select2-->
-                                                <div class="w-100 w-md-200px">
-                                                    <select class="form-select" name="livestock_counts"
-                                                        data-placeholder="প্রাণির ধরণ বাছাই করুন"
-                                                        data-kt-add-farm-repeater="livestock_counts"
-                                                        data-control="select2">
-                                                        <option selected disabled>বাছাই করুন</option>
-                                                        @foreach ($livestock_types as $livestock_type)
-                                                            <option value="{{ $livestock_type->id }}">
-                                                                {{ $livestock_type->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <!--end::Select2-->
-
-                                                <!--begin::Input-->
-                                                <input type="number" class="form-control mw-100 w-200px"
-                                                    name="livestock_counts_value" placeholder="সংখ্যা লিখুন" />
-                                                <!--end::Input-->
-                                                <button type="button" data-repeater-delete=""
-                                                    class="btn btn-sm btn-icon btn-light-danger">
-                                                    <i class="ki-outline ki-cross fs-1">
-                                                    </i>
-                                                </button>
-                                            </div>
+                            <!--begin::Card body-->
+                            <div class="card-body pt-0">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <!--begin::Input group-->
+                                        <div class="mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="required form-label fs-4">খামারের নাম</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip"
+                                                title="খামারের সম্পূর্ণ নাম এখানে এন্ট্রি দিন।">
+                                                <i class="ki-outline ki-information fs-7"></i>
+                                            </span>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="farm_name" class="form-control mb-2"
+                                                placeholder="যেমন: সাহাদ জাহান ডেইরি ফার্ম" value="{{ $farm->farm_name }}"
+                                                required />
+                                            @error('farm_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <!--end::Input-->
                                         </div>
+                                        <!--end::Input group-->
                                     </div>
-                                    <!--end::Form group-->
-                                    <!--begin::Form group-->
-                                    <div class="form-group mt-5">
-                                        <button type="button" data-repeater-create=""
-                                            class="btn btn-sm btn-light-primary">
-                                            <i class="ki-duotone ki-plus fs-2"></i>আরেকটি তথ্য দিন</button>
-                                    </div>
-                                    <!--end::Form group-->
-                                </div>
-                                <!--end::Repeater-->
-                            </div>
-                            <!--end::Input group-->
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                    <!--end::Variations-->
 
-                    <div class="d-flex justify-content-end">
-                        <!--begin::Button-->
-                        <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
-                        <!--end::Button-->
-                        <!--begin::Button-->
-                        <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-                            <span class="indicator-label">সাবমিট</span>
-                            <span class="indicator-progress">Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                        </button>
-                        <!--end::Button-->
+                                    <div class="col-lg-6">
+                                        <!--begin::Input group-->
+                                        <div class="mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="required form-label fs-4">খামার মালিকের নাম</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip"
+                                                title="খামার মালিকের নাম এখানে এন্ট্রি দিন।">
+                                                <i class="ki-outline ki-information fs-7"></i>
+                                            </span>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="owner_name" class="form-control mb-2"
+                                                placeholder="যেমন: আবু সায়েম" value="{{ $farm->owner_name }}" required />
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <!--begin::Input group-->
+                                        <div class="mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="required form-label fs-4">মোবাইল নং</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="phone_number" class="form-control mb-2"
+                                                id="phone_number" placeholder="যেমন: ০১৯১২-৩৪৫৬৭৮"
+                                                value="{{ $farm->phone_number }}" required />
+                                            @error('phone_number')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <!--begin::Input group-->
+                                        <div class="fv-row">
+                                            <!--begin::Label-->
+                                            <label class="form-label fs-4 required">খামারের ঠিকানা</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip"
+                                                title="খামারের পরিপূর্ণ ঠিকানা এন্ট্রি দিন">
+                                                <i class="ki-outline ki-information fs-7"></i>
+                                            </span>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="address" class="form-control mb-2"
+                                                placeholder="যেমন: রাস্তা, গ্রাম, ইউনিয়ন, উপজেলা, জেলা"
+                                                value="{{ $farm->address }}" required />
+                                            @error('address')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Card header-->
+                        </div>
+                        <!--end::খামারের তথ্য-->
                     </div>
+                    <!--end::Right column-->
+
+                    <!--begin::Bottom Row-->
+                    <div class="d-flex flex-column w-100 mb-7">
+                        <!--begin::গবাদি প্রাণির তথ্য-->
+                        <div class="card card-flush py-4 mb-7">
+                            <!--begin::Card header-->
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h2 class="required">পশুপাখির বিবরণ</h2>
+                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                        title="অন্তত একটি প্রকারের প্রাণির সংখ্যা লিখুন। প্রযোজ্য নয় এমন প্রাণির তথ্য ফাঁকা রাখুন।">
+                                        <i class="ki-outline ki-information fs-5"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <!--end::Card header-->
+                            <!--begin::Card body-->
+                            <div class="card-body pt-0">
+                                <!--begin::Input group-->
+                                <div class="row">
+                                    @foreach ($livestock_types as $livestock_type)
+                                        <div class="col-4 col-xl-3 mb-3">
+                                            <!--begin::Label-->
+                                            <label class="form-label fs-4"
+                                                for="livestock_counts[{{ $livestock_type->id }}]">
+                                                {{ $livestock_type->name }} (সংখ্যা)
+                                            </label>
+                                            <!--end::Label-->
+
+                                            <!--begin::Input-->
+                                            <input type="number" name="livestock_counts[{{ $livestock_type->id }}]"
+                                                class="form-control mb-2"
+                                                placeholder="{{ $livestock_type->name }} এর সংখ্যা লিখুন"
+                                                id="livestock_counts[{{ $livestock_type->id }}]"
+                                                value="{{ $livestock_counts[$livestock_type->id] ?? '' }}" min="1"
+                                                step="1" />
+                                            <!--end::Input-->
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+                            <!--end::Card header-->
+                        </div>
+                        <!--end::গবাদি প্রাণির তথ্য-->
+
+                        <div class="d-flex justify-content-end">
+                            <!--begin::Button-->
+                            <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
+                            <!--end::Button-->
+                            <!--begin::Button-->
+                            <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                                <span class="indicator-label">সাবমিট</span>
+                                <span class="indicator-progress">Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <!--end::Bottom Row-->
                 </div>
-                <!--end::Main column-->
             </form>
             <!--end::Form-->
         </div>
@@ -310,55 +323,11 @@
 
 @push('vendor-js')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 @endpush
 
 @push('page-js')
-    {{-- <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/save-product.js') }}"></script> --}}
-
     <script>
         document.getElementById("farms_info_menu").classList.add("here", "show");
         document.getElementById("all_farms_link").classList.add("active");
-    </script>
-
-    {{-- Form Validation --}}
-    <script>
-        // Phone
-        /* Inputmask({
-            "mask": "99999-999999",
-        }).mask("#phone_number"); */
-
-        $('#livestock_count_options').repeater({
-            initEmpty: false,
-
-            defaultValues: {
-                'text-input': 'foo'
-            },
-
-            show: function() {
-                $(this).slideDown();
-                initConditionsSelect2();
-            },
-
-            hide: function(deleteElement) {
-                $(this).slideUp(deleteElement);
-            }
-        });
-
-        // Init condition select2
-        const initConditionsSelect2 = () => {
-            // Tnit new repeating condition types
-            const allConditionTypes = document.querySelectorAll(
-                '[data-kt-add-farm-repeater="livestock_counts"]');
-            allConditionTypes.forEach(type => {
-                if ($(type).hasClass("select2-hidden-accessible")) {
-                    return;
-                } else {
-                    $(type).select2({
-                        minimumResultsForSearch: -1
-                    });
-                }
-            });
-        }
     </script>
 @endpush

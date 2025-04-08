@@ -77,7 +77,7 @@
                                 <th class="text-center">গবাদি প্রাণির তথ্য</th>
                                 <th class="text-center">নিবন্ধনের তারিখ</th>
                                 <th class="text-center">অবস্থা</th>
-                                <th class="text-center">অনুমোদন</th>
+                                @if (auth()->user()->role == 'admin')    <th class="text-center">অনুমোদন</th> @endif
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 fw-semibold fs-5">
@@ -111,7 +111,7 @@
                                             <div class="d-flex flex-column ">
                                                 <a href="{{ route('farms.show', $farm->id) }}"
                                                     class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                                    <span><i class="las la-phone"></i><strong>
+                                                <span><i class="las la-phone"></i><strong>
                                                         {{ en2bn($farm->phone_number) }}</strong></span>
                                             </div>
                                             <!--begin::Owner details-->
@@ -120,25 +120,30 @@
                                     <td class="text-center text-wrap">{{ $farm->address }}</td>
                                     <td class="text-center">
                                         @foreach ($farm->livestockCounts as $livestockCount)
-                                            {{ $livestockCount->livestockType->name }}: {{ en2bn($livestockCount->total) }}টি
+                                            {{ $livestockCount->livestockType->name }}:
+                                            {{ en2bn($livestockCount->total) }}টি
                                             <br>
                                         @endforeach
                                     </td>
                                     <td class="text-center">
                                         {{ en2bn($farm->created_at->format('d-M-Y')) }}
                                         <span class="ms-1" data-bs-toggle="tooltip"
-                                        title="{{ en2bn($farm->created_at->format('d-M-Y h:m:s A')) }}">
-                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
-                                    </span></td>
+                                            title="{{ en2bn($farm->created_at->format('d-M-Y h:m:s A')) }}">
+                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                        </span>
+                                    </td>
                                     <td class="text-center">
                                         <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
                                     </td>
-                                    <td class="text-center">
-                                            <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm" 
-                                                title="অনুমোদন করুন" data-bs-toggle="tooltip" data-farm-id="{{ $farm->id }}">
+                                    @if (auth()->user()->role == 'admin')
+                                        <td class="text-center">
+                                            <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm"
+                                                title="অনুমোদন করুন" data-bs-toggle="tooltip"
+                                                data-farm-id="{{ $farm->id }}">
                                                 <i class="ki-outline ki-double-check fs-2"></i>
                                             </button>
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

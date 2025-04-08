@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('farm_id');
             $table->foreignId('livestock_type_id');
-            $table->integer('total');
+            $table->integer('total')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

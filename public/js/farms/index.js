@@ -91,7 +91,7 @@ var KTFarmsList = function () {
                          showCancelButton: true,
                          confirmButtonColor: '#3085d6',
                          cancelButtonColor: '#d33',
-                         confirmButtonText: 'হ্যাঁ, ডিলিট করবো।',
+                         confirmButtonText: 'হ্যাঁ, ডিলিট করবো',
                          cancelButtonText: 'ক্যানসেল',
                     }).then((result) => {
                          if (result.isConfirmed) {

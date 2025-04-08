@@ -122,7 +122,7 @@
                     <!--end::Card toolbar-->
                 </div>
                 <!--end::Card header-->
-                
+
                 <!--begin::Card body-->
                 <div class="card-body py-4">
                     <!--begin::Table-->
@@ -201,12 +201,20 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <div
-                                            class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
-                                            <input class="form-check-input toggle-active" type="checkbox"
-                                                value="{{ $farm->id }}"
-                                                @if ($farm->is_active == 1) checked @endif />
-                                        </div>
+                                        @if (auth()->user()->role == 'admin')
+                                            <div
+                                                class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
+                                                <input class="form-check-input toggle-active" type="checkbox"
+                                                    value="{{ $farm->id }}"
+                                                    @if ($farm->is_active == 1) checked @endif />
+                                            </div>
+                                        @elseif (auth()->user()->role == 'staff')
+                                            @if ($farm->is_active == 1)
+                                                <span class="badge badge-success">সক্রিয়</span>
+                                            @else
+                                                <span class="badge badge-warning">নিষ্ক্রিয়</span>
+                                            @endif
+                                        @endif
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
@@ -217,27 +225,36 @@
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <a href="#" class="btn btn-light btn-sm" data-kt-menu-trigger="click"
-                                            data-kt-menu-placement="bottom-end">কার্যক্রম
-                                            <i class="ki-outline ki-down fs-5 m-0"></i></a>
-                                        <!--begin::Menu-->
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                                            data-kt-menu="true">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="{{ route('farms.edit', $farm->id) }}" class="menu-link px-3"><i
-                                                        class="las la-pen fs-2 me-2"></i>সংশোধন</a>
+                                        @if (auth()->user()->role == 'admin')
+                                            <a href="#" class="btn btn-light btn-sm" data-kt-menu-trigger="click"
+                                                data-kt-menu-placement="bottom-end">কার্যক্রম
+                                                <i class="ki-outline ki-down fs-5 m-0"></i></a>
+                                            <!--begin::Menu-->
+                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
+                                                data-kt-menu="true">
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="{{ route('farms.edit', $farm->id) }}"
+                                                        class="menu-link px-3"><i
+                                                            class="las la-pen fs-2 me-2"></i>সংশোধন</a>
+                                                </div>
+                                                <!--end::Menu item-->
+                                                <!--begin::Menu item-->
+                                                <div class="menu-item px-3">
+                                                    <a href="#" class="menu-link px-3 text-hover-danger delete-farm"
+                                                        data-farm-id="{{ $farm->id }}"><i
+                                                            class="las la-trash fs-2 me-2"></i>ডিলিট</a>
+                                                </div>
+                                                <!--end::Menu item-->
                                             </div>
-                                            <!--end::Menu item-->
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3 text-hover-danger delete-farm"
-                                                    data-farm-id="{{ $farm->id }}"><i
-                                                        class="las la-trash fs-2 me-2"></i>ডিলিট</a>
-                                            </div>
-                                            <!--end::Menu item-->
-                                        </div>
-                                        <!--end::Menu-->
+                                            <!--end::Menu-->
+                                        @elseif (auth()->user()->role == 'staff')
+                                            <a href="{{ route('farms.edit', $farm->id) }}"
+                                                class="btn btn-icon btn-active-light-success w-30px h-30px me-3"
+                                                title="সংশোধন করুন" data-bs-toggle="tooltip">
+                                                <i class="ki-outline ki-pencil fs-2"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
