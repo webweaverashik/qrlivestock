@@ -2,10 +2,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
-use App\Models\LivestockCount;
-use App\Models\LivestockType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\LivestockType;
+use App\Models\LivestockCount;
+use Illuminate\Support\Facades\Auth;
 
 class FarmController extends Controller
 {
@@ -119,8 +120,8 @@ class FarmController extends Controller
     {
         $farm = Farm::with('serviceRecords', 'livestockCounts')->findOrFail($id);
 
-        return response()->json($farm);
-        // return view('farms.show', compact('farm'));
+        // return response()->json($farm);
+        return view('farms.show', compact('farm'));
     }
 
     /**
@@ -241,7 +242,14 @@ class FarmController extends Controller
     {
         try {
             $farm         = Farm::findOrFail($id); // Find farm by ID
+
+            if ($farm->status === 'approved') {
+                return redirect()->route('farms.pending')->with('info', 'এই খামারটি ইতোমধ্যে অনুমোদিত রয়েছে');
+            }
+
             $farm->status = 'approved';            // Update the farm status
+            $farm->approved_at = now();
+            $farm->approved_by = Auth::user()->id;
             $farm->save();                         // Save changes
 
             // Redirect with success message

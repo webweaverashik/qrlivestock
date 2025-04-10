@@ -43,140 +43,133 @@
 
 
 @section('content')
-    <div id="kt_app_content" class="app-content flex-column-fluid">
-        <!--begin::Content container-->
-        <div id="kt_app_content_container" class="app-container container-fluid">
-            @if ($errors->any())
-                <div class="alert alert-danger fs-4">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <!--begin::Card-->
-            <div class="card">
-                <!--begin::Card header-->
-                <div class="card-header border-0 pt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex align-items-center position-relative my-1">
-                            <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
-                            </i>
-                            <input type="text" data-kt-user-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-13" placeholder="ইউজার অনুসন্ধান করুন" />
-                        </div>
-                        <!--end::Search-->
-                    </div>
-                    <!--begin::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <!--begin::Toolbar-->
-                        <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                            <!--begin::Add user-->
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_user">
-                                <i class="ki-outline ki-plus fs-2"></i>নতুন ইউজার</a>
-                            <!--end::Add user-->
-                        </div>
-                        <!--end::Toolbar-->
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-                    <!--begin::Table-->
-                    <table class="table table-hover align-middle fs-6 gy-5" id="kt_table_users">
-                        <thead>
-                            <tr class="fw-bold fs-5 text-uppercase gs-0">
-                                <th class="w-50px text-center">ক্রঃ</th>
-                                <th class="min-w-125px">ব্যবহারকারির তথ্য</th>
-                                <th class="min-w-125px text-center">রোল</th>
-                                <th class="min-w-125px text-center">সর্বশেষ লগিন</th>
-                                <th class="min-w-125px text-center">সক্রিয়/নিষ্ক্রিয়</th>
-                                <th class="min-w-100px text-center">কার্যক্রম</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-600 fw-semibold fs-5">
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td class="text-center">{{ $loop->index + 1 }}</td>
-                                    <td class="d-flex align-items-center">
-                                        <!--begin:: Avatar -->
-                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                            <a href="{{ $user->photo_url ? asset($user->photo_url) : '#'}}">
-                                                <div class="symbol-label">
-                                                    <img src="{{ $user->photo_url ? asset($user->photo_url) : asset('assets/img/dummy.png') }}"
-                                                        alt="{{ $user->name }}" class="w-100" />
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <!--end::Avatar-->
-                                        <!--begin::user details-->
-                                        <div class="d-flex flex-column">
-                                            <a href="#"
-                                                class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
-                                            <span class="fw-bold">{{ $user->email }}</span>
-                                        </div>
-                                        <!--begin::user details-->
-                                    </td>
-                                    <td class="text-center">
-                                        @if ($user->role == 'staff')
-                                            <div class="badge badge-light-warning fw-bold">Staff</div>
-                                        @elseif ($user->role == 'admin')
-                                            <div class="badge badge-light-success fw-bold">Admin</div>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        {{ $user->loginActivities()->latest()->first()->created_at ?? '-' }}</td>
-                                    <td class="text-center">
-                                        @if ($user->id != auth()->user()->id)
-                                            @if ($user->is_active == 0)
-                                                <div
-                                                    class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
-                                                    <input class="form-check-input toggle-active" type="checkbox"
-                                                        value="{{ $user->id }}">
-                                                </div>
-                                            @elseif ($user->is_active == 1)
-                                                <div
-                                                    class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
-                                                    <input class="form-check-input toggle-active" type="checkbox"
-                                                        value="{{ $user->id }}" checked />
-                                                </div>
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ route('users.edit', $user->id) }}" title="সংশোধন"
-                                            data-bs-toggle="modal" data-bs-target="#kt_modal_edit_user"
-                                            data-user-id="{{ $user->id }}"
-                                            class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
-                                            <i class="ki-outline ki-pencil fs-2"></i>
-                                        </a>
-                                        @if ($user->id != auth()->user()->id)
-                                            <a href="#" title="ডিলিট" data-bs-toggle="tooltip"
-                                                class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-user"
-                                                data-user-id="{{ $user->id }}">
-                                                <i class="ki-outline ki-trash fs-2"></i>
-                                            </a>
-                                        @endif
 
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <!--end::Table-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Card-->
+    @if ($errors->any())
+        <div class="alert alert-danger fs-4">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-        <!--end::Content container-->
+    @endif
+
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card header-->
+        <div class="card-header border-0 pt-6">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
+                    </i>
+                    <input type="text" data-kt-user-table-filter="search"
+                        class="form-control form-control-solid w-250px ps-13" placeholder="ইউজার অনুসন্ধান করুন" />
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--begin::Card title-->
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                    <!--begin::Add user-->
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                        <i class="ki-outline ki-plus fs-2"></i>নতুন ইউজার</a>
+                    <!--end::Add user-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+            <!--begin::Table-->
+            <table class="table table-hover align-middle fs-6 gy-5" id="kt_table_users">
+                <thead>
+                    <tr class="fw-bold fs-5 text-uppercase gs-0">
+                        <th class="w-50px text-center">ক্রঃ</th>
+                        <th class="min-w-125px">ব্যবহারকারির তথ্য</th>
+                        <th class="min-w-125px text-center">রোল</th>
+                        <th class="min-w-125px text-center">সর্বশেষ লগিন</th>
+                        <th class="min-w-125px text-center">সক্রিয়/নিষ্ক্রিয়</th>
+                        <th class="min-w-100px text-center">কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold fs-5">
+                    @foreach ($users as $user)
+                        <tr>
+                            <td class="text-center">{{ $loop->index + 1 }}</td>
+                            <td class="d-flex align-items-center">
+                                <!--begin:: Avatar -->
+                                <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                    <a href="{{ $user->photo_url ? asset($user->photo_url) : '#' }}">
+                                        <div class="symbol-label">
+                                            <img src="{{ $user->photo_url ? asset($user->photo_url) : asset('assets/img/dummy.png') }}"
+                                                alt="{{ $user->name }}" class="w-100" />
+                                        </div>
+                                    </a>
+                                </div>
+                                <!--end::Avatar-->
+                                <!--begin::user details-->
+                                <div class="d-flex flex-column">
+                                    <a href="#" class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
+                                    <span class="fw-bold">{{ $user->email }}</span>
+                                </div>
+                                <!--begin::user details-->
+                            </td>
+                            <td class="text-center">
+                                @if ($user->role == 'staff')
+                                    <div class="badge badge-light-warning fw-bold">Staff</div>
+                                @elseif ($user->role == 'admin')
+                                    <div class="badge badge-light-success fw-bold">Admin</div>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                {{ $user->loginActivities()->latest()->first()->created_at ?? '-' }}</td>
+                            <td class="text-center">
+                                @if ($user->id != auth()->user()->id)
+                                    @if ($user->is_active == 0)
+                                        <div
+                                            class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
+                                            <input class="form-check-input toggle-active" type="checkbox"
+                                                value="{{ $user->id }}">
+                                        </div>
+                                    @elseif ($user->is_active == 1)
+                                        <div
+                                            class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
+                                            <input class="form-check-input toggle-active" type="checkbox"
+                                                value="{{ $user->id }}" checked />
+                                        </div>
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('users.edit', $user->id) }}" title="সংশোধন" data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_edit_user" data-user-id="{{ $user->id }}"
+                                    class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                    <i class="ki-outline ki-pencil fs-2"></i>
+                                </a>
+                                @if ($user->id != auth()->user()->id)
+                                    <a href="#" title="ডিলিট" data-bs-toggle="tooltip"
+                                        class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-user"
+                                        data-user-id="{{ $user->id }}">
+                                        <i class="ki-outline ki-trash fs-2"></i>
+                                    </a>
+                                @endif
+
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <!--end::Table-->
+        </div>
+        <!--end::Card body-->
     </div>
+    <!--end::Card-->
 
 
     <!--begin::Modal - Add User-->
@@ -326,7 +319,7 @@
                                     <div class="form-check form-check-custom form-check-solid">
                                         <!--begin::Input-->
                                         <input class="form-check-input me-3" name="user_role" type="radio"
-                                            value="staff" id="kt_modal_add_role_staff" checked/>
+                                            value="staff" id="kt_modal_add_role_staff" checked />
                                         <!--end::Input-->
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_add_role_staff">

@@ -43,119 +43,116 @@
 
 
 @section('content')
-    <div id="kt_app_content" class="app-content flex-column-fluid">
-        <!--begin::Content container-->
-        <div id="kt_app_content_container" class="app-container container-fluid">
-            <!--begin::Card-->
-            <div class="card">
-                <!--begin::Card header-->
-                <div class="card-header border-0 pt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex align-items-center position-relative my-1">
-                            <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
-                            </i>
-                            <input type="text" data-kt-farm-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-13" placeholder="খামার অনুসন্ধান করুন" />
-                        </div>
-                        <!--end::Search-->
-                    </div>
-                    <!--begin::Card title-->
+    <!--begin::Card-->
+    <div class="card">
+        <!--begin::Card header-->
+        <div class="card-header border-0 pt-6">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
+                    </i>
+                    <input type="text" data-kt-farm-table-filter="search"
+                        class="form-control form-control-solid w-250px ps-13" placeholder="খামার অনুসন্ধান করুন" />
                 </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-                    <!--begin::Table-->
-                    <table class="table table-hover table-row-dashed align-middle fs-6 gy-5" id="kt_pending_farms_table">
-                        <thead>
-                            <tr class="fw-bold fs-5 text-uppercase gs-0">
-                                <th class="w-50px text-center">ক্রঃ</th>
-                                <th class="">খামারের নাম</th>
-                                <th class="">খামারির তথ্য</th>
-                                <th class="text-center">খামারের ঠিকানা</th>
-                                <th class="text-center">গবাদি প্রাণির তথ্য</th>
-                                <th class="text-center">নিবন্ধনের তারিখ</th>
-                                <th class="text-center">অবস্থা</th>
-                                @if (auth()->user()->role == 'admin')    <th class="text-center">অনুমোদন</th> @endif
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-600 fw-semibold fs-5">
-                            @foreach ($farms as $farm)
-                                {{-- <tr @if ($farm->is_active == 0) class="bg-light-warning" @endif> --}}
-                                <tr>
-                                    <td class="text-center">{{ en2bn($loop->index + 1) }}</td>
-                                    <td class="text-start">
-                                        <!--begin::Farm details-->
-                                        <div class="d-flex flex-column">
-                                            <a href="{{ route('farms.show', $farm->id) }}"
-                                                class="text-gray-800 text-hover-primary mb-1">{{ $farm->farm_name }}</a>
-                                            <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
-                                        </div>
-                                        <!--begin::Farm details-->
+                <!--end::Search-->
+            </div>
+            <!--begin::Card title-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body py-4 table-responsive">
+            <!--begin::Table-->
+            <table class="table table-hover table-row-dashed align-middle fs-6 gy-5" id="kt_pending_farms_table">
+                <thead>
+                    <tr class="fw-bold fs-5 text-uppercase gs-0">
+                        <th class="w-50px text-center">ক্রঃ</th>
+                        <th class="">খামারের নাম</th>
+                        <th class="">খামারির তথ্য</th>
+                        <th class="text-center">খামারের ঠিকানা</th>
+                        <th class="text-center w-lg-250px w-200px">গবাদি প্রাণির তথ্য</th>
+                        <th class="text-center">নিবন্ধনের তারিখ</th>
+                        <th class="text-center">অবস্থা</th>
+                        <th class="text-center">অনুমোদন</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 fw-semibold fs-5">
+                    @foreach ($farms as $farm)
+                        {{-- <tr @if ($farm->is_active == 0) class="bg-light-warning" @endif> --}}
+                        <tr>
+                            <td class="text-center">{{ en2bn($loop->index + 1) }}</td>
+                            <td class="text-start">
+                                <!--begin::Farm details-->
+                                <div class="d-flex flex-column">
+                                    <a href="{{ route('farms.show', $farm->id) }}"
+                                        class="text-gray-800 text-hover-primary mb-1">{{ $farm->farm_name }}</a>
+                                    <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
+                                </div>
+                                <!--begin::Farm details-->
 
-                                    </td>
-                                    <td class="">
-                                        <div class="d-flex align-items-center">
-                                            <!--begin:: Avatar -->
-                                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                                <a href="{{ route('farms.show', $farm->id) }}">
-                                                    <div class="symbol-label">
-                                                        <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
-                                                            alt="{{ $farm->owner_name }}" class="w-100" />
-                                                    </div>
-                                                </a>
+                            </td>
+                            <td class="">
+                                <div class="d-flex align-items-center">
+                                    <!--begin:: Avatar -->
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                        <a href="{{ route('farms.show', $farm->id) }}">
+                                            <div class="symbol-label">
+                                                <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
+                                                    alt="{{ $farm->owner_name }}" class="w-100" />
                                             </div>
-                                            <!--end::Avatar-->
-                                            <!--begin::Owner details-->
-                                            <div class="d-flex flex-column ">
-                                                <a href="{{ route('farms.show', $farm->id) }}"
-                                                    class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                                <span><i class="las la-phone"></i><strong>
-                                                        {{ en2bn($farm->phone_number) }}</strong></span>
-                                            </div>
-                                            <!--begin::Owner details-->
-                                        </div>
-                                    </td>
-                                    <td class="text-center text-wrap">{{ $farm->address }}</td>
-                                    <td class="text-center">
-                                        @foreach ($farm->livestockCounts as $livestockCount)
+                                        </a>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::Owner details-->
+                                    <div class="d-flex flex-column ">
+                                        <a href="{{ route('farms.show', $farm->id) }}"
+                                            class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
+                                        <span><i class="las la-phone"></i><strong>
+                                                {{ en2bn($farm->phone_number) }}</strong></span>
+                                    </div>
+                                    <!--begin::Owner details-->
+                                </div>
+                            </td>
+                            <td class="text-center text-wrap">{{ $farm->address }}</td>
+                            <td class="text-center">
+                                <div class="row">
+                                    @foreach ($farm->livestockCounts as $livestockCount)
+                                        <div class="col-md-6">
                                             {{ $livestockCount->livestockType->name }}:
                                             {{ en2bn($livestockCount->total) }}টি
-                                            <br>
-                                        @endforeach
-                                    </td>
-                                    <td class="text-center">
-                                        {{ en2bn($farm->created_at->format('d-M-Y')) }}
-                                        <span class="ms-1" data-bs-toggle="tooltip"
-                                            title="{{ en2bn($farm->created_at->format('d-M-Y h:m:s A')) }}">
-                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
-                                    </td>
-                                    @if (auth()->user()->role == 'admin')
-                                        <td class="text-center">
-                                            <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm"
-                                                title="অনুমোদন করুন" data-bs-toggle="tooltip"
-                                                data-farm-id="{{ $farm->id }}">
-                                                <i class="ki-outline ki-double-check fs-2"></i>
-                                            </button>
-                                        </td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <!--end::Table-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Card-->
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                {{ en2bn($farm->created_at->format('d-M-Y')) }}
+                                <span class="ms-1" data-bs-toggle="tooltip"
+                                    title="{{ en2bn($farm->created_at->format('d-M-Y h:m:s A')) }}">
+                                    <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
+                            </td>
+                            <td class="text-center">
+                                @if (auth()->user()->role == 'admin')
+                                    <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-farm"
+                                        title="অনুমোদন করুন" data-bs-toggle="tooltip" data-farm-id="{{ $farm->id }}">
+                                        <i class="ki-outline ki-double-check fs-2"></i>
+                                    </button>
+                                @else
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <!--end::Table-->
         </div>
-        <!--end::Content container-->
+        <!--end::Card body-->
     </div>
+    <!--end::Card-->
 @endsection
 
 

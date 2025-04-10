@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('created_by');
             $table->foreignId('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

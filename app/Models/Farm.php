@@ -23,6 +23,7 @@ class Farm extends Model
         'created_by',
         'approved_by',
         'approved_at',
+        'remarks'
     ];
 
     protected $casts = [

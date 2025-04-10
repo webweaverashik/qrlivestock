@@ -9,13 +9,16 @@ var KTPendingFarmsList = function () {
      var initDatatable = function () {
           // Init datatable --- more info on datatables: https://datatables.net/manual/
           datatable = $(table).DataTable({
-               "info": true,
-               'order': [],
-               "lengthMenu": [10, 25, 50, 100],
-               "pageLength": 10,
-               "lengthChange": true,
-               "autoWidth": false,  // Disable auto width
-               'columnDefs': [{ orderable: false, targets: [3, 4, 6] }]
+               // responsive: true,                 // ✅ Make it responsive
+               info: true,
+               order: [],
+               lengthMenu: [10, 25, 50, 100],
+               pageLength: 10,
+               lengthChange: true,
+               autoWidth: false,                // Disable auto width
+               columnDefs: [
+                    { orderable: false, targets: [3, 4, 6, 7] }
+               ]
           });
 
           // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw

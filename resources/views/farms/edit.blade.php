@@ -214,7 +214,7 @@
                                             <!--begin::Input-->
                                             <input type="text" name="phone_number" class="form-control mb-2"
                                                 id="phone_number" placeholder="যেমন: ০১৯১২-৩৪৫৬৭৮"
-                                                value="{{ $farm->phone_number }}" required />
+                                                value="{{ $farm->phone_number }}" maxlength="11" required />
                                             @error('phone_number')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
