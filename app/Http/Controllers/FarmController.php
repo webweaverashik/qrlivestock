@@ -2,11 +2,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\LivestockType;
 use App\Models\LivestockCount;
+use App\Models\LivestockType;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class FarmController extends Controller
 {
@@ -58,6 +58,7 @@ class FarmController extends Controller
             'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
             'livestock_counts'   => 'array',
             'livestock_counts.*' => 'nullable|integer|min:1',
+            'remarks'            => 'nullable|string',
         ], [
             'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
             'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
@@ -75,6 +76,7 @@ class FarmController extends Controller
             'unique_id'    => $uniqueId,
             'qr_code'      => null, // Will generate later
             'created_by'   => auth()->id(),
+            'remarks'      => $request->remarks ?? null,
         ]);
 
         // ✅ Handle file upload with unique_id prefix (only if a file is provided)
@@ -151,6 +153,7 @@ class FarmController extends Controller
             'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200',
             'livestock_counts'   => 'array',
             'livestock_counts.*' => 'nullable|integer|min:1',
+            'remarks'            => 'nullable|string',
         ], [
             'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
             'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
@@ -169,6 +172,11 @@ class FarmController extends Controller
             'phone_number' => $request->phone_number,
             'address'      => $request->address,
         ]);
+
+        if ($request->filled('remarks')) {
+            $farm->remarks = $request->remarks;
+            $farm->save(); // don't forget this!
+        }
 
         // Handle Photo update
         if (isset($request['photo_url'])) {
@@ -241,16 +249,16 @@ class FarmController extends Controller
     public function approveFarm($id)
     {
         try {
-            $farm         = Farm::findOrFail($id); // Find farm by ID
+            $farm = Farm::findOrFail($id); // Find farm by ID
 
             if ($farm->status === 'approved') {
                 return redirect()->route('farms.pending')->with('info', 'এই খামারটি ইতোমধ্যে অনুমোদিত রয়েছে');
             }
 
-            $farm->status = 'approved';            // Update the farm status
+            $farm->status      = 'approved'; // Update the farm status
             $farm->approved_at = now();
             $farm->approved_by = Auth::user()->id;
-            $farm->save();                         // Save changes
+            $farm->save(); // Save changes
 
             // Redirect with success message
             return redirect()->route('farms.index')->with('success', 'খামারটি সফলভাবে অনুমোদিত হয়েছে।');

@@ -248,6 +248,7 @@
                             </div>
 
                         </div>
+
                         <!--begin::Input group-->
                         <div class="fv-row">
                             <!--begin::Label-->
@@ -268,7 +269,7 @@
                         </div>
                         <!--end::Input group-->
                     </div>
-                    <!--end::Card header-->
+                    <!--end::Card body-->
                 </div>
                 <!--end::খামারের তথ্য-->
             </div>

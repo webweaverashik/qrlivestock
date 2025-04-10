@@ -22,10 +22,10 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->string('photo_url')->nullable();
             $table->string('qr_code')->nullable();
+            $table->string('remarks')->nullable();
             $table->foreignId('created_by');
             $table->foreignId('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->string('remarks')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

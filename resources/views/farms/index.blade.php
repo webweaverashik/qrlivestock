@@ -67,7 +67,8 @@
                     <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end">
                         <i class="ki-outline ki-filter fs-2">
-                        </i>ফিল্টার</button>
+                        </i>ফিল্টার
+                    </button>
                     <!--begin::Menu 1-->
                     <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                         <!--begin::Header-->

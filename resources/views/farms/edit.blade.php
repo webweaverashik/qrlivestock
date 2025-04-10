@@ -245,8 +245,28 @@
                                         <!--end::Input group-->
                                     </div>
                                 </div>
+
+                                <!--begin::Input group-->
+                                <div class="fv-row">
+                                    <!--begin::Label-->
+                                    <label class="form-label fs-4">মন্তব্য</label>
+                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                        title="খামার সম্পর্কিত কোনো মন্তব্য থাকলে লিখুন">
+                                        <i class="ki-outline ki-information fs-7"></i>
+                                    </span>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="remarks" class="form-control mb-2"
+                                        placeholder="মন্তব্য লিখুন" value="{{ $farm->remarks }}" />
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Input group-->
+
                             </div>
-                            <!--end::Card header-->
+                            <!--end::Card body-->
                         </div>
                         <!--end::খামারের তথ্য-->
                     </div>
