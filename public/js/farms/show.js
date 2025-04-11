@@ -15,7 +15,7 @@ var KTFarmView = function () {
                "pageLength": 10,
                "lengthChange": true,
                "autoWidth": false,  // Disable auto width
-               'columnDefs': [{ orderable: false, targets: [] }]
+               'columnDefs': [{ orderable: false, targets: [13] }]
           });
 
           // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw

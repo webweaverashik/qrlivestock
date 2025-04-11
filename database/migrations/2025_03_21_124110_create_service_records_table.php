@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('species_number_dead')->nullable();
             $table->string('species_type_species')->nullable();
             $table->string('species_type_breed')->nullable();
-            $table->string('species_type_gender')->nullable();
+            $table->enum('species_type_gender', ['male', 'female'])->nullable();
             $table->string('species_type_age')->nullable();
             $table->text('history_of_disease')->nullable();
             $table->text('microscopic_result')->nullable();
