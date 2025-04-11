@@ -1,0 +1,11 @@
+table.qrlivestock-table {
+     border: 1px dashed #F1F1F4;
+     border-collapse: collapse;
+}
+
+table.qrlivestock-table th,
+table.qrlivestock-table td {
+     border: 1px dashed #F1F1F4 !important;
+     text-align: center !important;
+     vertical-align: middle !important;
+}

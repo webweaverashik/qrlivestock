@@ -123,9 +123,9 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table table-hover table-row-dashed align-middle fs-6 gy-5" id="kt_farms_table">
+            <table class="table table-hover table-row-dashed align-middle fs-6 gy-5 qrlivestock-table" id="kt_farms_table">
                 <thead>
-                    <tr class="fw-bold fs-5 text-uppercase gs-0">
+                    <tr class="fw-bold fs-5 gs-0">
                         <th class="w-50px text-center">ক্রঃ</th>
                         <th class="">খামারের নাম</th>
                         <th class="min-w-125px">খামারির তথ্য</th>
@@ -185,18 +185,18 @@
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if (count($farm->serviceRecords) > 1)
                                     {{ en2bn($farm->serviceRecords()->latest()->value('created_at')->diffForHumans()) }}
                                     <span class="ms-1" data-bs-toggle="tooltip"
-                                        title="{{ en2bn($farm->serviceRecords()->latest()->value('created_at')->format('d-M-Y h:m:s A')) }}">
+                                        title="{{ en2bn($farm->serviceRecords()->latest()->value('created_at')->format('d-M-Y h:i:s A')) }}">
                                         <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
                                     </span>
                                 @else
                                     -
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if ($farm->status == 'pending')
                                     <div class="badge badge-light-warning fw-bold">অপেক্ষমাণ</div>
                                 @elseif ($farm->status == 'approved')
@@ -210,7 +210,7 @@
                                     ActiveFarm
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if (auth()->user()->role == 'admin')
                                     <div
                                         class="form-check form-switch form-check-solid form-check-success d-flex justify-content-center">
@@ -226,12 +226,11 @@
                                     @endif
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
                                     class="text-muted text-hover-info" data-bs-toggle="tooltip"
                                     title="খামারের আইডি কার্ড ডাউনলোড করুন">
-                                    {{-- <i class="las la-qrcode fs-3x"></i> --}}
-                                    <i class="fa-solid fa-download fs-2"></i>
+                                    <i class="bi bi-qr-code fs-2"></i>
                                 </a>
                             </td>
                             <td class="text-center">
@@ -244,7 +243,7 @@
                                         data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="{{ route('farms.edit', $farm->id) }}" class="menu-link px-3"><i
+                                            <a href="{{ route('farms.edit', $farm->id) }}" class="menu-link px-3 text-hover-primary"><i
                                                     class="las la-pen fs-2 me-2"></i>সংশোধন</a>
                                         </div>
                                         <!--end::Menu item-->

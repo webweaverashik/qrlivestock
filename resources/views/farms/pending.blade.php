@@ -64,7 +64,7 @@
         <!--begin::Card body-->
         <div class="card-body py-4 table-responsive">
             <!--begin::Table-->
-            <table class="table table-hover table-row-dashed align-middle fs-6 gy-5" id="kt_pending_farms_table">
+            <table class="table table-hover table-row-dashed align-middle fs-6 gy-5 qrlivestock-table" id="kt_pending_farms_table">
                 <thead>
                     <tr class="fw-bold fs-5 text-uppercase gs-0">
                         <th class="w-50px text-center">ক্রঃ</th>

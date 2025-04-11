@@ -87,49 +87,52 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            <table class="table table-hover align-middle fs-6 gy-5" id="kt_table_users">
+            <table class="table table-hover align-middle fs-6 gy-5 qrlivestock-table" id="kt_table_users">
                 <thead>
-                    <tr class="fw-bold fs-5 text-uppercase gs-0">
-                        <th class="w-50px text-center">ক্রঃ</th>
-                        <th class="min-w-125px">ব্যবহারকারির তথ্য</th>
-                        <th class="min-w-125px text-center">রোল</th>
-                        <th class="min-w-125px text-center">সর্বশেষ লগিন</th>
-                        <th class="min-w-125px text-center">সক্রিয়/নিষ্ক্রিয়</th>
-                        <th class="min-w-100px text-center">কার্যক্রম</th>
+                    <tr class="fw-bold fs-5 gs-0">
+                        <th class="w-25px">ক্রঃ</th>
+                        <th class="w-250px">ব্যবহারকারির তথ্য</th>
+                        <th class="w-50px">রোল</th>
+                        <th class="w-125px">সর্বশেষ লগিন</th>
+                        <th class="w-50px">সক্রিয়/নিষ্ক্রিয়</th>
+                        <th class="w-100px">কার্যক্রম</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold fs-5">
                     @foreach ($users as $user)
                         <tr>
-                            <td class="text-center">{{ $loop->index + 1 }}</td>
-                            <td class="d-flex align-items-center">
-                                <!--begin:: Avatar -->
-                                <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                    <a href="{{ $user->photo_url ? asset($user->photo_url) : '#' }}">
-                                        <div class="symbol-label">
-                                            <img src="{{ $user->photo_url ? asset($user->photo_url) : asset('assets/img/dummy.png') }}"
-                                                alt="{{ $user->name }}" class="w-100" />
-                                        </div>
-                                    </a>
+                            <td>{{ en2bn($loop->index + 1) }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    <!--begin:: Avatar -->
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                        <a href="{{ $user->photo_url ? asset($user->photo_url) : '#' }}">
+                                            <div class="symbol-label">
+                                                <img src="{{ $user->photo_url ? asset($user->photo_url) : asset('assets/img/dummy.png') }}"
+                                                    alt="{{ $user->name }}" class="w-100" />
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::user details-->
+                                    <div class="d-flex flex-column">
+                                        <span class="text-gray-800 mb-1">{{ $user->name }}</span>
+                                        <span class="fw-semibold">{{ $user->email }}</span>
+                                    </div>
+                                    <!--begin::user details-->
                                 </div>
-                                <!--end::Avatar-->
-                                <!--begin::user details-->
-                                <div class="d-flex flex-column">
-                                    <a href="#" class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
-                                    <span class="fw-bold">{{ $user->email }}</span>
-                                </div>
-                                <!--begin::user details-->
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if ($user->role == 'staff')
-                                    <div class="badge badge-light-warning fw-bold">Staff</div>
+                                    <div class="badge badge-light-info">স্টাফ</div>
                                 @elseif ($user->role == 'admin')
-                                    <div class="badge badge-light-success fw-bold">Admin</div>
+                                    <div class="badge badge-light-success">এডমিন</div>
                                 @endif
                             </td>
-                            <td class="text-center">
-                                {{ $user->loginActivities()->latest()->first()->created_at ?? '-' }}</td>
-                            <td class="text-center">
+                            <td>
+                                {{ en2bn(optional($user->loginActivities()->latest()->first())->created_at?->format('d-M-Y h:i:s A') ?? '-') }}
+                            </td>
+                            <td>
                                 @if ($user->id != auth()->user()->id)
                                     @if ($user->is_active == 0)
                                         <div

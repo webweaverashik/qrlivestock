@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -13,7 +12,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withoutTrashed()->orderby('id', 'desc')->get();
+        // Check if non-admin user
+        if (auth()->user()->role != 'admin') {
+            return back()->with('warning', 'এডমিন পেজে আপনার অনুমতি নেই।');
+        }
+
+        // Only executed for admin users
+        $users = User::withoutTrashed()->orderBy('id', 'desc')->get();
         return view('users.index', compact('users'));
     }
 
@@ -34,15 +39,15 @@ class UserController extends Controller
 
         // ✅ Validate request
         $request->validate([
-            'user_name' => 'required|string|max:255',
+            'user_name'  => 'required|string|max:255',
             'user_email' => 'required|string|max:50|unique:users,email',
-            'user_role' => 'required|string|in:admin,staff',
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
+            'user_role'  => 'required|string|in:admin,staff',
+            'avatar'     => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
         ]);
 
         // ✅ Handle file upload with unique_id prefix (only if a file is provided)
         if ($request->has('avatar')) {
-            $file = $request->file('avatar');
+            $file      = $request->file('avatar');
             $extension = $file->getClientOriginalExtension();
 
             $filename = 'photo_' . date('d-m-Y_H-i-s') . '.' . $extension;
@@ -57,10 +62,10 @@ class UserController extends Controller
 
         // ✅ Create the Farm record
         $user = User::create([
-            'name' => $request->user_name,
-            'email' => $request->user_email,
-            'role' => $request->user_role,
-            'password' => Hash::make('ulo1234'),
+            'name'      => $request->user_name,
+            'email'     => $request->user_email,
+            'role'      => $request->user_role,
+            'password'  => Hash::make('ulo1234'),
             'photo_url' => $imageURL, // Stored path
         ]);
 
@@ -82,16 +87,16 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['success' => false, 'message' => 'User not found'], 404);
         }
 
         return response()->json([
             'success' => true,
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
+            'user'    => [
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'role'      => $user->role,
                 'photo_url' => asset($user->photo_url), // Adjust path based on storage
             ],
         ]);
@@ -107,10 +112,10 @@ class UserController extends Controller
 
         // ✅ Validate request
         $request->validate([
-            'user_name' => 'required|string|max:255',
+            'user_name'  => 'required|string|max:255',
             'user_email' => 'required|string|max:50|unique:users,email,' . $id,
-            'user_role' => 'required|string|in:admin,staff',
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
+            'user_role'  => 'required|string|in:admin,staff',
+            'avatar'     => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
         ]);
 
         // ✅ Handle file upload (if a new file is provided)
@@ -118,7 +123,7 @@ class UserController extends Controller
             $photoPath = public_path('uploads/users/'); // Define absolute path
 
             // ✅ Ensure the directory exists
-            if (!file_exists($photoPath)) {
+            if (! file_exists($photoPath)) {
                 mkdir($photoPath, 0775, true); // Create folder with proper permissions
             }
 
@@ -128,7 +133,7 @@ class UserController extends Controller
             }
 
             // ✅ Upload new photo
-            $file = $request->file('avatar');
+            $file     = $request->file('avatar');
             $filename = 'photo_' . now()->format('d-m-Y_H-i-s') . '.' . $file->getClientOriginalExtension();
             $file->move($photoPath, $filename);
 
@@ -138,9 +143,9 @@ class UserController extends Controller
 
         // ✅ Update user data
         $user->update([
-            'name' => $request->user_name,
+            'name'  => $request->user_name,
             'email' => $request->user_email,
-            'role' => $request->user_role,
+            'role'  => $request->user_role,
         ]);
 
         return redirect()->route('users.index')->with('success', 'ইউজারটি সফলভাবে হালনাগাদ করা হয়েছে।');
@@ -156,13 +161,13 @@ class UserController extends Controller
     }
 
     /**
-     * Toggle active and inactive farms
+     * Toggle active and inactive users
      */
     public function toggleActive(Request $request)
     {
         $user = User::find($request->farm_id);
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['success' => false, 'message' => 'Error. Please, contact support.']);
         }
 

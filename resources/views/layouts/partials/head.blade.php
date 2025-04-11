@@ -1,5 +1,5 @@
 <head>
-    <title>@yield('title', 'Dashboard') - QR Livestock</title>
+    <title>@yield('title', 'Dashboard') | প্রাণি-সেবা সারথী</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8" />
     <meta name="description" content="Unique Coaching Management System (UCMS) is an all-in-one solution for academic coaching centers, streamlining student admissions, attendance tracking, tuition and notes payment management, teacher scheduling, and sheet distribution. Designed for efficiency, UCMS ensures seamless operations with role-based access for Super Admins, Branch Managers, Accountants, Teachers, Guardians, and Students." />
@@ -24,8 +24,8 @@
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <!--end::Global Stylesheets Bundle-->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
     
     <script>
         // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking)

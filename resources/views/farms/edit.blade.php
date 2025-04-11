@@ -82,9 +82,9 @@
                 @method('PUT')
                 <div class="d-flex flex-wrap">
                     <!--begin::Aside column-->
-                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-400px mb-7 me-lg-7">
+                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-xxl-400px mb-7 me-lg-7">
                         <!--begin::Thumbnail settings-->
-                        <div class="card card-flush py-4">
+                        <div class="card card-flush py-4 flex-grow-1">
                             <!--begin::Card header-->
                             <div class="card-header">
                                 <!--begin::Card title-->

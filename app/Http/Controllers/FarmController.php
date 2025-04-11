@@ -6,7 +6,6 @@ use App\Models\LivestockCount;
 use App\Models\LivestockType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class FarmController extends Controller
 {
@@ -64,8 +63,10 @@ class FarmController extends Controller
             'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
         ]);
 
-        // ✅ Generate Unique ID
-        $uniqueId = 'FARM_' . strtoupper(Str::random(6));
+        // Generate an 8-digit numeric ID (no preceding zero)
+        do {
+            $uniqueId = rand(100000, 999999);                        // Always 8 digits, first digit 1-9
+        } while (Farm::where('unique_id', $uniqueId)->exists()); // Check uniqueness
 
         // ✅ Create the Farm record
         $farm = Farm::create([
@@ -240,7 +241,14 @@ class FarmController extends Controller
         $farm->is_active = $request->is_active;
         $farm->save();
 
-        return response()->json(['success' => true, 'message' => 'খামারের তথ্য আপডেট করা হয়েছে।']);
+        $message = $request->is_active
+        ? 'খামার সফলভাবে সক্রিয় করা হয়েছে।'
+        : 'খামার সফলভাবে নিষ্ক্রিয় করা হয়েছে।';
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+        ]);
     }
 
     /**

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceRecordController;
 
 Route::get('/', function() {
     return view('welcome');
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::post('/farms/{id}/approve', [FarmController::class, 'approveFarm'])->name('farms.approve');
     
     Route::resource('farms', FarmController::class);
+    Route::resource('records', ServiceRecordController::class);
 
 
     // Route for users

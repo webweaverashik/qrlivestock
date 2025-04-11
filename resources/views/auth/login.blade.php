@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
-@section('title', 'Login')
+@section('title', 'লগিন')
 @include('layouts.partials.head')
 <!--end::Head-->
 <!--begin::Body-->
