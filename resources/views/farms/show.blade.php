@@ -324,9 +324,7 @@
                                         <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
                                     </span>
                                 </td>
-                                <td>
-                                    {{ $record->serviceCategory->name }}
-                                </td>
+                                <td>{{ $record->serviceCategory->name }}</td>
                                 <td>{{ $record->species_number_flock }}</td>
                                 <td>{{ $record->species_number_infected }}</td>
                                 <td>{{ $record->species_number_dead }}</td>
