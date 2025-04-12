@@ -204,15 +204,21 @@
                             </button>
                             <!--begin::Three Dots-->
 
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-150px py-3"
                                 data-kt-menu="true">
-                                <!--begin::Menu item-->
+                                @if ($farm->status == 'approved')
+                                    <div class="menu-item px-3">
+                                        <a href="{{ route('farms.id-card', $farm->id) }}"
+                                            class="menu-link px-3 text-hover-primary"><i class="bi bi-download fs-2 me-2"></i>
+                                            কার্ড ডাউনলোড</a>
+                                    </div>
+                                @endif
+
                                 <div class="menu-item px-3">
                                     <a href="{{ route('farms.edit', $farm->id) }}"
                                         class="menu-link px-3 text-hover-primary"><i class="las la-pen fs-2 me-2"></i>
                                         সংশোধন</a>
                                 </div>
-                                <!--end::Menu item-->
 
                                 @if (auth()->user()->role == 'admin')
                                     <!--begin::Menu item-->

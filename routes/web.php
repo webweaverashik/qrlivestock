@@ -32,6 +32,8 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::get('farms/pending', [FarmController::class, 'pendingFarm'])->name('farms.pending');
     Route::post('farms/toggle-active', [FarmController::class, 'toggleActive'])->name('farms.toggleActive');
     Route::post('/farms/{id}/approve', [FarmController::class, 'approveFarm'])->name('farms.approve');
+    Route::get('/farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
+
     
     Route::resource('farms', FarmController::class);
     Route::resource('records', ServiceRecordController::class);
