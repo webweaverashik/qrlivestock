@@ -56,8 +56,8 @@
                     <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
                         <!--begin::Image-->
                         <div
-                            class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                            <img class="mw-100px mw-lg-125px"
+                            class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-125px h-125px me-7 mb-4">
+                            <img class="w-100 p-3"
                                 src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/img/dummy.png') }}"
                                 alt="{{ $farm->name }}" />
                         </div>
@@ -76,7 +76,7 @@
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
-                                মোবাইল নং: &nbsp;<span class="text-gray-800">{{ $farm->phone_number }}</span>
+                                মোবাইল নং: &nbsp;<span class="text-gray-800">{{ en2bn($farm->phone_number) }}</span>
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
@@ -209,7 +209,8 @@
                                 @if ($farm->status == 'approved')
                                     <div class="menu-item px-3">
                                         <a href="{{ route('farms.id-card', $farm->id) }}"
-                                            class="menu-link px-3 text-hover-primary"><i class="bi bi-download fs-2 me-2"></i>
+                                            class="menu-link px-3 text-hover-primary"><i
+                                                class="bi bi-download fs-2 me-2"></i>
                                             কার্ড ডাউনলোড</a>
                                     </div>
                                 @endif
@@ -282,7 +283,7 @@
                 <!--end::Search-->
 
                 <!--begin::Add user-->
-                <a href="{{ route('farms.create') }}" class="btn btn-primary">
+                <a href="{{ route('records.create') }}" class="btn btn-primary">
                     <i class="ki-outline ki-plus fs-2"></i>তথ্য যুক্ত করুন</a>
                 <!--end::Add user-->
             </div>
@@ -300,23 +301,24 @@
                     <thead>
                         <tr class="fw-bold fs-5 gs-0">
                             <th class="w-30px" rowspan="2">ক্র:</th>
-                            <th class="w-100px" rowspan="2">তারিখ</th>
-                            <th class="w-25px" rowspan="2">সেবার<br>ধরণ</th>
-                            <th colspan="3">প্রজাতির সংখ্যা</th>
-                            <th colspan="4">প্রজাতির ধরণ</th>
+                            <th class="w-50px" rowspan="2">তারিখ</th>
+                            <th class="w-100px" rowspan="2">সেবার ধরণ</th>
+                            <th class="w-75px" colspan="3">প্রজাতির সংখ্যা</th>
+                            <th class="w-75px" colspan="4">প্রজাতির ধরণ</th>
+                            <th class="w-150px" rowspan="2">রোগের ইতিহাস</th>
                             <th class="w-150px" rowspan="2">রোগের লক্ষণ</th>
-                            <th class="w-100px" rowspan="2">পরীক্ষার<br>ফলাফল</th>
-                            <th class="w-100px" rowspan="2">সম্ভাব্য<br>রোগ</th>
+                            <th class="w-100px" rowspan="2">পরীক্ষার ফলাফল</th>
+                            <th class="w-100px" rowspan="2">সম্ভাব্য রোগ</th>
                             <th class="w-100px" rowspan="2">প্রেসক্রিপশন</th>
                         </tr>
                         <tr class="fw-bold fs-5 gs-0">
-                            <th class="w-50px">পাল/ঝাঁক</th>
-                            <th class="w-50px">আক্রান্ত</th>
-                            <th class="w-50px">মৃত</th>
-                            <th class="w-50px">প্রজাতি</th>
-                            <th class="w-50px">জাত</th>
-                            <th class="w-50px">লিঙ্গ</th>
-                            <th class="w-50px">বয়স</th>
+                            <th class="w-25px">পাল/ ঝাঁক</th>
+                            <th class="w-25px">আক্রান্ত</th>
+                            <th class="w-25px">মৃত</th>
+                            <th class="w-25px">প্রজাতি</th>
+                            <th class="w-25px">জাত</th>
+                            <th class="w-25px">লিঙ্গ</th>
+                            <th class="w-25px">বয়স</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 fw-semibold fs-5">
@@ -331,14 +333,21 @@
                                     </span>
                                 </td>
                                 <td>{{ $record->serviceCategory->name }}</td>
-                                <td>{{ $record->species_number_flock }}</td>
-                                <td>{{ $record->species_number_infected }}</td>
-                                <td>{{ $record->species_number_dead }}</td>
+                                <td>{{ en2bn($record->species_number_flock) }}</td>
+                                <td>{{ en2bn($record->species_number_infected) }}</td>
+                                <td>{{ en2bn($record->species_number_dead) }}</td>
                                 <td>{{ $record->species_type_species }}</td>
                                 <td>{{ $record->species_type_breed }}</td>
-                                <td>{{ $record->species_type_gender }}</td>
+                                <td>
+                                    @if ($record->species_type_gender == 'male')
+                                        মর্দা
+                                    @elseif ($record->species_type_gender == 'female')
+                                        মাদি
+                                    @endif
+                                </td>
                                 <td>{{ $record->species_type_age }}</td>
                                 <td>{{ $record->history_of_disease }}</td>
+                                <td>{{ $record->symptoms_of_disease }}</td>
                                 <td>{{ $record->microscopic_result }}</td>
                                 <td>{{ $record->disease->name }}</td>
                                 <td>

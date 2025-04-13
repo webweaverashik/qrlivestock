@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('species_type_gender', ['male', 'female'])->nullable();
             $table->string('species_type_age')->nullable();
             $table->text('history_of_disease')->nullable();
+            $table->text('symptoms_of_disease')->nullable();
             $table->text('microscopic_result')->nullable();
             $table->foreignId('disease_id')->nullable();
             $table->foreignId('prescription_id')->nullable();

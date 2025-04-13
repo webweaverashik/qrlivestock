@@ -73,202 +73,288 @@
         </div>
     @endif
 
-    <!--begin::Form-->
-    <form action="{{ route('records.store') }}" class="form d-flex flex-column flex-lg-row" method="POST">
-        @csrf
-        <div class="d-flex flex-wrap">
-            <!--begin::Aside column-->
-            <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-xxl-400px mb-7 me-lg-7">
-                <!--begin::Thumbnail settings-->
-                <div class="card card-flush py-4">
-                    <!--begin::Card header-->
-                    <div class="card-header">
-                        <!--begin::Card title-->
-                        <div class="card-title">
-                            <h2>খামারের তথ্য</h2>
+    <div class="row">
+        <!--begin::Form-->
+        <div class="col-xl-9 mb-10 mb-xl-0">
+            <form action="{{ route('records.store') }}" class="form d-flex flex-column" method="POST">
+                @csrf
+                <!--begin::Left column-->
+                <div class="d-flex flex-column">
+                    <!--begin::খামারের তথ্য-->
+                    <div class="card card-flush mb-6 py-4">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>সেবা ফর্ম</h2>
+                            </div>
                         </div>
-                        <!--end::Card title-->
-                    </div>
-                    <!--end::Card header-->
+                        <!--end::Card header-->
 
-                    <!--begin::Card body-->
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!--begin::farm Input group-->
-                                <div class="fv-row mb-7">
-                                    <!--begin::Label-->
-                                    <label class="form-label required fs-4">খামার নির্বাচন</label>
-                                    <!--end::Label-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0">
+                            <!--begin::Row-->
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!--begin::farm Input group-->
+                                    <div class="fv-row mb-7">
+                                        <!--begin::Label-->
+                                        <label class="form-label required fs-4">খামার নির্বাচন</label>
+                                        <!--end::Label-->
 
-                                    <!--begin::Solid input group style-->
-                                    <div class="input-group input-group-solid flex-nowrap">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-house fs-3"></i>
-                                        </span>
-                                        <div class="overflow-hidden flex-grow-1">
-                                            <select name="record_farm_id"
-                                                class="form-select form-select-solid rounded-start-0 border-start"
-                                                data-control="select2" data-placeholder="খামার বাছাই করুন" required>
-                                                <option></option>
-                                                @foreach ($farms as $farm)
-                                                    <option value="{{ $farm->id }}">{{ $farm->farm_name }}
-                                                        (ID: {{ $farm->unique_id }})
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                        <!--begin::Solid input group style-->
+                                        <div class="input-group flex-nowrap">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-house-door fs-3"></i>
+                                            </span>
+                                            <div class="overflow-hidden flex-grow-1">
+                                                <select name="farm_id" class="form-select rounded-start-0 border-start"
+                                                    data-control="select2" data-placeholder="খামার বাছাই করুন" required>
+                                                    <option></option>
+                                                    @foreach ($farms as $farm)
+                                                        <option value="{{ $farm->id }}"
+                                                            {{ old('farm_id') == $farm->id ? 'selected' : '' }}>
+                                                            {{ $farm->farm_name }} (ID: {{ $farm->unique_id }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
                                         </div>
+                                        <!--end::Solid input group style-->
                                     </div>
-                                    @error('record_farm_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <!--end::Solid input group style-->
+                                    <!--end::farm Input group-->
                                 </div>
-                                <!--end::farm Input group-->
-                            </div>
 
-                            <div class="col-lg-12">
-                                <!--begin::Image input placeholder-->
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
-                                    }
-
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
-                                    }
-                                </style>
-                                <!--end::Image input placeholder-->
-
-                                <div class="image-input image-input-empty image-input-circle image-input-outline image-input-placeholder mb-3"
-                                    data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px"></div>
-                                    <!--end::Preview existing avatar-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::Thumbnail settings-->
-            </div>
-            <!--end::Aside column-->
-
-            <!--begin::Right column-->
-            <div class="d-flex flex-column flex-row-fluid gap-7 mb-7">
-                <!--begin::খামারের তথ্য-->
-                <div class="card card-flush py-4">
-                    <!--begin::Card header-->
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h2>সেবা ফর্ম</h2>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-
-                    <!--begin::Card body-->
-                    <div class="card-body pt-0">
-                        <!--begin::Row-->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!--begin::Input group-->
-                                <div class="mb-8 fv-row">
-                                    <label class="form-label required fs-4">সেবার ধরণ</label>
-                                    <select name="record_service_cateogry" class="form-select" data-control="select2"
-                                        data-placeholder="সেবার ধরণ বাছাই করুন" required>
-                                        <option></option>
-                                        @foreach ($serviceCategories as $cateogry)
-                                            <option value="{{ $cateogry->id }}">{{ $cateogry->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('farm_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                            </div>
-
-                            <div class="col-lg-12">
-                                <!--begin::Input group-->
-                                <div class="mb-8 fv-row">
-                                    <!--begin::Label-->
-                                    <label class="required form-label">Quantity</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <div class="d-flex gap-3">
-                                        <input type="number" name="shelf" class="form-control mb-2"
-                                            placeholder="On shelf" value="" />
-                                        <input type="number" name="warehouse" class="form-control mb-2"
-                                            placeholder="In warehouse" />
-                                        <input type="number" name="warehouse" class="form-control mb-2"
-                                            placeholder="In warehouse" />
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="mb-8 fv-row">
+                                        <label class="form-label required fs-4">সেবার ধরণ</label>
+                                        <select name="service_category_id" class="form-select" data-control="select2"
+                                            data-placeholder="সেবার ধরণ বাছাই করুন" required>
+                                            <option></option>
+                                            @foreach ($serviceCategories as $cateogry)
+                                                <option value="{{ $cateogry->id }}"
+                                                    {{ old('service_category_id') == $cateogry->id ? 'selected' : '' }}>
+                                                    {{ $cateogry->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <!--end::Input-->
                                     </div>
-                                    <!--end::Input-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Enter the product quantity.</div>
-                                    <!--end::Description-->
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Input group-->
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!--begin::Input group-->
-                                <div class="mb-8 fv-row">
-                                    <!--begin::Label-->
-                                    <label class="required form-label">Quantity</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <div class="d-flex gap-3">
-                                        <input type="number" name="shelf" class="form-control mb-2"
-                                            placeholder="On shelf" value="" />
-                                        <input type="number" name="warehouse" class="form-control mb-2"
-                                            placeholder="In warehouse" />
-                                        <input type="number" name="warehouse" class="form-control mb-2"
-                                            placeholder="In warehouse" />
-                                        <input type="number" name="warehouse" class="form-control mb-2"
-                                            placeholder="In warehouse" />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="mb-8 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="form-label fs-4">প্রজাতির সংখ্যা &nbsp;
+                                            <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <div class="d-flex gap-3">
+                                            <input type="number" name="species_number_flock" class="form-control mb-2"
+                                                placeholder="পাল/ঝাঁক" value="{{ old('species_number_flock') }}"
+                                                min="1" />
+                                            <input type="number" name="species_number_infected" class="form-control mb-2"
+                                                placeholder="আক্রান্ত" value="{{ old('species_number_infected') }}"
+                                                min="1" />
+                                            <input type="number" name="species_number_dead" class="form-control mb-2"
+                                                placeholder="মৃত" value="{{ old('species_number_dead') }}"
+                                                min="1" />
+                                        </div>
+                                        <!--end::Input-->
                                     </div>
-                                    <!--end::Input-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Enter the product quantity.</div>
-                                    <!--end::Description-->
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Input group-->
                             </div>
-                        </div>
-                        <!--end::Row-->
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::খামারের তথ্য-->
-            </div>
-            <!--end::Right column-->
 
-            <!--begin::Bottom Row-->
-            <div class="d-flex flex-column w-100 mb-7">
-                <div class="d-flex justify-content-end">
-                    <!--begin::Button-->
-                    <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
-                    <!--end::Button-->
-                    <!--begin::Button-->
-                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-                        <span class="indicator-label">সাবমিট</span>
-                        <span class="indicator-progress">Please wait...
-                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                        </span>
-                    </button>
-                    <!--end::Button-->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="mb-8 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="form-label fs-4">প্রজাতির ধরণ &nbsp; <span
+                                                class="text-muted fs-6">(প্রযোজ্য
+                                                হলে)</span></label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <div class="d-flex gap-3">
+                                            <input type="text" name="species_type_species" class="form-control mb-2"
+                                                placeholder="প্রজাতি" value="{{ old('species_type_species') }}" />
+                                            <input type="text" name="species_type_breed" class="form-control mb-2"
+                                                placeholder="জাত" value="{{ old('species_type_breed') }}" />
+
+                                            <select name="species_type_gender" class="form-select mb-2"
+                                                data-control="select2" data-hide-search="true"
+                                                data-placeholder="লিঙ্গ বাছাই করুন">
+                                                <option></option>
+                                                <option value="male"
+                                                    {{ old('species_type_gender') == 'male' ? 'selected' : '' }}>মর্দা
+                                                </option>
+                                                <option value="female"
+                                                    {{ old('species_type_gender') == 'female' ? 'selected' : '' }}>মাদি
+                                                </option>
+                                            </select>
+
+                                            <input type="text" name="species_type_age" class="form-control mb-2"
+                                                placeholder="বয়স" value="{{ old('species_type_age') }}" />
+                                        </div>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="d-flex flex-column mb-5 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="fs-4 fw-semibold mb-2">রোগের ইতিহাস &nbsp; <span
+                                                class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <textarea class="form-control" rows="3" name="history_of_disease" placeholder="এই রোগের পূর্ব বিবরণ লিখুন">{{ old('history_of_disease') }}</textarea>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="d-flex flex-column mb-5 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="fs-4 fw-semibold mb-2">রোগের লক্ষণ &nbsp; <span
+                                                class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <textarea class="form-control" rows="3" name="symptoms_of_disease" placeholder="রোগের লক্ষণ সমূহ লিখুন">{{ old('symptoms_of_disease') }}</textarea>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="d-flex flex-column mb-5 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="fs-4 fw-semibold mb-2">আনুবিক্ষণিক পরীক্ষার ফলাফল &nbsp; <span
+                                                class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="species_type_species" class="form-control mb-2"
+                                            placeholder="প্রজাতি" value="{{ old('species_type_species') }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="mb-8 fv-row">
+                                        <label class="form-label fs-4">সম্ভাব্য রোগ নির্ণয় &nbsp; <span
+                                                class="text-muted fs-6">(প্রযোজ্য হলে)</span></label>
+                                        <select name="disease_id" class="form-select" data-control="select2"
+                                            data-placeholder="রোগ বাছাই করুন">
+                                            <option></option>
+                                            @foreach ($diseases as $disease)
+                                                <option value="{{ $disease->id }}"
+                                                    {{ old('disease_id') == $disease->id ? 'selected' : '' }}>
+                                                    {{ $disease->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::খামারের তথ্য-->
+
+                    <div class="d-flex justify-content-end">
+                        <!--begin::Button-->
+                        <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
+                        <!--end::Button-->
+                        <!--begin::Button-->
+                        <button type="submit" id="kt_add_record_submit" class="btn btn-primary">
+                            <span class="indicator-label">সাবমিট করুন</span>
+                            <span class="indicator-progress">Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                        <!--end::Button-->
+                    </div>
                 </div>
-            </div>
-            <!--end::Bottom Row-->
+                <!--end::Left column-->
+            </form>
         </div>
-    </form>
-    <!--end::Form-->
+        <!--end::Form-->
+
+        <!--begin::Aside column-->
+        <div class="col-xl-3">
+            <!--begin::Thumbnail settings-->
+            <div class="card card-flush py-4">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <!--begin::Card title-->
+                    <div class="card-title">
+                        <h2>খামারের তথ্য</h2>
+                    </div>
+                    <!--end::Card title-->
+                </div>
+                <!--end::Card header-->
+
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <div class="d-flex flex-column align-items-center mb-6">
+                        <!--begin::Image-->
+                        <div class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-125px h-125px me-7 mb-4">
+                            <img class="w-100 p-3" src="{{ asset('assets/img/dummy.png') }}" alt="খামার"
+                                id="ajax_photo" />
+                        </div>
+
+                        <!--begin::Details-->
+                        <div class="d-flex flex-column">
+                            <!--begin::Farm Name-->
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="text-gray-800 fs-2 fw-bold" id="ajax_farm_name">সাহাদ জাহান ডেইরি ফার্ম,</span> &nbsp;
+                                <span class="text-gray-800 fs-2 fw-bold me-3" id="ajax_unique_id">412033</span>
+                            </div>
+                            <!--end::Farm Name-->
+
+                            <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
+                                মালিকের নাম: &nbsp;<span class="text-gray-800" id="ajax_owner_name">আবু সায়েম</span>
+                            </div>
+
+                            <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
+                                মোবাইল নং: &nbsp;<span class="text-gray-800" id="ajax_phone_number">০১৭৭৮২৬৬৮৮৫</span>
+                            </div>
+
+                            <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
+                                ঠিকানা: &nbsp;<span class="text-gray-800" id="ajax_address">চরনাপ্তা, ভোলা সদর</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Thumbnail settings-->
+        </div>
+        <!--end::Aside column-->
+    </div>
 @endsection
 
 

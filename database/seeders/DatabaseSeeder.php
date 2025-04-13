@@ -38,14 +38,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Now populate all other tables with 'created_by' = 2 (staff user)
-        Farm::factory(30)->create(['created_by' => 2]);
+        Farm::factory(40)->create(['created_by' => 2]);
         LivestockType::factory()
             ->count(6)
             ->sequence(['name' => 'গরু'], ['name' => 'মুরগি'], ['name' => 'মহিষ'], ['name' => 'হাঁস'], ['name' => 'ছাগল'], ['name' => 'ভেড়া'])
             ->create();
         LivestockCount::factory(10)->create();
-        ServiceCategory::factory(10)->create();
-        Disease::factory(15)->create();
+        ServiceCategory::factory(20)->create();
+        Disease::factory(20)->create();
         ServiceRecord::factory(20)->create(['created_by' => 2]);
         Prescription::factory(10)->create(['created_by' => 2, 'approved_by' => 1]);
         SMSLog::factory(10)->create();

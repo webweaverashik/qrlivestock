@@ -3,45 +3,66 @@ namespace Database\Factories;
 
 use App\Models\Farm;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Farm>
  */
+
 class FarmFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Farm::class;
+
+    protected static array $farmNames = [
+        'সাহাদ ডেইরি ফার্ম', 'ভোলা পোল্ট্রি খামার', 'রফিক গরুর খামার', 'রহিম ছাগল পালন কেন্দ্র', 'সাব্বির হাঁস ফার্ম',
+        'তাহমিদ গবাদি পশু খামার', 'মেহেদী পোল্ট্রি ফার্ম', 'সাবরিনা ডেইরি ফার্ম', 'জামিল গরুর খামার', 'সজিব ছাগলের খামার',
+        'শামীম পোল্ট্রি ফার্ম', 'ফারহান হাঁস-মুরগি খামার', 'জুয়েল ডেইরি হাউস', 'রিয়াজ পোল্ট্রি খামার', 'তানভীর কৃষি খামার',
+        'রাকিব মৎস্য ও গবাদি খামার', 'রফিকুল ডেইরি ফার্ম', 'সালাউদ্দিন পশু খামার', 'মুকুল পোল্ট্রি হ্যাচারি', 'মোশাররফ প্রাণিসম্পদ খামার',
+        'বাবুল গরুর খামার', 'সাদিক ছাগল পালন কেন্দ্র', 'মোঃ আলী হাঁস খামার', 'নাফিস ডেইরি খামার', 'ইমরান পোল্ট্রি ফার্ম',
+        'সোহেল গরুর হাট খামার', 'হোসেন গরু-ছাগল খামার', 'তুহিন অর্গানিক খামার', 'সেলিম ডেইরি এন্ড পোল্ট্রি', 'শহিদুল হাঁস খামার',
+        'মোস্তাফিজ ছাগল ফার্ম', 'মাহফুজ গবাদি পশু খামার', 'জাহিদ গরুর খামার', 'বেলাল পোল্ট্রি ফার্ম', 'শাকিল ডেইরি হাউস',
+        'রবি কৃষি খামার', 'লতিফ হাঁস-মুরগির খামার', 'সুমন গরু পালন কেন্দ্র', 'রানা অর্গানিক ফার্ম', 'ফাহিম প্রাণিসম্পদ ফার্ম',
+        'তাসফিক পোল্ট্রি ফার্ম', 'আল আমিন গরুর খামার', 'রায়হান ছাগল পালন ফার্ম', 'রেজাউল হাঁস পালন কেন্দ্র', 'মাসুদ ডেইরি ও পোল্ট্রি খামার',
+        'জুয়েল গরুর খামার', 'শওকত পোল্ট্রি খামার', 'নূর ডেইরি ফার্ম', 'তানিয়া পশু পালন কেন্দ্র', 'সাবিনা ডেইরি হাউস',
+    ];
+
+    protected static array $ownerNames = [
+        'মোঃ রফিকুল ইসলাম', 'সাবিনা ইয়াসমিন', 'জুয়েল রানা', 'আয়েশা সিদ্দিকা', 'সালাউদ্দিন হোসেন',
+        'তানিয়া আক্তার', 'মোশাররফ হোসেন', 'সাদিয়া ইসলাম', 'মোঃ কামরুল হাসান', 'রুমানা হক',
+        'জাহিদ হাসান', 'রিজওয়ানা আক্তার', 'নাফিসা বিনতে রশিদ', 'সোহেল রানা', 'শবনম ফেরদৌস',
+        'মোঃ সুমন মিয়া', 'শাহনাজ পারভীন', 'রিয়াজ উদ্দিন', 'তাসনিম মিথিলা', 'মোঃ মাহফুজুল হক',
+        'মোমেনা বেগম', 'তানভীর হোসেন', 'সুমাইয়া ইসলাম', 'সাব্বির আহমেদ', 'ফারজানা রহমান',
+        'রাকিবুল হাসান', 'মাহিনুর সুলতানা', 'শহিদুল ইসলাম', 'শারমিন জাহান', 'মোঃ শফিকুল ইসলাম',
+        'নাজমুন নাহার', 'রেজাউল করিম', 'সারমিন আক্তার', 'মোঃ রবিউল ইসলাম', 'হাসিনা বেগম',
+        'মোহাম্মদ আলী', 'আনোয়ারা খাতুন', 'মোঃ সাইফুল ইসলাম', 'শাহিনুর বেগম', 'মোঃ আবদুল কাদের',
+        'আঞ্জুমান আরা', 'সাইদুল ইসলাম', 'রোকসানা আক্তার', 'আব্দুর রহিম', 'কাঞ্চন বালা',
+        'মোঃ ফিরোজ মিয়া', 'জেসমিন আক্তার', 'মোঃ জসিম উদ্দিন', 'মাহমুদা হক',
+    ];
 
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['pending', 'approved']);
+        $status = $this->faker->randomElement(['approved', 'pending']);
 
         return [
-            'farm_name' => $this->faker->name(),
-            'owner_name' => $this->faker->name(),
-            'phone_number' => '01' . $this->faker->numberBetween(100000000, 999999999), // Valid 11-digit BD number
-            'address' => $this->faker->address(),
-            'unique_id' => function () {
+            'farm_name'    => Arr::random(self::$farmNames),
+            'owner_name'   => Arr::random(self::$ownerNames),
+            'phone_number' => '01' . $this->faker->numberBetween(100000000, 999999999),
+            'address'      => $this->faker->address(),
+            'unique_id'    => function () {
                 do {
                     $id = rand(100000, 999999);
                 } while (Farm::where('unique_id', $id)->exists());
-
                 return $id;
             },
-            'status' => $status,
-            'is_active' => $this->faker->boolean(5) ? false : true,
-            'created_by' => 2, // Staff user
-            'approved_by' => $status === 'approved' ? 1 : null, // Set only if approved
-            'approved_at' => $status === 'approved' ? now() : null, // Set only if approved
-            'deleted_at' => $this->faker->boolean(15) ? now() : null,
-            'remarks' => $this->faker->boolean(50)
-                ? $this->faker->sentence(4, true) // 4 words, with period
-                : null,
+            'status'       => $status,
+            'is_active'    => $this->faker->boolean(5) ? false : true,
+            'created_by'   => 2,
+            'approved_by'  => $status === 'approved' ? 1 : null,
+            'approved_at'  => $status === 'approved' ? now() : null,
+            'deleted_at'   => $this->faker->boolean(15) ? now() : null,
+            'remarks'      => $this->faker->boolean(50)
+            ? $this->faker->sentence(4, true)
+            : null,
         ];
     }
 }
