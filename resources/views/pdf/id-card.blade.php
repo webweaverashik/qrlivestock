@@ -30,6 +30,7 @@
             height: 85.6mm;
             width: 54mm;
             border: 1px dotted #c4c4c4;
+            border-radius: 5px;
             padding: 15px;
             box-sizing: border-box;
             margin: 0 auto 5mm;

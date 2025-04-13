@@ -227,11 +227,12 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ $farm->qr_code ?? asset('cards/dummy.pdf') }}"
-                                    class="text-muted text-hover-info" data-bs-toggle="tooltip"
-                                    title="খামারের আইডি কার্ড ডাউনলোড করুন">
-                                    <i class="bi bi-qr-code fs-2"></i>
-                                </a>
+                                @if ($farm->qr_code)
+                                    <a href="{{ route('farms.id-card', $farm->id) }}" class="text-muted text-hover-info"
+                                        data-bs-toggle="tooltip" title="খামারের আইডি কার্ড ডাউনলোড করুন">
+                                        <i class="bi bi-download fs-2"></i>
+                                    </a>
+                                @endif
                             </td>
                             <td class="text-center">
                                 @if (auth()->user()->role == 'admin')
@@ -243,7 +244,8 @@
                                         data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="{{ route('farms.edit', $farm->id) }}" class="menu-link px-3 text-hover-primary"><i
+                                            <a href="{{ route('farms.edit', $farm->id) }}"
+                                                class="menu-link px-3 text-hover-primary"><i
                                                     class="las la-pen fs-2 me-2"></i>সংশোধন</a>
                                         </div>
                                         <!--end::Menu item-->

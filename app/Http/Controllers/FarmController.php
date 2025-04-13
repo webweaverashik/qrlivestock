@@ -303,14 +303,8 @@ class FarmController extends Controller
     {
         $farm = Farm::findOrFail($id);
 
-        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs      = $defaultConfig['fontDir'];
-
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-        $fontData          = $defaultFontConfig['fontdata'];
-
-                                             // Create a custom temp directory in your storage folder
-        $tempDir = storage_path('app/mpdf'); // Better and outside public directory
+        // Create a custom temp directory in your storage folder
+        $tempDir = storage_path('app/mpdf'); 
 
         if (! file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
@@ -320,15 +314,6 @@ class FarmController extends Controller
             'mode'             => 'utf-8',
             'format'           => 'A4',
             'tempDir'          => $tempDir,
-            'fontDir'          => array_merge($fontDirs, [
-                storage_path('fonts'),
-            ]),
-            'fontdata'         => $fontData + [
-                'solaimanlipi' => [
-                    'R' => 'SolaimanLipi.ttf',      // Regular
-                    'B' => 'SolaimanLipi-Bold.ttf', // Bold
-                ],
-            ],
             'default_font'     => 'solaimanlipi',
             'autoScriptToLang' => true,
             'autoLangToFont'   => true,
