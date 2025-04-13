@@ -325,6 +325,6 @@ class FarmController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output($farm->unique_id . '.pdf', 'I'); // I = Inline view, D = Download
+        return $pdf->Output($farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
     }
 }

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id');
             $table->text('diagnosis');
             $table->text('medication');
             $table->text('dosage');

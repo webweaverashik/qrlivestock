@@ -1,7 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Disease;
+use App\Models\Farm;
+use App\Models\ServiceCategory;
+use App\Models\ServiceRecord;
 use Illuminate\Http\Request;
 
 class ServiceRecordController extends Controller
@@ -11,7 +14,13 @@ class ServiceRecordController extends Controller
      */
     public function index()
     {
-        //
+        $serviceRecords = ServiceRecord::whereHas('farm', function ($query) {
+            $query->whereNull('deleted_at'); // Exclude soft-deleted farms
+        })
+            ->withoutTrashed()
+            ->get();
+
+        return view('records.index', compact('serviceRecords'));
     }
 
     /**
@@ -19,7 +28,13 @@ class ServiceRecordController extends Controller
      */
     public function create()
     {
-        //
+        $farms             = Farm::where('is_active', true)->withoutTrashed()->select('id', 'farm_name', 'unique_id')->orderby('farm_name', 'asc')->get();
+
+        $serviceCategories = ServiceCategory::withoutTrashed()->select('id', 'name')->get();
+        
+        $diseases          = Disease::withoutTrashed()->select('id', 'name')->get();
+
+        return view('records.create', compact('farms', 'serviceCategories', 'diseases'));
     }
 
     /**

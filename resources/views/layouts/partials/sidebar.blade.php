@@ -104,11 +104,25 @@
 
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="farm_pending_approval_link"
-                                    href="{{ route('farms.pending') }}"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">@if (auth()->user()->role == 'admin')খামার অনুমোদন @else অনুমোদনের অপেক্ষায় @endif<span class="menu-badge">
-                                            <span class="badge badge-danger badge-circle fw-bold fs-7">{{ en2bn(\App\Models\Farm::where('status', 'pending')->count()) }}</span>
-                                        </span></span></a>
+                                <!--begin:Menu link-->
+                                <a class="menu-link" id="farm_pending_approval_link"
+                                    href="{{ route('farms.pending') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">
+                                        @if (auth()->user()->role == 'admin')
+                                            খামার অনুমোদন
+                                        @else
+                                            অনুমোদনের অপেক্ষায়
+                                        @endif
+                                        <span class="menu-badge">
+                                            <span class="badge badge-danger badge-circle fw-bold fs-7">
+                                                {{ en2bn(\App\Models\Farm::where('status', 'pending')->withoutTrashed()->count()) }}
+                                            </span>
+                                        </span>
+                                    </span>
+                                </a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
@@ -119,7 +133,7 @@
 
 
                     <!--begin:চিকিৎসা রেজিস্টার Menu item-->
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="admission_menu">
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion" id="treatment_menu">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-icon">
@@ -134,8 +148,8 @@
                         <div class="menu-sub menu-sub-accordion">
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="new_admission_link"
-                                    href="{{ route('dashboard') }}"><span class="menu-bullet"><span
+                                <!--begin:Menu link--><a class="menu-link" id="all_records_link"
+                                    href="{{ route('records.index') }}"><span class="menu-bullet"><span
                                             class="bullet bullet-dot"></span></span><span class="menu-title">সকল
                                         সেবা</span></a>
                                 <!--end:Menu link-->
@@ -144,9 +158,26 @@
 
                             <!--begin:Menu item-->
                             <div class="menu-item">
-                                <!--begin:Menu link--><a class="menu-link" id="pending_approval_link"
-                                    href="#"><span class="menu-bullet"><span
-                                            class="bullet bullet-dot"></span></span><span class="menu-title">@if (auth()->user()->role == 'admin')প্রেসক্রিপশন অনুমোদন @else অনুমোদনের অপেক্ষায় @endif</span></a>
+                                <!--begin:Menu link-->
+                                <a class="menu-link" id="prescriptions_pending_link"
+                                    href="{{ route('prescriptions.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">
+                                        @if (auth()->user()->role == 'admin')
+                                            প্রেসক্রিপশন অনুমোদন
+                                        @else
+                                            অনুমোদনের অপেক্ষায়
+                                        @endif
+
+                                        <span class="menu-badge">
+                                            <span class="badge badge-danger badge-circle fw-bold fs-7">
+                                                {{ en2bn(\App\Models\Prescription::where('status', 'pending')->withoutTrashed()->count()) }}
+                                            </span>
+                                        </span>
+                                    </span>
+                                </a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
@@ -157,44 +188,43 @@
 
 
                     @if (auth()->user()->role == 'admin')
-                    {{-- ----------------- Settings Modules ----------------- --}}
-                    <!--begin:Systems Info Menu Heading-->
-                    <div class="menu-item pt-5">
-                        <!--begin:Menu content-->
-                        <div class="menu-content"><span
-                                class="menu-heading fw-bold text-uppercase fs-7">সিস্টেম</span>
+                        {{-- ----------------- Settings Modules ----------------- --}}
+                        <!--begin:Systems Info Menu Heading-->
+                        <div class="menu-item pt-5">
+                            <!--begin:Menu content-->
+                            <div class="menu-content"><span
+                                    class="menu-heading fw-bold text-uppercase fs-7">সিস্টেম</span>
+                            </div>
+                            <!--end:Menu content-->
                         </div>
-                        <!--end:Menu content-->
-                    </div>
-                    <!--end:Systems Info Menu Heading-->
+                        <!--end:Systems Info Menu Heading-->
 
-                    <!--begin:Users Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="{{ route('users.index') }}" id="users_link">
-                            <span class="menu-icon">
-                                <i class="ki-outline ki-user fs-2"></i>
-                            </span>
-                            <span class="menu-title">ব্যবহারকারি</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Users Menu item-->
+                        <!--begin:Users Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="{{ route('users.index') }}" id="users_link">
+                                <span class="menu-icon">
+                                    <i class="ki-outline ki-user fs-2"></i>
+                                </span>
+                                <span class="menu-title">ব্যবহারকারি</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Users Menu item-->
 
 
-                    <!--begin:Settings Tracking Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="#" id="settings_link">
-                            <span class="menu-icon">
-                                <i class="ki-outline ki-setting-2 fs-2"></i>
-                            </span>
-                            <span class="menu-title">সেটিংস</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Settings Tracking Menu item-->
-
+                        <!--begin:Settings Tracking Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="#" id="settings_link">
+                                <span class="menu-icon">
+                                    <i class="ki-outline ki-setting-2 fs-2"></i>
+                                </span>
+                                <span class="menu-title">সেটিংস</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Settings Tracking Menu item-->
                     @endif
 
                 </div>

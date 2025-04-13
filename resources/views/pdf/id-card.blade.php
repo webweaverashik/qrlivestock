@@ -29,11 +29,11 @@
         .card-container {
             height: 85.6mm;
             width: 54mm;
-            border: 1px dotted #c4c4c4;
+            border: 1px solid #4f4f4f;
             border-radius: 5px;
             padding: 15px;
             box-sizing: border-box;
-            margin: 0 auto 5mm;
+            margin: 0 auto 2mm;
             display: block;
             page-break-inside: avoid;
         }
@@ -88,7 +88,7 @@
 
 <body>
     {{-- SPACER to push FRONT SIDE down --}}
-    <div style="height: 10mm;"></div>
+    <div style="height: 5mm;"></div>
 
     {{-- FRONT SIDE --}}
     <div class="card-container">

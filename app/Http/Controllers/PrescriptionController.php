@@ -11,7 +11,7 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        //
+        return view('prescriptions.index');
     }
 
     /**
@@ -61,4 +61,14 @@ class PrescriptionController extends Controller
     {
         //
     }
+    
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function downloadPrescription(string $id)
+    {
+        return '<h1>File Downloaded</h1>';
+    }
+
+
 }

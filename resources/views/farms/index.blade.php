@@ -151,7 +151,6 @@
                                     <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
                                 </div>
                                 <!--begin::Farm details-->
-
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
