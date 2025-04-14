@@ -185,7 +185,7 @@
                                 </div>
                             </td>
                             <td>
-                                @if (count($farm->serviceRecords) > 1)
+                                @if (count($farm->serviceRecords) > 0)
                                     {{ en2bn($farm->serviceRecords()->latest()->value('created_at')->diffForHumans()) }}
                                     <span class="ms-1" data-bs-toggle="tooltip"
                                         title="{{ en2bn($farm->serviceRecords()->latest()->value('created_at')->format('d-M-Y h:i:s A')) }}">

@@ -43,6 +43,36 @@
 
 
 @section('content')
+    @if ($errors->any())
+        <div
+            class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-information fs-2hx text-danger me-4 mb-5 mb-sm-0">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+            </i>
+            <!--end::Icon-->
+
+            <!--begin::Content-->
+            <div class="d-flex flex-column pe-0 pe-sm-10">
+                <h5 class="mb-1 text-danger">নিম্নোক্ত এররগুলো চেক করুন।</h5>
+                @foreach ($errors->all() as $error)
+                    <li class="text-danger">{{ $error }}</li>
+                @endforeach
+            </div>
+            <!--end::Content-->
+
+            <!--begin::Close-->
+            <button type="button"
+                class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                data-bs-dismiss="alert">
+                <i class="ki-outline ki-cross fs-1 text-danger"></i>
+            </button>
+            <!--end::Close-->
+        </div>
+    @endif
+
     <!--begin::Navbar-->
     <div
         class="card mb-6 mb-xl-9 @if ($farm->status == 'pending') border border-dashed border-warning 
@@ -55,8 +85,7 @@
                     <!--begin::Details-->
                     <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
                         <!--begin::Image-->
-                        <div
-                            class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-125px h-125px me-7 mb-4">
+                        <div class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-125px h-125px me-7 mb-4">
                             <img class="w-100 p-3"
                                 src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/img/dummy.png') }}"
                                 alt="{{ $farm->name }}" />
@@ -177,7 +206,7 @@
                         <tr class="">
                             <td class="text-gray-500">সর্বশেষ সেবা নিয়েছেন:</td>
                             <td class="text-gray-800">
-                                @if (count($farm->serviceRecords) > 1)
+                                @if (count($farm->serviceRecords) > 0)
                                     {{ en2bn($farm->serviceRecords()->latest()->value('created_at')->diffForHumans()) }}
                                     <span class="ms-1" data-bs-toggle="tooltip"
                                         title="{{ en2bn($farm->serviceRecords()->latest()->value('created_at')->format('d-M-Y h:i:s A')) }}">
@@ -283,9 +312,11 @@
                 <!--end::Search-->
 
                 <!--begin::Add user-->
-                <a href="{{ route('records.create') }}" class="btn btn-primary">
-                    <i class="ki-outline ki-plus fs-2"></i>তথ্য যুক্ত করুন</a>
+                @if ($farm->is_active == 1 && $farm->status == 'approved')
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_add_record_modal">
+                    <i class="ki-outline ki-plus fs-2"></i>নতুন রেকর্ড</a>
                 <!--end::Add user-->
+                @endif
             </div>
             <!--end::Toolbar-->
         </div>
@@ -349,7 +380,11 @@
                                 <td>{{ $record->history_of_disease }}</td>
                                 <td>{{ $record->symptoms_of_disease }}</td>
                                 <td>{{ $record->microscopic_result }}</td>
-                                <td>{{ $record->disease->name }}</td>
+                                <td>
+                                    @if ($record->disease)
+                                        {{ $record->disease->name }}
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
                                         data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i
@@ -374,8 +409,8 @@
     </div>
     <!--end::Card-->
 
-    <!--begin::Modal - View Prescription-->
-    <div class="modal fade" id="kt_view_prescription_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    <!--begin::Modal - Add Record-->
+    <div class="modal fade" id="kt_add_record_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-900px">
@@ -384,7 +419,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2>Create App</h2>
+                    <h2>{{ $farm->farm_name }} এর সেবা ফর্ম</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -394,136 +429,199 @@
                     <!--end::Close-->
                 </div>
                 <!--end::Modal header-->
+
                 <!--begin::Modal body-->
                 <div class="modal-body py-lg-5">
                     <!--begin::Content-->
                     <div class="flex-row-fluid p-lg-5">
                         <!--begin::Step 1-->
                         <div>
-                            <div class="w-100">
-                                <!--begin::Input group-->
-                                <div class="fv-row mb-10">
-                                    <!--begin::Label-->
-                                    <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                        <span class="required">App Name</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip"
-                                            title="Specify your unique app name">
-                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6">
-                                            </i>
-                                        </span>
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid"
-                                        name="name" placeholder="" value="" />
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                        <span class="required">Category</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select your app category">
-                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6">
-                                            </i>
-                                        </span>
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin:Options-->
-                                    <div class="fv-row">
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-primary">
-                                                        <i class="ki-outline ki-compass fs-1 text-primary">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Quick Online Courses</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        is just one SEO</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="1" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-danger">
-                                                        <i class="ki-outline ki-element-11 fs-1 text-danger">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Face to Face Discussions</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        is just one aspect</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="2" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-success">
-                                                        <i class="ki-outline ki-timer fs-1 text-success">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Full Intro Training</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        copywriting</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="3" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
+                            <form action="{{ route('records.storeFromShow', $farm->id) }}" class="form d-flex flex-column"
+                                method="POST">
+                                @csrf
+                                <!--begin::Left column-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Row-->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <label class="form-label required fs-4">সেবার ধরণ</label>
+                                                <select name="service_category_id" class="form-select"
+                                                    data-control="select2" data-placeholder="সেবার ধরণ বাছাই করুন"
+                                                    required>
+                                                    <option></option>
+                                                    @foreach ($serviceCategories as $cateogry)
+                                                        <option value="{{ $cateogry->id }}"
+                                                            {{ old('service_category_id') == $cateogry->id ? 'selected' : '' }}>
+                                                            {{ $cateogry->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
                                     </div>
-                                    <!--end:Options-->
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label fs-4">প্রজাতির সংখ্যা &nbsp;
+                                                    <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div class="d-flex gap-3">
+                                                    <input type="number" name="species_number_flock"
+                                                        class="form-control mb-2" placeholder="পাল/ঝাঁক"
+                                                        value="{{ old('species_number_flock') }}" min="1" />
+                                                    <input type="number" name="species_number_infected"
+                                                        class="form-control mb-2" placeholder="আক্রান্ত"
+                                                        value="{{ old('species_number_infected') }}" min="1" />
+                                                    <input type="number" name="species_number_dead"
+                                                        class="form-control mb-2" placeholder="মৃত"
+                                                        value="{{ old('species_number_dead') }}" min="1" />
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label fs-4">প্রজাতির ধরণ &nbsp; <span
+                                                        class="text-muted fs-6">(প্রযোজ্য
+                                                        হলে)</span></label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div class="d-flex gap-3">
+                                                    <input type="text" name="species_type_species"
+                                                        class="form-control mb-2" placeholder="প্রজাতি"
+                                                        value="{{ old('species_type_species') }}" />
+                                                    <input type="text" name="species_type_breed"
+                                                        class="form-control mb-2" placeholder="জাত"
+                                                        value="{{ old('species_type_breed') }}" />
+
+                                                    <select name="species_type_gender" class="form-select mb-2"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-placeholder="লিঙ্গ বাছাই করুন">
+                                                        <option></option>
+                                                        <option value="male"
+                                                            {{ old('species_type_gender') == 'male' ? 'selected' : '' }}>
+                                                            মর্দা
+                                                        </option>
+                                                        <option value="female"
+                                                            {{ old('species_type_gender') == 'female' ? 'selected' : '' }}>
+                                                            মাদি
+                                                        </option>
+                                                    </select>
+
+                                                    <input type="text" name="species_type_age"
+                                                        class="form-control mb-2" placeholder="বয়স"
+                                                        value="{{ old('species_type_age') }}" />
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">রোগের ইতিহাস &nbsp; <span
+                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <textarea class="form-control" rows="3" name="history_of_disease" placeholder="এই রোগের পূর্ব বিবরণ লিখুন">{{ old('history_of_disease') }}</textarea>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">রোগের লক্ষণ &nbsp; <span
+                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <textarea class="form-control" rows="3" name="symptoms_of_disease" placeholder="রোগের লক্ষণ সমূহ লিখুন">{{ old('symptoms_of_disease') }}</textarea>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">আনুবিক্ষণিক পরীক্ষার ফলাফল
+                                                    &nbsp; <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="microscopic_result" class="form-control mb-2"
+                                                    placeholder="ফলাফল লিখুন" value="{{ old('microscopic_result') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <label class="form-label fs-4">সম্ভাব্য রোগ নির্ণয় &nbsp; <span
+                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span></label>
+                                                <select name="disease_id" class="form-select" data-control="select2"
+                                                    data-placeholder="রোগ বাছাই করুন">
+                                                    <option></option>
+                                                    @foreach ($diseases as $disease)
+                                                        <option value="{{ $disease->id }}"
+                                                            {{ old('disease_id') == $disease->id ? 'selected' : '' }}>
+                                                            {{ $disease->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="d-flex justify-content-end">
+                                        <!--begin::Button-->
+                                        <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_add_record_submit" class="btn btn-primary">
+                                            <span class="indicator-label">সাবমিট করুন</span>
+                                            <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
                                 </div>
-                                <!--end::Input group-->
-                            </div>
+                                <!--end::Left column-->
+                            </form>
                         </div>
                         <!--end::Step 1-->
                     </div>
@@ -535,7 +633,7 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - View Prescription-->
+    <!--end::Modal - Add Record-->
 
 @endsection
 

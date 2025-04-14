@@ -218,6 +218,24 @@ var KTFarmView = function () {
           });
      };
 
+     // Select2 input reset
+     var handleResetButton = function () {
+          document.querySelectorAll('form').forEach(form => {
+               form.addEventListener('reset', function () {
+                    // Slight delay to allow form reset to complete
+                    setTimeout(function () {
+                         document.querySelectorAll('select[data-control="select2"]').forEach(select => {
+                              select.value = '';
+
+                              // Create and dispatch a 'change' event
+                              const event = new Event('change');
+                              select.dispatchEvent(event);
+                         });
+                    }, 50);
+               });
+          });
+     };
+
      return {
           // Public functions  
           init: function () {
@@ -232,6 +250,7 @@ var KTFarmView = function () {
                handleDeletion();
                handleToggleActivation();
                handleFarmApproval();
+               handleResetButton();
           }
      }
 }();

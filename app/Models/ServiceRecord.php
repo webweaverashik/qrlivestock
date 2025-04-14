@@ -21,6 +21,7 @@ class ServiceRecord extends Model
         'species_type_gender',
         'species_type_age',
         'history_of_disease',
+        'symptoms_of_disease',
         'microscopic_result',
         'disease_id',
         'prescription_id',

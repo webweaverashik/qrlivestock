@@ -110,14 +110,13 @@
                                                 <select name="farm_id" class="form-select rounded-start-0 border-start"
                                                     data-control="select2" data-placeholder="খামার বাছাই করুন" required>
                                                     <option></option>
-                                                    @foreach ($farms as $farm)
-                                                        <option value="{{ $farm->id }}"
-                                                            {{ old('farm_id') == $farm->id ? 'selected' : '' }}>
-                                                            {{ $farm->farm_name }} (ID: {{ $farm->unique_id }})
+                                                    @foreach ($farms as $f)
+                                                        <option value="{{ $f->id }}"
+                                                            {{ (old('farm_id') ?? ($farm->id ?? null)) == $f->id ? 'selected' : '' }}>
+                                                            {{ $f->farm_name }} (ID: {{ $f->unique_id }})
                                                         </option>
                                                     @endforeach
                                                 </select>
-
                                             </div>
                                         </div>
                                         <!--end::Solid input group style-->
@@ -251,8 +250,8 @@
                                         </label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="species_type_species" class="form-control mb-2"
-                                            placeholder="প্রজাতি" value="{{ old('species_type_species') }}" />
+                                        <input type="text" name="microscopic_result" class="form-control mb-2"
+                                            placeholder="ফলাফল লিখুন" value="{{ old('microscopic_result') }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -330,21 +329,21 @@
                         <div class="d-flex flex-column">
                             <!--begin::Farm Name-->
                             <div class="d-flex align-items-center mb-1">
-                                <span class="text-gray-800 fs-2 fw-bold" id="ajax_farm_name">সাহাদ জাহান ডেইরি ফার্ম,</span> &nbsp;
+                                <span class="text-gray-800 fs-2 fw-bold" id="ajax_farm_name">খামারের নাম,</span> &nbsp;
                                 <span class="text-gray-800 fs-2 fw-bold me-3" id="ajax_unique_id">412033</span>
                             </div>
                             <!--end::Farm Name-->
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
-                                মালিকের নাম: &nbsp;<span class="text-gray-800" id="ajax_owner_name">আবু সায়েম</span>
+                                মালিকের নাম: &nbsp;<span class="text-gray-800" id="ajax_owner_name">মালিকের নাম</span>
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
-                                মোবাইল নং: &nbsp;<span class="text-gray-800" id="ajax_phone_number">০১৭৭৮২৬৬৮৮৫</span>
+                                মোবাইল নং: &nbsp;<span class="text-gray-800" id="ajax_phone_number">০১৭০০-০০০০০০</span>
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
-                                ঠিকানা: &nbsp;<span class="text-gray-800" id="ajax_address">চরনাপ্তা, ভোলা সদর</span>
+                                ঠিকানা: &nbsp;<span class="text-gray-800" id="ajax_address">আপন ঠিকানা</span>
                             </div>
                         </div>
                     </div>

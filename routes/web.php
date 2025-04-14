@@ -1,14 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FarmController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ServiceRecordController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
+Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
@@ -28,21 +27,24 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
         return redirect()->back();
     })->name('logout.get');
 
-
     // Custom routes for farms
     Route::get('farms/pending', [FarmController::class, 'pendingFarm'])->name('farms.pending');
     Route::post('farms/toggle-active', [FarmController::class, 'toggleActive'])->name('farms.toggleActive');
     Route::post('/farms/{id}/approve', [FarmController::class, 'approveFarm'])->name('farms.approve');
     Route::get('/farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
-    
+    Route::get('/get-farm-details/{id}', [FarmController::class, 'getFarmDetails']);
+
     // Custom routes form prescription
     Route::get('/prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');
-    
+
+    // Custom routes for recrords
+    Route::post('/records/{id}/storeFromShow', [ServiceRecordController::class, 'storeFromShow'])->name('records.storeFromShow');
+
+
     // Resource Routes for General Activites
     Route::resource('farms', FarmController::class);
     Route::resource('records', ServiceRecordController::class);
     Route::resource('prescriptions', PrescriptionController::class);
-
 
     // Route for users
     Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
