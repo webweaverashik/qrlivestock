@@ -30,9 +30,11 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     // Custom routes for farms
     Route::get('farms/pending', [FarmController::class, 'pendingFarm'])->name('farms.pending');
     Route::post('farms/toggle-active', [FarmController::class, 'toggleActive'])->name('farms.toggleActive');
-    Route::post('/farms/{id}/approve', [FarmController::class, 'approveFarm'])->name('farms.approve');
-    Route::get('/farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
-    Route::get('/get-farm-details/{id}', [FarmController::class, 'getFarmDetails']);
+    Route::post('farms/{id}/approve', [FarmController::class, 'approveFarm'])->name('farms.approve');
+    Route::get('farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
+    Route::get('get-farm-details/{id}', [FarmController::class, 'getFarmDetails']);
+    Route::post('farms/search', [FarmController::class, 'search'])->name('farms.search');
+
 
     // Custom routes form prescription
     Route::get('/prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');

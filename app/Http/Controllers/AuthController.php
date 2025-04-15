@@ -17,7 +17,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard')->with('warning', 'You are already logged in.');
         }
-        return view('auth.login')->with('warning', 'Please login first.');
+        return view('auth.login')->with('warning', 'অনুগ্রহ করে লগিন করুন।');
     }
 
     // Handle login
@@ -32,7 +32,7 @@ class AuthController extends Controller
         $user = User::withTrashed()->where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->with('error', 'User not found.');
+            return back()->with('error', 'ইউজারটি খুঁজে পাওয়া যায়নি।');
         }
 
         // Step 1: Check if the user is soft-deleted
@@ -57,10 +57,10 @@ class AuthController extends Controller
                 'device' => $this->detectDevice($request->header('User-Agent')),
             ]);
 
-            return redirect()->route('dashboard')->with('success', 'Login successful');
+            return redirect()->route('dashboard')->with('success', 'সফলভাবে লগিন সম্পন্ন হয়েছে।');
         }
 
-        return back()->with('error', 'Invalid Credentials');
+        return back()->with('error', 'ইমেইল ও পাসওয়ার্ড সঠিক নয়।');
     }
 
     // Helper function to detect device type
@@ -79,6 +79,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Logged out successfully.');
+        return redirect()->route('login')->with('success', 'সফলভাবে লগআউট সম্পন্ন হয়েছে।');
     }
 }

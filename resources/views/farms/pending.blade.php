@@ -98,7 +98,7 @@
                                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                         <a href="{{ route('farms.show', $farm->id) }}">
                                             <div class="symbol-label">
-                                                <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/media/avatars/300-5.jpg') }}"
+                                                <img src="{{ $farm->photo_url ? asset($farm->photo_url) : asset('assets/img/dummy.png') }}"
                                                     alt="{{ $farm->owner_name }}" class="w-100" />
                                             </div>
                                         </a>

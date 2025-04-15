@@ -57,47 +57,47 @@ class FarmController extends Controller
         // ✅ Validate request
         $request->validate(
             [
-                'farm_name' => 'required|string|max:255',
-                'owner_name' => 'required|string|max:255',
-                'phone_number' => 'required|string|max:11',
-                'address' => 'nullable|string|max:500',
-                'photo_url' => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
-                'livestock_counts' => 'array',
+                'farm_name'          => 'required|string|max:255',
+                'owner_name'         => 'required|string|max:255',
+                'phone_number'       => 'required|string|max:11',
+                'address'            => 'nullable|string|max:500',
+                'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
+                'livestock_counts'   => 'array',
                 'livestock_counts.*' => 'nullable|integer|min:1',
-                'remarks' => 'nullable|string',
+                'remarks'            => 'nullable|string',
             ],
             [
                 'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
-                'photo_url.max' => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
+                'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
             ],
         );
 
         // Generate an 8-digit numeric ID (no preceding zero)
         do {
-            $uniqueId = rand(100000, 999999); // Always 8 digits, first digit 1-9
+            $uniqueId = rand(100000, 999999);                        // Always 8 digits, first digit 1-9
         } while (Farm::where('unique_id', $uniqueId)->exists()); // Check uniqueness
 
         // ✅ Create the Farm record
         $farm = Farm::create([
-            'farm_name' => $request->farm_name,
-            'owner_name' => $request->owner_name,
+            'farm_name'    => $request->farm_name,
+            'owner_name'   => $request->owner_name,
             'phone_number' => $request->phone_number,
-            'address' => $request->address,
-            'unique_id' => $uniqueId,
-            'qr_code' => null, // Will generate later
-            'created_by' => auth()->id(),
-            'remarks' => $request->remarks ?? null,
+            'address'      => $request->address,
+            'unique_id'    => $uniqueId,
+            'qr_code'      => null, // Will generate later
+            'created_by'   => auth()->id(),
+            'remarks'      => $request->remarks ?? null,
         ]);
 
         // ✅ Handle file upload with unique_id prefix (only if a file is provided)
         if (isset($request['photo_url'])) {
-            $file = $request['photo_url']; // ✅ Directly access the file
+            $file      = $request['photo_url']; // ✅ Directly access the file
             $extension = $file->getClientOriginalExtension();
-            $filename = 'photo_' . $uniqueId . '.' . $extension;
+            $filename  = 'photo_' . $uniqueId . '.' . $extension;
             $photoPath = public_path('uploads/farms/'); // Full path
 
             // ✅ Check if folder exists, if not, create it with proper permissions
-            if (!file_exists($photoPath)) {
+            if (! file_exists($photoPath)) {
                 mkdir($photoPath, 0777, true); // 0777 allows full read/write access
             }
 
@@ -115,9 +115,9 @@ class FarmController extends Controller
             if ($count > 0) {
                 // Ensure it's a valid number
                 LivestockCount::create([
-                    'farm_id' => $farm->id,
+                    'farm_id'           => $farm->id,
                     'livestock_type_id' => $livestock_type_id,
-                    'total' => $count,
+                    'total'             => $count,
                 ]);
             }
         }
@@ -166,18 +166,18 @@ class FarmController extends Controller
         // ✅ Validate request
         $request->validate(
             [
-                'farm_name' => 'required|string|max:255',
-                'owner_name' => 'required|string|max:255',
-                'phone_number' => 'required|string|max:11',
-                'address' => 'nullable|string|max:500',
-                'photo_url' => 'nullable|image|mimes:jpg,jpeg,png|max:200',
-                'livestock_counts' => 'array',
+                'farm_name'          => 'required|string|max:255',
+                'owner_name'         => 'required|string|max:255',
+                'phone_number'       => 'required|string|max:11',
+                'address'            => 'nullable|string|max:500',
+                'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200',
+                'livestock_counts'   => 'array',
                 'livestock_counts.*' => 'nullable|integer|min:1',
-                'remarks' => 'nullable|string',
+                'remarks'            => 'nullable|string',
             ],
             [
                 'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
-                'photo_url.max' => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
+                'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
             ],
         );
 
@@ -189,10 +189,10 @@ class FarmController extends Controller
 
         // ✅ Update basic info
         $farm->update([
-            'farm_name' => $request->farm_name,
-            'owner_name' => $request->owner_name,
+            'farm_name'    => $request->farm_name,
+            'owner_name'   => $request->owner_name,
             'phone_number' => $request->phone_number,
-            'address' => $request->address,
+            'address'      => $request->address,
         ]);
 
         if ($request->filled('remarks')) {
@@ -202,12 +202,12 @@ class FarmController extends Controller
 
         // Handle Photo update
         if (isset($request['photo_url'])) {
-            $file = $request['photo_url'];
+            $file      = $request['photo_url'];
             $extension = $file->getClientOriginalExtension();
-            $filename = 'photo_' . $farm->unique_id . '.' . $extension;
+            $filename  = 'photo_' . $farm->unique_id . '.' . $extension;
             $photoPath = public_path('uploads/farms/');
 
-            if (!file_exists($photoPath)) {
+            if (! file_exists($photoPath)) {
                 mkdir($photoPath, 0777, true);
             }
             $file->move($photoPath, $filename);
@@ -217,12 +217,12 @@ class FarmController extends Controller
         // ✅ Update/create/delete livestock counts
         foreach ($livestock_types as $type) {
             $typeId = $type->id;
-            $count = $request->livestock_counts[$typeId] ?? null;
+            $count  = $request->livestock_counts[$typeId] ?? null;
 
             if ($count && $count > 0) {
                 LivestockCount::updateOrCreate(
                     [
-                        'farm_id' => $farm->id,
+                        'farm_id'           => $farm->id,
                         'livestock_type_id' => $typeId,
                     ],
                     [
@@ -253,7 +253,7 @@ class FarmController extends Controller
     {
         $farm = Farm::find($request->farm_id);
 
-        if (!$farm) {
+        if (! $farm) {
             return response()->json(['success' => false, 'message' => 'খামারের তথ্য খুঁজে পাওয়া যায়নি।']);
         }
 
@@ -281,12 +281,12 @@ class FarmController extends Controller
             }
 
             $qrCodeContent = $farm->unique_id;
-            $fileName = 'qr_' . $qrCodeContent . '.svg'; // Use .svg extension
-            $qrPath = public_path('uploads/farm-qr-codes/');
+            $fileName      = 'qr_' . $qrCodeContent . '.svg'; // Use .svg extension
+            $qrPath        = public_path('uploads/farm-qr-codes/');
 
             // Create folder if not exists
-            if (!file_exists($qrPath)) {
-                if (!mkdir($qrPath, 0777, true) && !is_dir($qrPath)) {
+            if (! file_exists($qrPath)) {
+                if (! mkdir($qrPath, 0777, true) && ! is_dir($qrPath)) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created', $qrPath));
                 }
             }
@@ -296,10 +296,10 @@ class FarmController extends Controller
                 ->size(300)
                 ->generate($qrCodeContent, $qrPath . $fileName);
 
-            $farm->status = 'approved';
+            $farm->status      = 'approved';
             $farm->approved_at = now();
             $farm->approved_by = Auth::id();
-            $farm->qr_code = 'uploads/farm-qr-codes/' . $fileName;
+            $farm->qr_code     = 'uploads/farm-qr-codes/' . $fileName;
             $farm->save();
 
             return redirect()->route('farms.index')->with('success', 'খামারটি সফলভাবে অনুমোদিত হয়েছে।');
@@ -317,19 +317,19 @@ class FarmController extends Controller
         // Create a custom temp directory in your storage folder
         $tempDir = storage_path('app/mpdf');
 
-        if (!file_exists($tempDir)) {
+        if (! file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
 
         $pdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'tempDir' => $tempDir,
-            'default_font' => 'solaimanlipi',
+            'mode'             => 'utf-8',
+            'format'           => 'A4',
+            'tempDir'          => $tempDir,
+            'default_font'     => 'solaimanlipi',
             'autoScriptToLang' => true,
-            'autoLangToFont' => true,
-            'margin_header' => 5,
-            'margin_footer' => 5,
+            'autoLangToFont'   => true,
+            'margin_header'    => 5,
+            'margin_footer'    => 5,
         ]);
 
         $html = view('pdf.id-card', compact('farm'))->render();
@@ -345,12 +345,38 @@ class FarmController extends Controller
         $farm = Farm::findOrFail($id);
 
         return response()->json([
-            'farm_name' => $farm->farm_name,
-            'unique_id' => $farm->unique_id,
-            'owner_name' => $farm->owner_name,
+            'farm_name'    => $farm->farm_name,
+            'unique_id'    => $farm->unique_id,
+            'owner_name'   => $farm->owner_name,
             'phone_number' => en2bn($farm->phone_number),
-            'address' => $farm->address,
-            'photo' => asset($farm->photo_url ?? 'assets/img/dummy.png'),
+            'address'      => $farm->address,
+            'photo'        => asset($farm->photo_url ?? 'assets/img/dummy.png'),
         ]);
+    }
+
+    // QR code scanned farm search
+    public function search(Request $request)
+    {
+        $request->validate([
+            'farm_unique_id' => 'required',
+        ]);
+
+        $farm = Farm::withTrashed()->where('unique_id', $request->input('farm_unique_id'))->first();
+
+        if (! $farm) {
+            return response()->json([
+                'error' => 'খামারটি খুঁজে পাওয়া যায়নি।',
+                'type'  => 'warning',
+            ]);
+        }
+
+        if ($farm->trashed()) {
+            return response()->json([
+                'error' => 'এই খামারটি মুছে ফেলা হয়েছে।',
+                'type'  => 'error',
+            ]);
+        }
+
+        return response()->json(['farm' => $farm]);
     }
 }

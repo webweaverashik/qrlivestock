@@ -78,6 +78,8 @@
     <!--begin::Javascript-->
     @include('layouts.partials.scripts')
     <!--end::Javascript-->
+
+    @include('layouts.partials.webcam-qr-scanner')
 </body>
 <!--end::Body-->
 

@@ -11,7 +11,7 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        $prescriptions = Prescription::where('status', 'pending')
+        return $prescriptions = Prescription::where('status', 'pending')
             ->whereHas('serviceRecord', function ($query) {
                 $query->whereNull('deleted_at');
             })
