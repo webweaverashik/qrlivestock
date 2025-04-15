@@ -45,7 +45,7 @@ class ServiceRecord extends Model
 
     public function prescription()
     {
-        return $this->hasOne(Prescription::class);
+        return $this->belongsTo(Prescription::class);
     }
 
     public function createdBy()

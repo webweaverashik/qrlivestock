@@ -173,7 +173,11 @@
 
                                         <span class="menu-badge">
                                             <span class="badge badge-danger badge-circle fw-bold fs-7">
-                                                {{ en2bn(\App\Models\Prescription::where('status', 'pending')->withoutTrashed()->count()) }}
+                                                {{ en2bn(
+                                                    \App\Models\Prescription::where('status', 'pending')->whereHas('serviceRecord', function ($query) {
+                                                            $query->whereNull('deleted_at');
+                                                        })->withoutTrashed()->count(),
+                                                ) }}
                                             </span>
                                         </span>
                                     </span>

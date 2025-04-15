@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Prescription;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
@@ -11,7 +11,14 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        return view('prescriptions.index');
+        $prescriptions = Prescription::where('status', 'pending')
+            ->whereHas('serviceRecord', function ($query) {
+                $query->whereNull('deleted_at');
+            })
+            ->withoutTrashed()
+            ->get();
+
+        return view('prescriptions.index', compact('prescriptions'));
     }
 
     /**
@@ -61,7 +68,7 @@ class PrescriptionController extends Controller
     {
         //
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
@@ -69,6 +76,5 @@ class PrescriptionController extends Controller
     {
         return '<h1>File Downloaded</h1>';
     }
-
 
 }

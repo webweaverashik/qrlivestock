@@ -313,9 +313,10 @@
 
                 <!--begin::Add user-->
                 @if ($farm->is_active == 1 && $farm->status == 'approved')
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_add_record_modal">
-                    <i class="ki-outline ki-plus fs-2"></i>নতুন রেকর্ড</a>
-                <!--end::Add user-->
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#kt_add_record_modal">
+                        <i class="ki-outline ki-plus fs-2"></i>নতুন রেকর্ড</a>
+                    <!--end::Add user-->
                 @endif
             </div>
             <!--end::Toolbar-->
@@ -352,6 +353,7 @@
                             <th class="w-25px">বয়স</th>
                         </tr>
                     </thead>
+
                     <tbody class="text-gray-600 fw-semibold fs-5">
                         @foreach ($farm->serviceRecords as $record)
                             <tr>
@@ -386,16 +388,25 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i
-                                            class="ki-outline ki-eye fs-2x me-2"></i>
-                                    </a>
+                                    @if ($record->prescription && $record->prescription->status == 'approved')
+                                        <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
+                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i
+                                                class="ki-outline ki-eye fs-2x me-2"></i>
+                                        </a>
 
-                                    <a href="{{ $record->prescription_id ?? asset('cards/dummy.pdf') }}"
-                                        class="btn btn-icon text-hover-info" data-bs-toggle="tooltip"
-                                        title="প্রেসক্রিপশন ডাউনলোড করুন"><i
-                                            class="ki-outline ki-file-down fs-2x me-2"></i>
-                                    </a>
+                                        <a href="{{ asset('cards/dummy.pdf') }}" class="btn btn-icon text-hover-info"
+                                            data-bs-toggle="tooltip" title="প্রেসক্রিপশন ডাউনলোড করুন"><i
+                                                class="ki-outline ki-file-down fs-2x"></i>
+                                        </a>
+                                    @elseif ($record->prescription && $record->prescription->status == 'pending')
+                                        <span class="badge badge-warning">পেন্ডিং</span>
+                                        
+                                    @else
+                                        <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
+                                            data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i <i
+                                                class="bi bi-plus-circle fs-2"></i>
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -436,8 +447,8 @@
                     <div class="flex-row-fluid p-lg-5">
                         <!--begin::Step 1-->
                         <div>
-                            <form action="{{ route('records.storeFromShow', $farm->id) }}" class="form d-flex flex-column"
-                                method="POST">
+                            <form action="{{ route('records.storeFromShow', $farm->id) }}"
+                                class="form d-flex flex-column" method="POST">
                                 @csrf
                                 <!--begin::Left column-->
                                 <div class="d-flex flex-column">
