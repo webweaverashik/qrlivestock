@@ -4,6 +4,7 @@ var KTFarmView = function () {
      // Define shared variables
      var table;
      var datatable;
+     let quillInstances = {};
 
      // Private functions
      var initDatatable = function () {
@@ -236,6 +237,89 @@ var KTFarmView = function () {
           });
      };
 
+     // ------------------ kt_add_prescription_form ----------------
+     // Init quill editor
+     const initQuill = () => {
+          const editors = [
+               { selector: '#kt_disease_brief_editor', inputId: 'disease_brief_input' },
+               { selector: '#kt_medication_editor', inputId: 'medication_input' }
+          ];
+
+          editors.forEach(({ selector, inputId }) => {
+               let el = document.querySelector(selector);
+               if (!el) return;
+
+               let quill = new Quill(el, {
+                    modules: {
+                         toolbar: [
+                              [{ header: [1, 2, false] }],
+                              ['bold', 'italic', 'underline'],
+                              [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                              [{ align: [] }],
+                              ['link'],
+                         ]
+                    },
+                    placeholder: 'তথ্যসমূহ লিখুন...',
+                    theme: 'snow'
+               });
+
+               quillInstances[inputId] = quill;
+          });
+     };
+
+     document.querySelector('#kt_add_prescription_form').addEventListener('submit', function (e) {
+          for (let inputId in quillInstances) {
+               let quill = quillInstances[inputId];
+               let html = quill.root.innerHTML;
+               document.getElementById(inputId).value = html;
+          }
+     });
+
+     //Update the value when the modal is opened
+     const addPrescriptionModal = document.getElementById('kt_add_prescription_modal');
+
+     addPrescriptionModal.addEventListener('show.bs.modal', function (event) {
+          // Button that triggered the modal
+          const button = event.relatedTarget;
+
+          // Get the data-service-record-id value
+          const serviceRecordId = button.getAttribute('data-service-record-id');
+
+          // Set it to the hidden input inside the form
+          document.getElementById('service_record_id_input').value = serviceRecordId;
+     });
+
+     // ------------------- kt_view_prescription_modal --------------
+     var viewPrescriptionModalAJAX = function () {
+
+          const viewPrescriptionModal = document.getElementById('kt_view_prescription_modal');
+
+          viewPrescriptionModal.addEventListener('show.bs.modal', function (event) {
+               const button = event.relatedTarget;
+               const prescriptionId = button.getAttribute('data-prescription-id');
+
+               // Optional: show loading spinner or placeholder
+               document.getElementById('kt_disease_brief_data').innerHTML = '<p>লোড হচ্ছে...</p>';
+               document.getElementById('kt_medication_data').innerHTML = '';
+               document.getElementById('kt_additional_notes_data').innerHTML = '';
+
+               // Make AJAX request to fetch prescription
+               fetch(`/prescriptions/${prescriptionId}`)
+                    .then(response => {
+                         if (!response.ok) throw new Error('ডেটা লোড করতে ব্যর্থ হয়েছে।');
+                         return response.json();
+                    })
+                    .then(data => {
+                         document.getElementById('kt_disease_brief_data').innerHTML = data.disease_brief;
+                         document.getElementById('kt_medication_data').innerHTML = data.medication;
+                         document.getElementById('kt_additional_notes_data').innerHTML = data.additional_notes || '<span class="text-muted">কোনো অতিরিক্ত তথ্য নেই।</span>';
+                    })
+                    .catch(error => {
+                         document.getElementById('kt_disease_brief_data').innerHTML = `<p class="text-danger">${error.message}</p>`;
+                    });
+          });
+     };
+
      return {
           // Public functions  
           init: function () {
@@ -251,6 +335,11 @@ var KTFarmView = function () {
                handleToggleActivation();
                handleFarmApproval();
                handleResetButton();
+
+               // Init quill on modal forms
+               initQuill();
+
+               viewPrescriptionModalAJAX();
           }
      }
 }();

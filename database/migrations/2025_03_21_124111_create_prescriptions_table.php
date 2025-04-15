@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->text('diagnosis');
+            $table->text('disease_brief');
             $table->text('medication');
-            $table->text('dosage');
             $table->text('additional_notes')->nullable();
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->foreignId('approved_by')->nullable();

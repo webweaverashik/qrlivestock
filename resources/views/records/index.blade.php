@@ -44,6 +44,36 @@
 
 
 @section('content')
+    @if ($errors->any())
+        <div
+            class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-information fs-2hx text-danger me-4 mb-5 mb-sm-0">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+            </i>
+            <!--end::Icon-->
+
+            <!--begin::Content-->
+            <div class="d-flex flex-column pe-0 pe-sm-10">
+                <h5 class="mb-1 text-danger">নিম্নোক্ত এররগুলো চেক করুন।</h5>
+                @foreach ($errors->all() as $error)
+                    <li class="text-danger">{{ $error }}</li>
+                @endforeach
+            </div>
+            <!--end::Content-->
+
+            <!--begin::Close-->
+            <button type="button"
+                class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                data-bs-dismiss="alert">
+                <i class="ki-outline ki-cross fs-1 text-danger"></i>
+            </button>
+            <!--end::Close-->
+        </div>
+    @endif
+
     <!--begin::Card-->
     <div class="card">
         <!--begin::Card header-->
@@ -194,7 +224,7 @@
                             <td>
                                 @if ($record->prescription && $record->prescription->status == 'approved')
                                     <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i
+                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন" data-prescription-id="{{ $record->prescription_id }}"><i
                                             class="ki-outline ki-eye fs-2x me-2"></i>
                                     </a>
 
@@ -204,10 +234,17 @@
                                     </a>
                                 @elseif ($record->prescription && $record->prescription->status == 'pending')
                                     <span class="badge badge-warning">পেন্ডিং</span>
+                                    <br>
+                                    <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
+                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"
+                                        data-prescription-id="{{ $record->prescription_id }}"><i
+                                            class="ki-outline ki-eye fs-2x me-2"></i>
+                                    </a>
                                 @else
                                     <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                        data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন যুক্ত করুন"><i <i
-                                            class="bi bi-plus-circle fs-2"></i>
+                                        data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন যুক্ত করুন"
+                                        data-service-record-id="{{ $record->id }}">
+                                        <i class="bi bi-plus-circle fs-2"></i>
                                     </a>
                                 @endif
                             </td>
@@ -231,7 +268,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2>Create App</h2>
+                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -241,136 +278,89 @@
                     <!--end::Close-->
                 </div>
                 <!--end::Modal header-->
+
                 <!--begin::Modal body-->
                 <div class="modal-body py-lg-5">
                     <!--begin::Content-->
                     <div class="flex-row-fluid p-lg-5">
                         <!--begin::Step 1-->
                         <div>
-                            <div class="w-100">
-                                <!--begin::Input group-->
-                                <div class="fv-row mb-10">
-                                    <!--begin::Label-->
-                                    <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                        <span class="required">App Name</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip"
-                                            title="Specify your unique app name">
-                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6">
-                                            </i>
-                                        </span>
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid"
-                                        name="name" placeholder="" value="" />
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                        <span class="required">Category</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select your app category">
-                                            <i class="ki-outline ki-information-5 text-gray-500 fs-6">
-                                            </i>
-                                        </span>
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin:Options-->
-                                    <div class="fv-row">
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-primary">
-                                                        <i class="ki-outline ki-compass fs-1 text-primary">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Quick Online Courses</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        is just one SEO</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="1" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-danger">
-                                                        <i class="ki-outline ki-element-11 fs-1 text-danger">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Face to Face Discussions</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        is just one aspect</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="2" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
-                                        <!--begin:Option-->
-                                        <label class="d-flex flex-stack cursor-pointer">
-                                            <!--begin:Label-->
-                                            <span class="d-flex align-items-center me-2">
-                                                <!--begin:Icon-->
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label bg-light-success">
-                                                        <i class="ki-outline ki-timer fs-1 text-success">
-                                                        </i>
-                                                    </span>
-                                                </span>
-                                                <!--end:Icon-->
-                                                <!--begin:Info-->
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bold fs-6">Full Intro Training</span>
-                                                    <span class="fs-7 text-muted">Creating a clear text structure
-                                                        copywriting</span>
-                                                </span>
-                                                <!--end:Info-->
-                                            </span>
-                                            <!--end:Label-->
-                                            <!--begin:Input-->
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="category"
-                                                    value="3" />
-                                            </span>
-                                            <!--end:Input-->
-                                        </label>
-                                        <!--end::Option-->
+                            <form action="{{ route('prescriptions.store') }}" class="form d-flex flex-column"
+                                method="POST" id="kt_add_prescription_form">
+                                @csrf
+                                <!--begin::Left column-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Row-->
+                                    <div class="row">
+                                        <input type="hidden" name="service_record_id" id="service_record_id_input">
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2 required">রোগের বিবরণ
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div id="kt_disease_brief_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="disease_brief" id="disease_brief_input">
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2 required">চিকিৎসাপত্র
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div id="kt_medication_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="medication" id="medication_input">
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">মন্তব্য
+                                                    &nbsp; <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="additional_notes" class="form-control mb-2"
+                                                    placeholder="অন্য কোনো সাজেশন থাকলে লিখুন"
+                                                    value="{{ old('additional_notes') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
                                     </div>
-                                    <!--end:Options-->
+                                    <!--end::Row-->
+
+                                    <div class="d-flex justify-content-end">
+                                        <!--begin::Button-->
+                                        <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_add_record_submit" class="btn btn-primary">
+                                            <span class="indicator-label">সাবমিট করুন</span>
+                                            <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+
                                 </div>
-                                <!--end::Input group-->
-                            </div>
+                                <!--end::Left column-->
+                            </form>
                         </div>
                         <!--end::Step 1-->
                     </div>
@@ -383,6 +373,106 @@
         <!--end::Modal dialog-->
     </div>
     <!--end::Modal - Add Prescription-->
+
+    <!--begin::Modal - View Prescription-->
+    <div class="modal fade" id="kt_view_prescription_modal" tabindex="-1" aria-hidden="true"
+        data-bs-backdrop="static">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-900px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-outline ki-cross fs-1">
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5">
+                    <!--begin::Content-->
+                    <div class="flex-row-fluid p-lg-5">
+                        <!--begin::Step 1-->
+                        <div>
+                            <!--begin::Left column-->
+                            <div class="d-flex flex-column">
+                                <!--begin::Row-->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">রোগের বিবরণ
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <div id="kt_disease_brief_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">চিকিৎসাপত্র
+                                            </label>
+                                            <!--end::Label-->
+
+                                            <!--begin::Input-->
+                                            <div id="kt_medication_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">মন্তব্য
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <div id="kt_additional_notes_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                </div>
+                                <!--end::Row-->
+
+                                <div class="d-flex justify-content-end">
+                                    <!--begin::Button-->
+                                    <button type="submit" class="btn btn-success">
+                                        অনুমোদন করুন
+                                    </button>
+                                    <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <!--end::Left column-->
+                            </form>
+                        </div>
+                        <!--end::Step 1-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Stepper-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - View Prescription-->
 @endsection
 
 

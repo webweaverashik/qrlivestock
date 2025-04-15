@@ -10,9 +10,8 @@ class Prescription extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'diagnosis',
+        'disease_brief',
         'medication',
-        'dosage',
         'additional_notes',
         'status',
         'approved_by',

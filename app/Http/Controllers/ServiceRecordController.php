@@ -19,7 +19,7 @@ class ServiceRecordController extends Controller
             $query->whereNull('deleted_at'); // Exclude soft-deleted farms
         })
             ->withoutTrashed()
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('records.index', compact('serviceRecords'));

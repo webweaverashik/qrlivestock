@@ -390,7 +390,7 @@
                                 <td>
                                     @if ($record->prescription && $record->prescription->status == 'approved')
                                         <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"><i
+                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন" data-prescription-id="{{ $record->prescription_id }}"><i
                                                 class="ki-outline ki-eye fs-2x me-2"></i>
                                         </a>
 
@@ -400,10 +400,16 @@
                                         </a>
                                     @elseif ($record->prescription && $record->prescription->status == 'pending')
                                         <span class="badge badge-warning">পেন্ডিং</span>
-                                        
+                                        <br>
+                                        <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
+                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"
+                                            data-prescription-id="{{ $record->prescription_id }}"><i
+                                                class="ki-outline ki-eye fs-2x me-2"></i>
+                                        </a>
                                     @else
                                         <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                            data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন যুক্ত করুন"><i <i
+                                            data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন যুক্ত করুন"
+                                            data-service-record-id="{{ $record->id }}"><i
                                                 class="bi bi-plus-circle fs-2"></i>
                                         </a>
                                     @endif
@@ -445,7 +451,6 @@
                 <div class="modal-body py-lg-5">
                     <!--begin::Content-->
                     <div class="flex-row-fluid p-lg-5">
-                        <!--begin::Step 1-->
                         <div>
                             <form action="{{ route('records.storeFromShow', $farm->id) }}"
                                 class="form d-flex flex-column" method="POST">
@@ -615,8 +620,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
                                         <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
@@ -634,19 +637,18 @@
                                 <!--end::Left column-->
                             </form>
                         </div>
-                        <!--end::Step 1-->
                     </div>
                     <!--end::Content-->
                 </div>
-                <!--end::Stepper-->
+                <!--end::Modal body-->
             </div>
-            <!--end::Modal body-->
+            <!--end::Modal content-->
         </div>
         <!--end::Modal dialog-->
     </div>
     <!--end::Modal - Add Record-->
 
-    <!--begin::Modal - Add Record-->
+    <!--begin::Modal - Add Prescription-->
     <div class="modal fade" id="kt_add_prescription_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <!--begin::Modal dialog-->
@@ -673,175 +675,64 @@
                     <div class="flex-row-fluid p-lg-5">
                         <!--begin::Step 1-->
                         <div>
-                            <form action="{{ route('records.storeFromShow', $farm->id) }}"
-                                class="form d-flex flex-column" method="POST">
+                            <form action="{{ route('prescriptions.store') }}" class="form d-flex flex-column"
+                                method="POST" id="kt_add_prescription_form">
                                 @csrf
                                 <!--begin::Left column-->
                                 <div class="d-flex flex-column">
 
                                     <!--begin::Row-->
                                     <div class="row">
+                                        <input type="hidden" name="service_record_id" id="service_record_id_input">
+
                                         <div class="col-lg-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-8 fv-row">
-                                                <label class="form-label required fs-4">সেবার ধরণ</label>
-                                                <select name="service_category_id" class="form-select"
-                                                    data-control="select2" data-placeholder="সেবার ধরণ বাছাই করুন"
-                                                    required>
-                                                    <option></option>
-                                                    @foreach ($serviceCategories as $cateogry)
-                                                        <option value="{{ $cateogry->id }}"
-                                                            {{ old('service_category_id') == $cateogry->id ? 'selected' : '' }}>
-                                                            {{ $cateogry->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-8 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label fs-4">প্রজাতির সংখ্যা &nbsp;
-                                                    <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <div class="d-flex gap-3">
-                                                    <input type="number" name="species_number_flock"
-                                                        class="form-control mb-2" placeholder="পাল/ঝাঁক"
-                                                        value="{{ old('species_number_flock') }}" min="1" />
-                                                    <input type="number" name="species_number_infected"
-                                                        class="form-control mb-2" placeholder="আক্রান্ত"
-                                                        value="{{ old('species_number_infected') }}" min="1" />
-                                                    <input type="number" name="species_number_dead"
-                                                        class="form-control mb-2" placeholder="মৃত"
-                                                        value="{{ old('species_number_dead') }}" min="1" />
-                                                </div>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <!--begin::Input group-->
-                                            <div class="mb-8 fv-row">
-                                                <!--begin::Label-->
-                                                <label class="form-label fs-4">প্রজাতির ধরণ &nbsp; <span
-                                                        class="text-muted fs-6">(প্রযোজ্য
-                                                        হলে)</span></label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <div class="d-flex gap-3">
-                                                    <input type="text" name="species_type_species"
-                                                        class="form-control mb-2" placeholder="প্রজাতি"
-                                                        value="{{ old('species_type_species') }}" />
-                                                    <input type="text" name="species_type_breed"
-                                                        class="form-control mb-2" placeholder="জাত"
-                                                        value="{{ old('species_type_breed') }}" />
-
-                                                    <select name="species_type_gender" class="form-select mb-2"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-placeholder="লিঙ্গ বাছাই করুন">
-                                                        <option></option>
-                                                        <option value="male"
-                                                            {{ old('species_type_gender') == 'male' ? 'selected' : '' }}>
-                                                            মর্দা
-                                                        </option>
-                                                        <option value="female"
-                                                            {{ old('species_type_gender') == 'female' ? 'selected' : '' }}>
-                                                            মাদি
-                                                        </option>
-                                                    </select>
-
-                                                    <input type="text" name="species_type_age"
-                                                        class="form-control mb-2" placeholder="বয়স"
-                                                        value="{{ old('species_type_age') }}" />
-                                                </div>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-6">
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-5 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-4 fw-semibold mb-2">রোগের ইতিহাস &nbsp; <span
-                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                <label class="fs-4 fw-semibold mb-2 required">রোগের বিবরণ
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <textarea class="form-control" rows="3" name="history_of_disease" placeholder="এই রোগের পূর্ব বিবরণ লিখুন">{{ old('history_of_disease') }}</textarea>
+                                                <div id="kt_disease_brief_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="disease_brief" id="disease_brief_input">
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
 
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-5 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-4 fw-semibold mb-2">রোগের লক্ষণ &nbsp; <span
-                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                <label class="fs-4 fw-semibold mb-2 required">চিকিৎসাপত্র
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <textarea class="form-control" rows="3" name="symptoms_of_disease" placeholder="রোগের লক্ষণ সমূহ লিখুন">{{ old('symptoms_of_disease') }}</textarea>
+                                                <div id="kt_medication_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="medication" id="medication_input">
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-5 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="fs-4 fw-semibold mb-2">আনুবিক্ষণিক পরীক্ষার ফলাফল
+                                                <label class="fs-4 fw-semibold mb-2">মন্তব্য
                                                     &nbsp; <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="microscopic_result" class="form-control mb-2"
-                                                    placeholder="ফলাফল লিখুন" value="{{ old('microscopic_result') }}" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <!--begin::Input group-->
-                                            <div class="mb-8 fv-row">
-                                                <label class="form-label fs-4">সম্ভাব্য রোগ নির্ণয় &nbsp; <span
-                                                        class="text-muted fs-6">(প্রযোজ্য হলে)</span></label>
-                                                <select name="disease_id" class="form-select" data-control="select2"
-                                                    data-placeholder="রোগ বাছাই করুন">
-                                                    <option></option>
-                                                    @foreach ($diseases as $disease)
-                                                        <option value="{{ $disease->id }}"
-                                                            {{ old('disease_id') == $disease->id ? 'selected' : '' }}>
-                                                            {{ $disease->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <input type="text" name="additional_notes" class="form-control mb-2"
+                                                    placeholder="অন্য কোনো সাজেশন থাকলে লিখুন"
+                                                    value="{{ old('additional_notes') }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
                                     </div>
-
-
+                                    <!--end::Row-->
 
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
@@ -856,6 +747,7 @@
                                         </button>
                                         <!--end::Button-->
                                     </div>
+
                                 </div>
                                 <!--end::Left column-->
                             </form>
@@ -870,7 +762,107 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Add Record-->
+    <!--end::Modal - Add Prescription-->
+
+    <!--begin::Modal - View Prescription-->
+    <div class="modal fade" id="kt_view_prescription_modal" tabindex="-1" aria-hidden="true"
+        data-bs-backdrop="static">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-900px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-outline ki-cross fs-1">
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5">
+                    <!--begin::Content-->
+                    <div class="flex-row-fluid p-lg-5">
+                        <!--begin::Step 1-->
+                        <div>
+                            <!--begin::Left column-->
+                            <div class="d-flex flex-column">
+                                <!--begin::Row-->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">রোগের বিবরণ
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <div id="kt_disease_brief_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">চিকিৎসাপত্র
+                                            </label>
+                                            <!--end::Label-->
+
+                                            <!--begin::Input-->
+                                            <div id="kt_medication_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-5 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="fs-4 fw-semibold mb-2">মন্তব্য
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <div id="kt_additional_notes_data" class="mb-2"></div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                </div>
+                                <!--end::Row-->
+
+                                <div class="d-flex justify-content-end">
+                                    <!--begin::Button-->
+                                    <button type="submit" class="btn btn-success">
+                                        অনুমোদন করুন
+                                    </button>
+                                    <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <!--end::Left column-->
+                            </form>
+                        </div>
+                        <!--end::Step 1-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Stepper-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - View Prescription-->
 
 @endsection
 
