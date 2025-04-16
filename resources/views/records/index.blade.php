@@ -224,7 +224,8 @@
                             <td>
                                 @if ($record->prescription && $record->prescription->status == 'approved')
                                     <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন" data-prescription-id="{{ $record->prescription_id }}"><i
+                                        data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"
+                                        data-prescription-id="{{ $record->prescription_id }}"><i
                                             class="ki-outline ki-eye fs-2x me-2"></i>
                                     </a>
 
@@ -384,7 +385,9 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম</h2>
+                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম
+                        <span id="view_precription_status"></span>
+                    </h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -397,78 +400,54 @@
 
                 <!--begin::Modal body-->
                 <div class="modal-body py-lg-5">
-                    <!--begin::Content-->
-                    <div class="flex-row-fluid p-lg-5">
-                        <!--begin::Step 1-->
-                        <div>
-                            <!--begin::Left column-->
-                            <div class="d-flex flex-column">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <!--begin::Input group-->
-                                        <div class="d-flex flex-column mb-5 fv-row">
-                                            <!--begin::Label-->
-                                            <label class="fs-4 fw-semibold mb-2">রোগের বিবরণ
-                                            </label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <div id="kt_disease_brief_data" class="mb-2"></div>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <!--begin::Input group-->
-                                        <div class="d-flex flex-column mb-5 fv-row">
-                                            <!--begin::Label-->
-                                            <label class="fs-4 fw-semibold mb-2">চিকিৎসাপত্র
-                                            </label>
-                                            <!--end::Label-->
-
-                                            <!--begin::Input-->
-                                            <div id="kt_medication_data" class="mb-2"></div>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <!--begin::Input group-->
-                                        <div class="d-flex flex-column mb-5 fv-row">
-                                            <!--begin::Label-->
-                                            <label class="fs-4 fw-semibold mb-2">মন্তব্য
-                                            </label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <div id="kt_additional_notes_data" class="mb-2"></div>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
-                                </div>
-                                <!--end::Row-->
-
-                                <div class="d-flex justify-content-end">
-                                    <!--begin::Button-->
-                                    <button type="submit" class="btn btn-success">
-                                        অনুমোদন করুন
-                                    </button>
-                                    <!--end::Button-->
-                                </div>
-
-                            </div>
-                            <!--end::Left column-->
-                            </form>
-                        </div>
-                        <!--end::Step 1-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-5 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-4 fw-semibold mb-2">রোগের বিবরণ
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <div id="kt_disease_brief_data" class="mb-2"></div>
+                        <!--end::Input-->
                     </div>
-                    <!--end::Content-->
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-5 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-4 fw-semibold mb-2">চিকিৎসাপত্র
+                        </label>
+                        <!--end::Label-->
+
+                        <!--begin::Input-->
+                        <div id="kt_medication_data" class="mb-2"></div>
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-5 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-4 fw-semibold mb-2">মন্তব্য
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <div id="kt_additional_notes_data" class="mb-2"></div>
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
                 </div>
-                <!--end::Stepper-->
+                <!--end::Modal body-->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">বন্ধ করুন</button>
+
+                    @if (auth()->user()->role == 'admin')
+                        <button type="button" class="btn btn-success" id="prescription_approve_button" data-prescription-id="">অনুমোদন করুন</button>
+                    @endif
+                </div>
             </div>
-            <!--end::Modal body-->
+            <!--end::Modal Content-->
         </div>
         <!--end::Modal dialog-->
     </div>

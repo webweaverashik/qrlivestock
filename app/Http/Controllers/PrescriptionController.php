@@ -80,9 +80,11 @@ class PrescriptionController extends Controller
         $prescription = Prescription::findOrFail($id);
 
         return response()->json([
+            'id'               => $prescription->id,
             'disease_brief'    => $prescription->disease_brief,
             'medication'       => $prescription->medication,
             'additional_notes' => $prescription->additional_notes,
+            'status'           => $prescription->status,
         ]);
     }
 
@@ -116,6 +118,17 @@ class PrescriptionController extends Controller
     public function downloadPrescription(string $id)
     {
         return '<h1>File Downloaded</h1>';
+    }
+
+    // Prescription Approval
+    public function approve(Prescription $prescription)
+    {
+        $prescription->update([
+            'status'      => 'approved',
+            'approved_by' => auth()->id(),
+        ]);
+
+        return response()->json(['message' => 'Prescription approved successfully.']);
     }
 
 }

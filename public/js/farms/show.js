@@ -290,7 +290,7 @@ var KTFarmView = function () {
      });
 
      // ------------------- kt_view_prescription_modal --------------
-     var viewPrescriptionModalAJAX = function () {
+     var handlePrescriptionModalAJAX = function () {
 
           const viewPrescriptionModal = document.getElementById('kt_view_prescription_modal');
 
@@ -310,13 +310,92 @@ var KTFarmView = function () {
                          return response.json();
                     })
                     .then(data => {
+                         const status = data.status; // 'pending' or 'approved'
+
+                         let badgeClass = '';
+                         let badgeText = '';
+
+                         if (status === 'pending') {
+                              badgeClass = 'badge badge-warning';
+                              badgeText = 'পেন্ডিং';
+                              document.getElementById('prescription_approve_button').setAttribute('data-prescription-id', data.id);
+                              document.getElementById('prescription_approve_button').classList.remove('d-none');
+
+                         } else if (status === 'approved') {
+                              badgeClass = 'badge badge-success';
+                              badgeText = 'অনুমোদিত';
+                              document.getElementById('prescription_approve_button').classList.add('d-none');
+
+                         } else {
+                              badgeClass = 'badge badge-info';
+                              badgeText = 'অজানা';
+                         }
+
                          document.getElementById('kt_disease_brief_data').innerHTML = data.disease_brief;
                          document.getElementById('kt_medication_data').innerHTML = data.medication;
                          document.getElementById('kt_additional_notes_data').innerHTML = data.additional_notes || '<span class="text-muted">কোনো অতিরিক্ত তথ্য নেই।</span>';
+                         document.getElementById('view_precription_status').innerHTML =
+                              '<span class="' + badgeClass + '">' + badgeText + '</span>';
                     })
                     .catch(error => {
                          document.getElementById('kt_disease_brief_data').innerHTML = `<p class="text-danger">${error.message}</p>`;
                     });
+          });
+     };
+
+     // ------------------- handlePrescriptionApprovalAJAX --------------
+     var handlePrescriptionApprovalAJAX = function () {
+          const button = document.getElementById('prescription_approve_button');
+
+          if (!button) return;
+
+          button.addEventListener('click', function () {
+               const prescriptionId = this.getAttribute('data-prescription-id');
+
+               if (!prescriptionId) {
+                    toastr.error('প্রেসক্রিপশন আইডি পাওয়া যায়নি!');
+                    return;
+               }
+
+               Swal.fire({
+                    title: 'আপনি কি নিশ্চিত?',
+                    text: 'এই প্রেসক্রিপশনটি অনুমোদন করতে চান?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'হ্যাঁ, অনুমোদন করুন',
+                    cancelButtonText: 'ক্যানসেল',
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#dc3545'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         fetch(`/prescriptions/${prescriptionId}/approve`, {
+                              method: 'POST',
+                              headers: {
+                                   'Content-Type': 'application/json',
+                                   'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                              }
+                         })
+                              .then(response => {
+                                   if (!response.ok) {
+                                        throw new Error('Approval failed');
+                                   }
+                                   return response.json();
+                              })
+                              .then(data => {
+                                   toastr.success('প্রেসক্রিপশন সফলভাবে অনুমোদিত হয়েছে!');
+                                   document.getElementById('view_precription_status').innerHTML =
+                                        '<span class="badge badge-success">অনুমোদিত</span>';
+                                   button.remove(); // Optional: Remove or disable button
+                                   setTimeout(() => {
+                                        location.reload();
+                                   }, 3000); // Delay a bit to let user see the toast
+                              })
+                              .catch(error => {
+                                   toastr.error('অনুমোদন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');
+                                   console.error(error);
+                              });
+                    }
+               });
           });
      };
 
@@ -339,7 +418,8 @@ var KTFarmView = function () {
                // Init quill on modal forms
                initQuill();
 
-               viewPrescriptionModalAJAX();
+               handlePrescriptionModalAJAX();
+               handlePrescriptionApprovalAJAX();
           }
      }
 }();
