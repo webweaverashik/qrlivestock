@@ -229,7 +229,7 @@
                                             class="ki-outline ki-eye fs-2x me-2"></i>
                                     </a>
 
-                                    <a href="{{ asset('cards/dummy.pdf') }}" class="btn btn-icon text-hover-info"
+                                    <a href="{{ route('prescriptions.download', $record->prescription_id) }}" class="btn btn-icon text-hover-info"
                                         data-bs-toggle="tooltip" title="প্রেসক্রিপশন ডাউনলোড করুন"><i
                                             class="ki-outline ki-file-down fs-2x"></i>
                                     </a>
@@ -443,7 +443,12 @@
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">বন্ধ করুন</button>
 
                     @if (auth()->user()->role == 'admin')
-                        <button type="button" class="btn btn-success" id="prescription_approve_button" data-prescription-id="">অনুমোদন করুন</button>
+                        <button type="button" class="btn btn-success" id="prescription_approve_button"
+                            data-prescription-id="">অনুমোদন করুন</button>
+                    @else
+                        {{-- Used to avoid js error for admin approval button --}}
+                        <button type="button" style="display: none !important;"
+                            id="prescription_approve_button">Demo</button>
                     @endif
                 </div>
             </div>

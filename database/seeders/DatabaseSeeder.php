@@ -1,17 +1,16 @@
 <?php
-
 namespace Database\Seeders;
 
-use App\Models\Farm;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
-use App\Models\SMSLog;
 use App\Models\Disease;
-use App\Models\Prescription;
-use App\Models\LivestockType;
-use App\Models\ServiceRecord;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Farm;
 use App\Models\LivestockCount;
+use App\Models\LivestockType;
+use App\Models\Prescription;
 use App\Models\ServiceCategory;
+use App\Models\ServiceRecord;
+use App\Models\SMSLog;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,18 +22,18 @@ class DatabaseSeeder extends Seeder
     {
         // Create one admin user
         User::factory()->create([
-            'name' => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
-            'email' => 'admin@mail.com',
+            'name'     => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
+            'email'    => 'admin@mail.com',
             'password' => bcrypt('password'),
-            'role' => 'admin',
+            'role'     => 'admin',
         ]);
 
         // Create one staff user
         User::factory()->create([
-            'name' => 'এ এম ইউনুস আলী',
-            'email' => 'staff@mail.com',
+            'name'     => 'এ এম ইউনুস আলী',
+            'email'    => 'staff@mail.com',
             'password' => bcrypt('password'),
-            'role' => 'staff',
+            'role'     => 'staff',
         ]);
 
         // Now populate all other tables with 'created_by' = 2 (staff user)
@@ -46,8 +45,21 @@ class DatabaseSeeder extends Seeder
         LivestockCount::factory(10)->create();
         ServiceCategory::factory(20)->create();
         Disease::factory(20)->create();
-        ServiceRecord::factory(20)->create(['created_by' => 2]);
-        Prescription::factory(10)->create(['created_by' => 2, 'approved_by' => 1]);
+
+        ServiceRecord::factory(20)
+            ->create(['created_by' => 2])
+            ->each(function ($serviceRecord) {
+                if (fake()->boolean(50)) { // 50% chance
+                    $prescription = Prescription::factory()->create([
+                        'created_by' => $serviceRecord->created_by,
+                    ]);
+
+                    // Attach the prescription to this service record
+                    $serviceRecord->prescription_id = $prescription->id;
+                    $serviceRecord->save();
+                }
+            });
+            
         SMSLog::factory(10)->create();
     }
 }

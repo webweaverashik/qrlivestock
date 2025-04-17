@@ -831,7 +831,12 @@
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">বন্ধ করুন</button>
 
                     @if (auth()->user()->role == 'admin')
-                        <button type="button" class="btn btn-success" id="prescription_approve_button" data-prescription-id="">অনুমোদন করুন</button>
+                        <button type="button" class="btn btn-success" id="prescription_approve_button"
+                            data-prescription-id="">অনুমোদন করুন</button>
+                    @else
+                        {{-- Used to avoid js error for admin approval button --}}
+                        <button type="button" style="display: none !important;"
+                            id="prescription_approve_button">Demo</button>
                     @endif
                 </div>
             </div>

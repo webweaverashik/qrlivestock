@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('livestock_type_id')->nullable();
+            $table->string('livestock_age')->nullable();
+            $table->string('livestock_weight')->nullable();
             $table->text('disease_brief');
             $table->text('medication');
+            $table->string('livestock_temp')->nullable();
+            $table->string('livestock_pulse')->nullable();
+            $table->string('livestock_rumen_motility')->nullable();
+            $table->string('livestock_respiratory')->nullable();
+            $table->string('livestock_other')->nullable();
             $table->text('additional_notes')->nullable();
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->foreignId('approved_by')->nullable();

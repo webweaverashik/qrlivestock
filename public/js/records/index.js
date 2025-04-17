@@ -194,11 +194,10 @@ var KTFarmsList = function () {
                let quill = new Quill(el, {
                     modules: {
                          toolbar: [
-                              [{ header: [1, 2, false] }],
-                              ['bold', 'italic', 'underline'],
+                              [{ header: [false] }],
+                              ['italic', 'underline', 'strike'],
                               [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
                               [{ align: [] }],
-                              ['link'],
                          ]
                     },
                     placeholder: 'তথ্যসমূহ লিখুন...',
@@ -330,7 +329,7 @@ var KTFarmsList = function () {
                                    button.remove(); // Optional: Remove or disable button
                                    setTimeout(() => {
                                         location.reload();
-                                    }, 3000); // Delay a bit to let user see the toast
+                                    }, 2000); // Delay a bit to let user see the toast
                               })
                               .catch(error => {
                                    toastr.error('অনুমোদন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');

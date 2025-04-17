@@ -34,10 +34,12 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::get('farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
     Route::get('get-farm-details/{id}', [FarmController::class, 'getFarmDetails']);
     Route::post('farms/search', [FarmController::class, 'search'])->name('farms.search');
-
+    
     // Custom routes form prescription
+    Route::post('farms/{id}/approve', [PrescriptionController::class, 'approvePrescription'])->name('prescriptions.approve');
     Route::get('/prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');
     Route::post('/prescriptions/{prescription}/approve', [PrescriptionController::class, 'approve']);
+
 
     // Custom routes for recrords
     Route::post('/records/{id}/storeFromShow', [ServiceRecordController::class, 'storeFromShow'])->name('records.storeFromShow');

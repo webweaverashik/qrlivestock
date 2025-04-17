@@ -5,6 +5,7 @@ use App\Models\Prescription;
 use App\Models\ServiceRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mpdf\Mpdf;
 
 class PrescriptionController extends Controller
 {
@@ -13,7 +14,7 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        return $prescriptions = Prescription::where('status', 'pending')
+        $prescriptions = Prescription::where('status', 'pending')
             ->whereHas('serviceRecord', function ($query) {
                 $query->whereNull('deleted_at');
             })
@@ -28,7 +29,7 @@ class PrescriptionController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -117,7 +118,44 @@ class PrescriptionController extends Controller
      */
     public function downloadPrescription(string $id)
     {
-        return '<h1>File Downloaded</h1>';
+        $prescription = Prescription::findOrFail($id);
+
+        if ($prescription->status == 'pending') {
+            return redirect()->route('prescriptions.index')->with('warning', 'প্রেসক্রিপশনটি অনুমোদনের অপেক্ষায়।');
+        }
+
+        // Create a custom temp directory in your storage folder
+        $tempDir = storage_path('app/mpdf');
+
+        if (! file_exists($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+
+        $pdf = new Mpdf([
+            'mode'             => 'utf-8',
+            'format'           => 'A4-L',
+            'tempDir'          => $tempDir,
+            'default_font'     => 'solaimanlipi',
+            'autoScriptToLang' => true,
+            'autoLangToFont'   => true,
+            'margin_top'       => 0,
+            'margin_bottom'    => 0,
+            'margin_left'      => 0,
+            'margin_right'     => 0,
+            'margin_header'    => 0,
+            'margin_footer'    => 0,
+        ]);
+
+        $pdf->SetWatermarkImage(public_path('assets/img/icon.png'), 0.05, 'F'); // Adjust opacity (0.0 to 1.0)
+        $pdf->showWatermarkImage = true;
+
+        $pdf->SetAutoPageBreak(false); // নতুন পৃষ্ঠা তৈরি হবে না
+
+        $html = view('pdf.prescription-pdf', compact('prescription'))->render();
+
+        $pdf->WriteHTML($html);
+
+        return $pdf->Output('prescription' . '.pdf', 'I'); // I = Inline view, D = Download
     }
 
     // Prescription Approval
