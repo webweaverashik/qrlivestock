@@ -389,24 +389,12 @@
                                 </td>
                                 <td>
                                     @if ($record->prescription && $record->prescription->status == 'approved')
-                                        <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"
-                                            data-prescription-id="{{ $record->prescription_id }}"><i
-                                                class="ki-outline ki-eye fs-2x me-2"></i>
-                                        </a>
-
                                         <a href="{{ route('prescriptions.download', $record->prescription_id) }}"
                                             class="btn btn-icon text-hover-info" data-bs-toggle="tooltip"
                                             title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="ki-outline ki-file-down fs-2x"></i>
                                         </a>
                                     @elseif ($record->prescription && $record->prescription->status == 'pending')
                                         <span class="badge badge-warning">পেন্ডিং</span>
-                                        <br>
-                                        <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
-                                            data-bs-target="#kt_view_prescription_modal" title="প্রেসক্রিপশন দেখুন"
-                                            data-prescription-id="{{ $record->prescription_id }}"><i
-                                                class="ki-outline ki-eye fs-2x me-2"></i>
-                                        </a>
                                     @else
                                         <a href="#" class="btn btn-icon text-hover-info" data-bs-toggle="modal"
                                             data-bs-target="#kt_add_prescription_modal" title="প্রেসক্রিপশন যুক্ত করুন"
@@ -846,88 +834,6 @@
         <!--end::Modal dialog-->
     </div>
     <!--end::Modal - Add Prescription-->
-
-    <!--begin::Modal - View Prescription-->
-    <div class="modal fade" id="kt_view_prescription_modal" tabindex="-1" aria-hidden="true"
-        data-bs-backdrop="static">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-900px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header">
-                    <!--begin::Modal title-->
-                    <h2>সেবা রেজিস্টার এর প্রেসক্রিপশন ফর্ম <span id="view_precription_status"></span></h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-outline ki-cross fs-1">
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-5">
-                    <!--begin::Input group-->
-                    <div class="d-flex flex-column mb-5 fv-row">
-                        <!--begin::Label-->
-                        <label class="fs-4 fw-semibold mb-2">রোগের বিবরণ
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <div id="kt_disease_brief_data" class="mb-2"></div>
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-
-                    <!--begin::Input group-->
-                    <div class="d-flex flex-column mb-5 fv-row">
-                        <!--begin::Label-->
-                        <label class="fs-4 fw-semibold mb-2">চিকিৎসাপত্র
-                        </label>
-                        <!--end::Label-->
-
-                        <!--begin::Input-->
-                        <div id="kt_medication_data" class="mb-2"></div>
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-
-                    <!--begin::Input group-->
-                    <div class="d-flex flex-column mb-5 fv-row">
-                        <!--begin::Label-->
-                        <label class="fs-4 fw-semibold mb-2">মন্তব্য
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <div id="kt_additional_notes_data" class="mb-2"></div>
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-                </div>
-                <!--end::Modal body-->
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">বন্ধ করুন</button>
-
-                    @if (auth()->user()->role == 'admin')
-                        <button type="button" class="btn btn-success" id="prescription_approve_button"
-                            data-prescription-id="">অনুমোদন করুন</button>
-                    @else
-                        {{-- Used to avoid js error for admin approval button --}}
-                        <button type="button" style="display: none !important;"
-                            id="prescription_approve_button">Demo</button>
-                    @endif
-                </div>
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - View Prescription-->
-
 @endsection
 
 

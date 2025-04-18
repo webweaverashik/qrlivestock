@@ -288,60 +288,6 @@ var KTFarmView = function () {
           document.getElementById('service_record_id_input').value = serviceRecordId;
      });
 
-     // ------------------- kt_view_prescription_modal --------------
-     var handlePrescriptionModalAJAX = function () {
-
-          const viewPrescriptionModal = document.getElementById('kt_view_prescription_modal');
-
-          viewPrescriptionModal.addEventListener('show.bs.modal', function (event) {
-               const button = event.relatedTarget;
-               const prescriptionId = button.getAttribute('data-prescription-id');
-
-               // Optional: show loading spinner or placeholder
-               document.getElementById('kt_disease_brief_data').innerHTML = '<p>লোড হচ্ছে...</p>';
-               document.getElementById('kt_medication_data').innerHTML = '';
-               document.getElementById('kt_additional_notes_data').innerHTML = '';
-
-               // Make AJAX request to fetch prescription
-               fetch(`/prescriptions/${prescriptionId}`)
-                    .then(response => {
-                         if (!response.ok) throw new Error('ডেটা লোড করতে ব্যর্থ হয়েছে।');
-                         return response.json();
-                    })
-                    .then(data => {
-                         const status = data.status; // 'pending' or 'approved'
-
-                         let badgeClass = '';
-                         let badgeText = '';
-
-                         if (status === 'pending') {
-                              badgeClass = 'badge badge-warning';
-                              badgeText = 'পেন্ডিং';
-                              document.getElementById('prescription_approve_button').setAttribute('data-prescription-id', data.id);
-                              document.getElementById('prescription_approve_button').classList.remove('d-none');
-
-                         } else if (status === 'approved') {
-                              badgeClass = 'badge badge-success';
-                              badgeText = 'অনুমোদিত';
-                              document.getElementById('prescription_approve_button').classList.add('d-none');
-
-                         } else {
-                              badgeClass = 'badge badge-info';
-                              badgeText = 'অজানা';
-                         }
-
-                         document.getElementById('kt_disease_brief_data').innerHTML = data.disease_brief;
-                         document.getElementById('kt_medication_data').innerHTML = data.medication;
-                         document.getElementById('kt_additional_notes_data').innerHTML = data.additional_notes || '<span class="text-muted">কোনো অতিরিক্ত তথ্য নেই।</span>';
-                         document.getElementById('view_precription_status').innerHTML =
-                              '<span class="' + badgeClass + '">' + badgeText + '</span>';
-                    })
-                    .catch(error => {
-                         document.getElementById('kt_disease_brief_data').innerHTML = `<p class="text-danger">${error.message}</p>`;
-                    });
-          });
-     };
-
      // ------------------- handlePrescriptionApprovalAJAX --------------
      var handlePrescriptionApprovalAJAX = function () {
           const button = document.getElementById('prescription_approve_button');
@@ -417,7 +363,6 @@ var KTFarmView = function () {
                // Init quill on modal forms
                initQuill();
 
-               handlePrescriptionModalAJAX();
                handlePrescriptionApprovalAJAX();
           }
      }
