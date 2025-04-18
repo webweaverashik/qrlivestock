@@ -95,7 +95,35 @@ class SettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validate the request
+        $request->validate([
+            'setting_type' => 'required|in:1,2,3',
+            'setting_name' => 'required|string|max:255',
+        ]);
+
+        // Determine model based on setting_type
+        switch ($request->setting_type) {
+            case 1:
+                $model = LivestockType::findOrFail($id);
+                $message = 'প্রাণির ধরণ সফলভাবে আপডেট করা হয়েছে।';
+                break;
+            case 2:
+                $model = ServiceCategory::findOrFail($id);
+                $message = 'সেবার ধরণ সফলভাবে আপডেট করা হয়েছে।';
+                break;
+            case 3:
+                $model = Disease::findOrFail($id);
+                $message = 'রোগের ধরণ সফলভাবে আপডেট করা হয়েছে।';
+                break;
+            default:
+            return back()->withErrors(['setting_type' => 'অবৈধ ধরণ।']);
+        }
+
+        // Update the setting name
+        $model->name = $request->setting_name;
+        $model->save();
+
+        return redirect()->back()->with('success', $message);
     }
 
     /**

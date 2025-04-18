@@ -106,7 +106,7 @@
                                         @if (auth()->user()->role == 'admin')
                                             <a href="#" title="সংশোধন" data-bs-toggle="modal"
                                                 data-bs-target="#kt_edit_setting_modal"
-                                                data-setting-id="{{ $type->id }}"
+                                                data-setting-id="{{ $type->id }}" data-setting-name="{{ $type->name }}"
                                                 class="btn btn-icon text-hover-primary w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
@@ -176,7 +176,7 @@
                                         @if (auth()->user()->role == 'admin')
                                             <a href="#" title="সংশোধন" data-bs-toggle="modal"
                                                 data-bs-target="#kt_edit_setting_modal"
-                                                data-setting-id="{{ $category->id }}"
+                                                data-setting-id="{{ $category->id }}" data-setting-name="{{ $category->name }}"
                                                 class="btn btn-icon text-hover-success w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
@@ -244,12 +244,11 @@
                                         @if (auth()->user()->role == 'admin')
                                             <a href="#" title="সংশোধন" data-bs-toggle="modal"
                                                 data-bs-target="#kt_edit_setting_modal"
-                                                data-setting-id="{{ $disease->id }}"
+                                                data-setting-id="{{ $disease->id }}" data-setting-name="{{ $disease->name }}"
                                                 class="btn btn-icon text-hover-info w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
                                         @endif
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -263,7 +262,7 @@
         </div>
     </div>
 
-    <!--begin::Modal - Add Prescription-->
+    <!--begin::Modal - Add Setting-->
     <div class="modal fade" id="kt_add_setting_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <!--begin::Modal dialog-->
@@ -313,10 +312,10 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Add Prescription-->
+    <!--end::Modal - Add Setting-->
 
 
-    <!--begin::Modal - Add Prescription-->
+    <!--begin::Modal - Update Seting-->
     <div class="modal fade" id="kt_edit_setting_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <!--begin::Modal dialog-->
@@ -326,7 +325,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2 id="kt_modal_add_setting_title">সেটিংস এড ফর্ম</h2>
+                    <h2 id="kt_modal_edit_setting_title">সেটিংস আপডেট ফর্ম</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -339,22 +338,22 @@
 
                 <!--begin::Modal body-->
                 <div class="modal-body py-lg-5">
-                    <form action="{{ route('settings.update', 2) }}" method="POST" class="form d-flex flex-column"
-                        id="kt_add_setting_form">
+                    <form action="#" method="POST" class="form d-flex flex-column" id="kt_edit_setting_form">
                         @csrf
+                        @method('PUT')
                         <div class="d-flex flex-column">
                             <div class="d-flex flex-column mb-5 fv-row">
-                                <input type="hidden" name="setting_type" id="setting_type_input">
+                                <input type="hidden" name="setting_type" id="edit_setting_type_input">
 
-                                <label class="fs-4 fw-semibold mb-2" id="kt_add_setting_title">ওজন
+                                <label class="fs-4 fw-semibold mb-2" id="kt_edit_setting_title">ওজন
                                 </label>
                                 <input type="text" name="setting_name" class="form-control mb-2"
                                     placeholder="প্রাণির ওজন লিখুন" />
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn" id="kt_add_setting_submit">
-                                    সাবমিট করুন
+                                <button type="submit" class="btn" id="kt_edit_setting_submit">
+                                    আপডেট করুন
                                 </button>
                             </div>
                         </div>
@@ -366,7 +365,7 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Add Prescription-->
+    <!--end::Modal - Update Seting-->
 @endsection
 
 
