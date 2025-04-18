@@ -220,7 +220,7 @@
                         <!--begin:Settings Tracking Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="#" id="settings_link">
+                            <a class="menu-link" href="{{ route('settings.index') }}" id="settings_link">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-setting-2 fs-2"></i>
                                 </span>

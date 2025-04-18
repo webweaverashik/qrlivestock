@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FarmController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ServiceRecordController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,6 +53,9 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     // Route for users
     Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
     Route::resource('users', UserController::class);
+
+    // Route for settings
+    Route::resource('settings', SettingController::class);
 });
 
 // Handle GET /logout for logged-out users (redirect to login)
