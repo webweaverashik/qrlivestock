@@ -252,11 +252,10 @@ var KTFarmView = function () {
                let quill = new Quill(el, {
                     modules: {
                          toolbar: [
-                              [{ header: [1, 2, false] }],
-                              ['bold', 'italic', 'underline'],
+                              [{ header: [false] }],
+                              ['italic', 'underline', 'strike'],
                               [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
                               [{ align: [] }],
-                              ['link'],
                          ]
                     },
                     placeholder: 'তথ্যসমূহ লিখুন...',

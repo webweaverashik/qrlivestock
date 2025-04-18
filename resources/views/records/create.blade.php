@@ -321,7 +321,7 @@
                     <div class="d-flex flex-column align-items-center mb-6">
                         <!--begin::Image-->
                         <div class="d-flex flex-center flex-shrink-0 bg-light rounded-circle w-125px h-125px me-7 mb-4">
-                            <img class="w-100 p-3" src="{{ asset('assets/img/dummy.png') }}" alt="খামার"
+                            <img class="w-100 p-3" src="{{ asset('assets/img/dummy  ') }}" alt="খামার"
                                 id="ajax_photo" />
                         </div>
 

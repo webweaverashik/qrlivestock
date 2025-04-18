@@ -15,7 +15,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         .header-table td {
             vertical-align: top;
             padding: 20px;
@@ -29,7 +29,7 @@
         .rx-table td {
             padding: 20px;
             vertical-align: top;
-            height: 490px;;
+            height: 500px;
         }
 
         .section-title {
@@ -67,7 +67,7 @@
         <tr>
             <td width="50%">
                 <div class="section-title">ডাঃ উজ্জ্বল কুমার কুন্ডু</div>
-                <div>ডিভিএম, এমএস ইন প্যারাসাইটোলজি (বাকৃবি)</div>
+                <div>ডিভিএম, এমএস ইন প্যারাসাইটোলজী (বাকৃবি)</div>
                 <div>বিসিএস (প্রাণিসম্পদ)</div>
                 <div>উপজেলা প্রাণিসম্পদ অফিসার</div>
                 <div>উপজেলা প্রাণিসম্পদ দপ্তর ও ভেটেরিনারি হাসপাতাল</div>
@@ -94,10 +94,12 @@
     <table class="info-table" style="width: 100%; table-layout: fixed;">
         <tr>
             <td style="">
-                মালিকের নাম: {{ $prescription->serviceRecord->farm->owner_name }}, {{ en2bn($prescription->serviceRecord->farm->phone_number) }}
+                মালিকের নাম: {{ $prescription->serviceRecord->farm->owner_name }},
+                {{ en2bn($prescription->serviceRecord->farm->phone_number) }}
             </td>
             <td style="">
-                খামার: {{ $prescription->serviceRecord->farm->farm_name }} ({{ en2bn($prescription->serviceRecord->farm->unique_id) }})
+                খামার: {{ $prescription->serviceRecord->farm->farm_name }}
+                ({{ en2bn($prescription->serviceRecord->farm->unique_id) }})
             </td>
             <td style="">
                 গবাদি প্রাণি: {{ $prescription->livestockType->name }}
@@ -113,7 +115,7 @@
             </td>
         </tr>
     </table>
-    
+
 
     <hr>
 
@@ -125,23 +127,23 @@
                 <div>
                     {!! $prescription->disease_brief !!}
                 </div>
-                <p>Tem:</p>
                 <br>
-                <p>Pulse:</p>
-                <br>
-                <p>Rumen Motility:</p>
-                <br>
-                <p>Respiratory Rate:</p>
-                <br>
-                <p>Other:</p>
-                <br>
-                <p>T/D:</p>
+                <div>Tem: {{ $prescription->livestock_temp }}</div>
+                <div>Pulse: {{ $prescription->livestock_pulse }}</div>
+                <div>Rumen Motility: {{ $prescription->livestock_rumen_motility }}</div>
+                <div>Respiratory Rate: {{ $prescription->livestock_respiratory }}</div>
+                <div>Other: {{ $prescription->livestock_other }}</div>
             </td>
             <td width="2%" style="border-left: 1px solid #999;"></td>
             <td width="63%">
                 <div class="rx-title">Rx</div>
                 {{-- Add prescription items dynamically if needed --}}
-                {!! $prescription->medication !!}
+                {!! ($prescription->medication) !!}
+
+                @if ($prescription->additional_notes)
+                    <br><br>
+                    <div style="background-color: yellow;">{{ $prescription->additional_notes }}</div>
+                @endif
             </td>
         </tr>
     </table>

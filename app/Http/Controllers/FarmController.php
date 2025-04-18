@@ -141,8 +141,10 @@ class FarmController extends Controller
 
         $diseases = Disease::withoutTrashed()->select('id', 'name')->get();
 
+        $livestockTypes = LivestockType::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
+
         // return response()->json($farm);
-        return view('farms.show', compact('farm', 'serviceCategories', 'diseases'));
+        return view('farms.show', compact('farm', 'serviceCategories', 'diseases', 'livestockTypes'));
     }
 
     /**

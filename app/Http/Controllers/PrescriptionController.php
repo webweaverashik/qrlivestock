@@ -19,6 +19,7 @@ class PrescriptionController extends Controller
                 $query->whereNull('deleted_at');
             })
             ->withoutTrashed()
+            ->orderby('created_at', 'desc')
             ->get();
 
         return view('prescriptions.index', compact('prescriptions'));
@@ -37,12 +38,21 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         // Validate request
         $request->validate([
-            'disease_brief'     => 'required|string',
-            'medication'        => 'required|string',
-            'service_record_id' => 'required|integer|exists:service_records,id',
-            'additional_notes'  => 'nullable|string',
+            'service_record_id'        => 'required|integer|exists:service_records,id',
+            'livestock_type_id'        => 'nullable|exists:livestock_types,id',
+            'livestock_age'            => 'nullable|string|max:255',
+            'livestock_weight'         => 'nullable|string|max:255',
+            'disease_brief'            => 'required|string',
+            'medication'               => 'required|string',
+            'livestock_temp'           => 'nullable|string|max:255',
+            'livestock_pulse'          => 'nullable|string|max:255',
+            'livestock_rumen_motility' => 'nullable|string|max:255',
+            'livestock_respiratory'    => 'nullable|string|max:255',
+            'livestock_other'          => 'nullable|string|max:255',
+            'additional_notes'         => 'nullable|string',
         ]);
 
         // Clean text from HTML to ensure it's not just empty tags
@@ -59,10 +69,18 @@ class PrescriptionController extends Controller
 
         // Create the prescription
         $prescription = Prescription::create([
-            'disease_brief'    => $request->disease_brief,
-            'medication'       => $request->medication,
-            'additional_notes' => $request->additional_notes,
-            'created_by'       => Auth::id(),
+            'livestock_type_id'        => $request->livestock_type_id,
+            'livestock_age'            => $request->livestock_age,
+            'livestock_weight'         => $request->livestock_weight,
+            'disease_brief'            => $request->disease_brief,
+            'medication'               => $request->medication,
+            'livestock_temp'           => $request->livestock_temp,
+            'livestock_pulse'          => $request->livestock_pulse,
+            'livestock_rumen_motility' => $request->livestock_rumen_motility,
+            'livestock_respiratory'    => $request->livestock_respiratory,
+            'livestock_other'          => $request->livestock_other,
+            'additional_notes'         => $request->additional_notes,
+            'created_by'               => Auth::id(),
         ]);
 
         // Update the related ServiceRecord with the new prescription_id
@@ -155,7 +173,7 @@ class PrescriptionController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output('prescription' . '.pdf', 'I'); // I = Inline view, D = Download
+        return $pdf->Output('prescription_'. $prescription->serviceRecord->farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
     }
 
     // Prescription Approval

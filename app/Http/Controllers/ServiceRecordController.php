@@ -1,11 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Disease;
 use App\Models\Farm;
-use App\Models\ServiceCategory;
-use App\Models\ServiceRecord;
+use App\Models\Disease;
 use Illuminate\Http\Request;
+use App\Models\LivestockType;
+use App\Models\ServiceRecord;
+use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceRecordController extends Controller
@@ -22,7 +23,9 @@ class ServiceRecordController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('records.index', compact('serviceRecords'));
+        $livestockTypes = LivestockType::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
+
+        return view('records.index', compact('serviceRecords', 'livestockTypes'));
     }
 
     /**

@@ -229,9 +229,9 @@
                                             class="ki-outline ki-eye fs-2x me-2"></i>
                                     </a>
 
-                                    <a href="{{ route('prescriptions.download', $record->prescription_id) }}" class="btn btn-icon text-hover-info"
-                                        data-bs-toggle="tooltip" title="প্রেসক্রিপশন ডাউনলোড করুন"><i
-                                            class="ki-outline ki-file-down fs-2x"></i>
+                                    <a href="{{ route('prescriptions.download', $record->prescription_id) }}"
+                                        class="btn btn-icon text-hover-info" data-bs-toggle="tooltip"
+                                        title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="ki-outline ki-file-down fs-2x"></i>
                                     </a>
                                 @elseif ($record->prescription && $record->prescription->status == 'pending')
                                     <span class="badge badge-warning">পেন্ডিং</span>
@@ -263,7 +263,7 @@
     <div class="modal fade" id="kt_add_prescription_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-900px">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered mw-1000px">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -296,6 +296,56 @@
                                     <div class="row">
                                         <input type="hidden" name="service_record_id" id="service_record_id_input">
 
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <label class="form-label required fs-4">গবাদি প্রাণির ধরণ</label>
+                                                <select name="livestock_type_id" class="form-select"
+                                                    data-control="select2" data-hide-search="true"
+                                                    data-placeholder="ধরণ বাছাই করুন" required>
+                                                    <option></option>
+                                                    @foreach ($livestockTypes as $type)
+                                                        <option value="{{ $type->id }}"
+                                                            {{ old('livestock_type_id') == $type->id ? 'selected' : '' }}>
+                                                            {{ $type->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">বয়স
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="livestock_age" class="form-control mb-2"
+                                                    placeholder="প্রাণির বয়স লিখুন" value="{{ old('livestock_age') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">ওজন
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="livestock_weight" class="form-control mb-2"
+                                                    placeholder="প্রাণির ওজন লিখুন" value="{{ old('livestock_weight') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
                                         <div class="col-lg-12">
                                             <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-5 fv-row">
@@ -306,6 +356,37 @@
                                                 <!--begin::Input-->
                                                 <div id="kt_disease_brief_editor" class="min-h-150px mb-2"></div>
                                                 <input type="hidden" name="disease_brief" id="disease_brief_input">
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label fs-4">ডায়াগনোসিস তথ্য &nbsp;
+                                                    <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div class="d-flex gap-3">
+                                                    <input type="text" name="livestock_temp" class="form-control mb-2"
+                                                        placeholder="Temp" value="{{ old('livestock_temp') }}"
+                                                        min="1" />
+                                                    <input type="text" name="livestock_pulse" class="form-control mb-2"
+                                                        placeholder="Pulse" value="{{ old('livestock_pulse') }}"
+                                                        min="1" />
+                                                    <input type="text" name="livestock_rumen_motility" class="form-control mb-2"
+                                                        placeholder="Rumen Motility" value="{{ old('livestock_rumen_motility') }}"
+                                                        min="1" />
+                                                    <input type="text" name="livestock_respiratory" class="form-control mb-2"
+                                                        placeholder="Respiratory Rate" value="{{ old('livestock_respiratory') }}"
+                                                        min="1" />
+                                                    <input type="text" name="livestock_other" class="form-control mb-2"
+                                                        placeholder="Other" value="{{ old('livestock_other') }}"
+                                                        min="1" />
+                                                </div>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
