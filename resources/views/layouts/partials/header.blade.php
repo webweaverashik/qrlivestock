@@ -895,7 +895,7 @@
 
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="#" class="menu-link px-5">
+                            <a href="{{ route('profile') }}" class="menu-link px-5">
                                 আমার প্রোফাইল
                             </a>
                         </div>
@@ -917,21 +917,13 @@
                         </div>
                         <!--end::Menu item-->
 
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-5">
-                            <a href="#" class="menu-link px-5">
-                                আমার এক্টিভিটি
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
-
                         <!--begin::Menu separator-->
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
 
                         <!--begin::Menu item-->
                         <div class="menu-item px-5 my-1">
-                            <a href="#" class="menu-link px-5">
+                            <a href="{{ route('settings.index') }}" class="menu-link px-5">
                                 সেটিংস
                             </a>
                         </div>

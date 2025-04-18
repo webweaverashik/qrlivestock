@@ -53,9 +53,11 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     // Route for users
     Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
     Route::resource('users', UserController::class);
+    Route::get('profile', [UserController::class, 'profile'])->name('profile');
 
     // Route for settings
     Route::resource('settings', SettingController::class);
+
 });
 
 // Handle GET /logout for logged-out users (redirect to login)
