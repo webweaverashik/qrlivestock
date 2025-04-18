@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Disease;
-use Illuminate\Http\Request;
 use App\Models\LivestockType;
 use App\Models\ServiceCategory;
+use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -18,7 +17,7 @@ class SettingController extends Controller
         if (auth()->user()->role != 'admin') {
             return back()->with('warning', 'এডমিন পেজে আপনার অনুমতি নেই।');
         }
-        
+
         $service_categories = ServiceCategory::withoutTrashed()->orderby('name', 'asc')->get();
 
         $livestock_types = LivestockType::withoutTrashed()->orderby('name', 'asc')->get();
@@ -41,7 +40,38 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'setting_name' => 'required|string|max:255',
+            'setting_type' => 'required|in:1,2,3',
+        ]);
+
+        switch ($request->setting_type) {
+            case 1:
+                LivestockType::create([
+                    'name' => $request->setting_name,
+                ]);
+                $message = 'প্রাণির ধরণ সফলভাবে যুক্ত হয়েছে।';
+                break;
+
+            case 2:
+                ServiceCategory::create([
+                    'name' => $request->setting_name,
+                ]);
+                $message = 'সেবার ধরণ সফলভাবে যুক্ত হয়েছে।';
+                break;
+
+            case 3:
+                Disease::create([
+                    'name' => $request->setting_name,
+                ]);
+                $message = 'রোগের ধরণ সফলভাবে যুক্ত হয়েছে।';
+                break;
+
+            default:
+                return back()->withErrors(['setting_type' => 'অবৈধ ধরণ।']);
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
     /**

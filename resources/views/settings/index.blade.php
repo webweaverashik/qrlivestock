@@ -55,7 +55,7 @@
 
 
     <div class="row">
-        <div class="col-xxl-2 col-lg-3 mb-5">
+        <div class="col-xxl-3 col-lg-3 mb-5">
             <!--begin::Card-->
             <div class="card">
                 <!--begin::Card header-->
@@ -79,7 +79,7 @@
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                             <!--begin::Add user-->
                             <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_category">
+                                data-bs-target="#kt_add_setting_modal" id="addLivestockType">
                                 <i class="ki-outline ki-plus fs-2"></i>নতুন প্রাণি</a>
                             <!--end::Add user-->
                         </div>
@@ -104,9 +104,9 @@
                                     <td>{{ $type->name }}</td>
                                     <td>
                                         @if (auth()->user()->role == 'admin')
-                                            <a href="{{ route('settings.edit', $type->id) }}" title="সংশোধন"
-                                                data-bs-toggle="modal" data-bs-target="#kt_modal_edit_category"
-                                                data-category-id="{{ $type->id }}"
+                                            <a href="#" title="সংশোধন" data-bs-toggle="modal"
+                                                data-bs-target="#kt_edit_setting_modal"
+                                                data-setting-id="{{ $type->id }}"
                                                 class="btn btn-icon text-hover-primary w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
@@ -124,7 +124,7 @@
             <!--end::Card-->
         </div>
 
-        <div class="col-xxl-5 col-lg-5 mb-5">
+        <div class="col-xxl col-lg-5 mb-5">
             <!--begin::Card-->
             <div class="card">
                 <!--begin::Card header-->
@@ -148,7 +148,7 @@
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                             <!--begin::Add user-->
                             <a href="#" class="btn btn-success" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_category">
+                                data-bs-target="#kt_add_setting_modal" id="addServiceCategory">
                                 <i class="ki-outline ki-plus fs-2"></i>নতুন সেবা</a>
                             <!--end::Add user-->
                         </div>
@@ -174,9 +174,9 @@
                                     <td>{{ $category->name }}</td>
                                     <td>
                                         @if (auth()->user()->role == 'admin')
-                                            <a href="{{ route('settings.edit', $category->id) }}" title="সংশোধন"
-                                                data-bs-toggle="modal" data-bs-target="#kt_modal_edit_category"
-                                                data-category-id="{{ $category->id }}"
+                                            <a href="#" title="সংশোধন" data-bs-toggle="modal"
+                                                data-bs-target="#kt_edit_setting_modal"
+                                                data-setting-id="{{ $category->id }}"
                                                 class="btn btn-icon text-hover-success w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
@@ -194,7 +194,7 @@
             <!--end::Card-->
         </div>
 
-        <div class="col-xxl-5 col-lg-4">
+        <div class="col-xxl col-lg-4">
             <!--begin::Card-->
             <div class="card">
                 <!--begin::Card header-->
@@ -217,7 +217,7 @@
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                             <!--begin::Add user-->
                             <a href="#" class="btn btn-info" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_category">
+                                data-bs-target="#kt_add_setting_modal" id="addDisease">
                                 <i class="ki-outline ki-plus fs-2"></i>নতুন রোগ</a>
                             <!--end::Add user-->
                         </div>
@@ -242,9 +242,9 @@
                                     <td>{{ $disease->name }}</td>
                                     <td>
                                         @if (auth()->user()->role == 'admin')
-                                            <a href="{{ route('settings.edit', $disease->id) }}" title="সংশোধন"
-                                                data-bs-toggle="modal" data-bs-target="#kt_modal_edit_category"
-                                                data-category-id="{{ $disease->id }}"
+                                            <a href="#" title="সংশোধন" data-bs-toggle="modal"
+                                                data-bs-target="#kt_edit_setting_modal"
+                                                data-setting-id="{{ $disease->id }}"
                                                 class="btn btn-icon text-hover-info w-30px h-30px me-3">
                                                 <i class="ki-outline ki-pencil fs-2"></i>
                                             </a>
@@ -262,6 +262,111 @@
             <!--end::Card-->
         </div>
     </div>
+
+    <!--begin::Modal - Add Prescription-->
+    <div class="modal fade" id="kt_add_setting_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered mw-500px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 id="kt_modal_add_setting_title">সেটিংস এড ফর্ম</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-outline ki-cross fs-1">
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5">
+                    <form action="{{ route('settings.store') }}" method="POST" class="form d-flex flex-column"
+                        id="kt_add_setting_form">
+                        @csrf
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-column mb-5 fv-row">
+                                <input type="hidden" name="setting_type" id="setting_type_input">
+
+                                <label class="fs-4 fw-semibold mb-2" id="kt_add_setting_title">ওজন
+                                </label>
+                                <input type="text" name="setting_name" class="form-control mb-2"
+                                    placeholder="প্রাণির ওজন লিখুন" />
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn" id="kt_add_setting_submit">
+                                    সাবমিট করুন
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - Add Prescription-->
+
+
+    <!--begin::Modal - Add Prescription-->
+    <div class="modal fade" id="kt_edit_setting_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered mw-500px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 id="kt_modal_add_setting_title">সেটিংস এড ফর্ম</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-outline ki-cross fs-1">
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5">
+                    <form action="{{ route('settings.update', 2) }}" method="POST" class="form d-flex flex-column"
+                        id="kt_add_setting_form">
+                        @csrf
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-column mb-5 fv-row">
+                                <input type="hidden" name="setting_type" id="setting_type_input">
+
+                                <label class="fs-4 fw-semibold mb-2" id="kt_add_setting_title">ওজন
+                                </label>
+                                <input type="text" name="setting_name" class="form-control mb-2"
+                                    placeholder="প্রাণির ওজন লিখুন" />
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn" id="kt_add_setting_submit">
+                                    সাবমিট করুন
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - Add Prescription-->
 @endsection
 
 
