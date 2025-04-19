@@ -38,7 +38,7 @@ var KTRegisteredLivestockCountChart = function () {
                plotOptions: {
                     bar: {
                          horizontal: false,
-                         columnWidth: ['28%'],
+                         columnWidth: ['58%'],
                          borderRadius: 5,
                          dataLabels: {
                               position: "top" // top, center, bottom

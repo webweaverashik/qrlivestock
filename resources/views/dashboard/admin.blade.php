@@ -148,7 +148,7 @@
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">
                         <!--begin::Icon-->
                         <div class="m-0">
-                            <i class="las la-hourglass-half fs-3hx text-gray-600"></i>
+                            <i class="las la-notes-medical fs-3hx text-gray-600"></i>
                         </div>
                         <!--end::Icon-->
                         <!--begin::Section-->
