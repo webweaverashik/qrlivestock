@@ -169,12 +169,18 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('users.edit', $user->id) }}" title="সংশোধন" data-bs-toggle="modal"
-                                    data-bs-target="#kt_modal_edit_user" data-user-id="{{ $user->id }}"
-                                    class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
-                                    <i class="ki-outline ki-pencil fs-2"></i>
-                                </a>
-                                @if ($user->id != auth()->user()->id)
+                                @if ($user->id == auth()->user()->id)
+                                    <a href="{{ route('users.profile') }}" title="আমার প্রোফাইল" data-bs-toggle="tooltip"
+                                        class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                        <i class="ki-outline ki-pencil fs-2"></i>
+                                    </a>
+                                @elseif ($user->id != auth()->user()->id)
+                                    <a href="#" title="সংশোধন" data-bs-toggle="modal"
+                                        data-bs-target="#kt_modal_edit_user" data-user-id="{{ $user->id }}"
+                                        class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                        <i class="ki-outline ki-pencil fs-2"></i>
+                                    </a>
+
                                     <a href="#" title="ডিলিট" data-bs-toggle="tooltip"
                                         class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-user"
                                         data-user-id="{{ $user->id }}">
@@ -614,7 +620,8 @@
 
                             // Profile image preview
                             if (user.photo_url) {
-                                $("#kt_modal_edit_user_avatar").css("background-image", "url(" + user
+                                $("#kt_modal_edit_user_avatar").css("background-image", "url(" +
+                                    user
                                     .photo_url + ")");
                             }
                         } else {

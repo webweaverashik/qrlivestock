@@ -52,8 +52,8 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
 
     // Route for users
     Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
+    Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
     Route::resource('users', UserController::class);
-    Route::get('profile', [UserController::class, 'profile'])->name('profile');
 
     // Route for settings
     Route::resource('settings', SettingController::class);

@@ -178,4 +178,9 @@ class UserController extends Controller
 
         return response()->json(['success' => true, 'message' => 'ইউজার আপডেট করা হয়েছে।']);
     }
+
+    public function profile()
+    {
+        return view('users.profile');
+    }
 }
