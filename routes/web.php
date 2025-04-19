@@ -34,9 +34,9 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::post('farms/search', [FarmController::class, 'search'])->name('farms.search');
     
     // Custom routes form prescription
-    Route::post('farms/{id}/approve', [PrescriptionController::class, 'approvePrescription'])->name('prescriptions.approve');
-    Route::get('/prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');
-    Route::post('/prescriptions/{prescription}/approve', [PrescriptionController::class, 'approve']);
+    Route::post('prescriptions/{id}/approve', [PrescriptionController::class, 'approvePrescription'])->name('prescriptions.approve');
+    Route::get('prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');
+    Route::post('prescriptions/{prescription}/approve', [PrescriptionController::class, 'approve']);
 
 
     // Custom routes for recrords

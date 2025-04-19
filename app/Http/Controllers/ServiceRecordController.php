@@ -17,7 +17,7 @@ class ServiceRecordController extends Controller
     public function index()
     {
         $serviceRecords = ServiceRecord::whereHas('farm', function ($query) {
-            $query->whereNull('deleted_at'); // Exclude soft-deleted farms
+            $query->where('status', 'approved')->whereNull('deleted_at'); // Exclude soft-deleted farms
         })
             ->withoutTrashed()
             ->orderBy('updated_at', 'desc')
