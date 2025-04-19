@@ -43,14 +43,33 @@
 
 
 @section('content')
-
     @if ($errors->any())
-        <div class="alert alert-danger fs-4">
-            <ul>
+        <div
+            class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-information fs-2hx text-danger me-4 mb-5 mb-sm-0">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+            </i>
+            <!--end::Icon-->
+
+            <!--begin::Content-->
+            <div class="d-flex flex-column pe-0 pe-sm-10">
+                <h5 class="mb-1 text-danger">নিম্নোক্ত এররগুলো চেক করুন।</h5>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li class="text-danger">{{ $error }}</li>
                 @endforeach
-            </ul>
+            </div>
+            <!--end::Content-->
+
+            <!--begin::Close-->
+            <button type="button"
+                class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                data-bs-dismiss="alert">
+                <i class="ki-outline ki-cross fs-1 text-danger"></i>
+            </button>
+            <!--end::Close-->
         </div>
     @endif
 
@@ -176,7 +195,7 @@
 
 
     <!--begin::Modal - Add User-->
-    <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <!--begin::Modal content-->
@@ -271,7 +290,7 @@
                                 <label class="required fw-semibold fs-6 mb-2">নাম</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" name="user_name"
+                                <input type="text" name="user_name_add"
                                     class="form-control form-control-solid mb-3 mb-lg-0" placeholder="সম্পূর্ণ নাম লিখুন"
                                     value="{{ old('user_name') }}" required />
                                 <!--end::Input-->
@@ -283,7 +302,7 @@
                                 <label class="required fw-semibold fs-6 mb-2">ইমেইল</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="email" name="user_email"
+                                <input type="email" name="user_email_add"
                                     class="form-control form-control-solid mb-3 mb-lg-0" placeholder="example@domain.com"
                                     value="{{ old('user_email') }}" required />
                                 <!--end::Input-->
@@ -292,7 +311,7 @@
                             <!--begin::Input group-->
                             <div class="mb-5">
                                 <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-5">Role</label>
+                                <label class="required fw-semibold fs-6 mb-5">রোল</label>
                                 <!--end::Label-->
                                 <!--begin::Roles-->
                                 <!--begin::Input row-->
@@ -300,8 +319,9 @@
                                     <!--begin::Radio-->
                                     <div class="form-check form-check-custom form-check-solid">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio"
-                                            value="admin" id="kt_modal_add_role_admin" />
+                                        <input class="form-check-input me-3" name="user_role_add" type="radio"
+                                            value="admin" id="kt_modal_add_role_admin"
+                                            {{ old('user_role', 'staff') == 'admin' ? 'checked' : '' }} />
                                         <!--end::Input-->
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_add_role_admin">
@@ -321,8 +341,9 @@
                                     <!--begin::Radio-->
                                     <div class="form-check form-check-custom form-check-solid">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio"
-                                            value="staff" id="kt_modal_add_role_staff" checked />
+                                        <input class="form-check-input me-3" name="user_role_add" type="radio"
+                                            value="staff" id="kt_modal_add_role_staff"
+                                            {{ old('user_role', 'staff') == 'staff' ? 'checked' : '' }} />
                                         <!--end::Input-->
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_add_role_staff">
@@ -363,7 +384,7 @@
     <!--end::Modal - Add User-->
 
     <!--begin::Modal - Edit User-->
-    <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <!--begin::Modal content-->
@@ -413,7 +434,7 @@
                                 <div class="image-input image-input-empty image-input-outline image-input-placeholder"
                                     data-kt-image-input="true">
                                     <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-125px h-125px"></div>
+                                    <div class="image-input-wrapper w-125px h-125px" id="kt_modal_edit_user_avatar"></div>
                                     <!--end::Preview existing avatar-->
                                     <!--begin::Label-->
                                     <label
@@ -480,7 +501,7 @@
                             <!--begin::Input group-->
                             <div class="mb-5">
                                 <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-5">Role</label>
+                                <label class="required fw-semibold fs-6 mb-5">রোল</label>
                                 <!--end::Label-->
                                 <!--begin::Roles-->
                                 <!--begin::Input row-->
@@ -557,121 +578,15 @@
 @endpush
 
 @push('page-js')
-    <script src="{{ asset('assets/js/custom/apps/user-management/users/list/add.js') }}"></script>{{--  Used for modal close only --}}
-
     <script>
-        $(document).ready(function() {
-            $('#kt_table_users').DataTable();
-        });
+        const routeDeleteUser = "{{ route('users.destroy', ':id') }}";
+        const routeToggleActive = "{{ route('users.toggleActive', ':id') }}";
     </script>
+
+    <script src="{{ asset('js/users/index.js') }}"></script>
 
     <script>
         document.getElementById("users_link").classList.add("active");
-    </script>
-
-    {{-- Toggle active/inactive button --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleInputs = document.querySelectorAll('.toggle-active');
-
-            toggleInputs.forEach(input => {
-                input.addEventListener('change', function() {
-                    const farmId = this.value;
-                    const isActive = this.checked ? 1 : 0;
-                    const row = this.closest('tr'); // Get the parent <tr> element
-
-                    fetch("{{ route('users.toggleActive') }}", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                            },
-                            body: JSON.stringify({
-                                farm_id: farmId,
-                                is_active: isActive
-                            })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                toastr.success(data.message);
-                            } else {
-                                toastr.error(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            toastr.error('Error occurred while toggling farm status');
-                        });
-                });
-            });
-        });
-    </script>
-
-    {{-- Delete button alert modal dialog --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-user');
-
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-
-                    const userId = this.dataset.userId;
-
-                    Swal.fire({
-                        title: 'আপনি কি নিশ্চিত ডিলিট করতে চান?',
-                        text: "ডিলিট করার পর এই ইউজারের তথ্য আর পাওয়া যাবে না।",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'হ্যাঁ, ডিলিট করবো।',
-                        cancelButtonText: 'ক্যানসেল',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            fetch("{{ route('users.destroy', '') }}/" + userId, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        _method: 'DELETE'
-                                    })
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        Swal.fire({
-                                            title: 'সফল!',
-                                            text: 'ইউজার ডিলিট করা হয়েছে।',
-                                            icon: 'success',
-                                            confirmButtonText: 'ঠিক আছে।'
-                                        }).then(() => {
-                                            window.location.reload();
-                                        });
-                                    } else {
-                                        Swal.fire('ব্যর্থ!', 'ইউজার করা যায়নি।',
-                                            'error');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    Swal.fire('ব্যর্থ!',
-                                        'একটি ত্রুটি হয়েছে। অনুগ্রহ করে সাপোর্টে যোগাযোগ করুন।',
-                                        'error');
-                                });
-                        }
-                    });
-                });
-            });
-        });
     </script>
 
     <script>
@@ -699,7 +614,7 @@
 
                             // Profile image preview
                             if (user.photo_url) {
-                                $(".image-input-wrapper").css("background-image", "url(" + user
+                                $("#kt_modal_edit_user_avatar").css("background-image", "url(" + user
                                     .photo_url + ")");
                             }
                         } else {

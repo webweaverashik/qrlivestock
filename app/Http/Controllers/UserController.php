@@ -39,10 +39,12 @@ class UserController extends Controller
 
         // ✅ Validate request
         $request->validate([
-            'user_name'  => 'required|string|max:255',
-            'user_email' => 'required|string|max:50|unique:users,email',
-            'user_role'  => 'required|string|in:admin,staff',
+            'user_name_add'  => 'required|string|max:255',
+            'user_email_add' => 'required|string|max:50|unique:users,email',
+            'user_role_add'  => 'required|string|in:admin,staff',
             'avatar'     => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
+        ], [
+            'user_email.unique' => 'এই ইমেইলটি ইতোমধ্যে সিস্টেমে নিবন্ধিত।',
         ]);
 
         // ✅ Handle file upload with unique_id prefix (only if a file is provided)
@@ -69,7 +71,7 @@ class UserController extends Controller
             'photo_url' => $imageURL, // Stored path
         ]);
 
-        return redirect()->route('users.index')->with('success', 'ইউজারটি সফলভাবে যুক্ত করা হয়েছে।');
+        return redirect()->route('users.index')->with('success', 'ইউজারটি সফলভাবে যুক্ত করা হয়েছে। Password: ulo1234');
     }
 
     /**
@@ -88,7 +90,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (! $user) {
-            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+            return response()->json(['success' => false, 'message' => 'ইউজার পাওয়া যায়নি।'], 404);
         }
 
         return response()->json([
@@ -165,7 +167,7 @@ class UserController extends Controller
      */
     public function toggleActive(Request $request)
     {
-        $user = User::find($request->farm_id);
+        $user = User::find($request->user_id);
 
         if (! $user) {
             return response()->json(['success' => false, 'message' => 'Error. Please, contact support.']);

@@ -878,7 +878,7 @@
                                                 class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">এডমিন</span>
                                         @elseif (auth()->user()->role == 'staff')
                                             <span
-                                                class="badge badge-light-warning fw-bold fs-8 px-2 py-1 ms-2">স্টাফ</span>
+                                                class="badge badge-light-primary fw-bold fs-8 px-2 py-1 ms-2">স্টাফ</span>
                                         @endif
                                     </div>
                                     <a href="#"
