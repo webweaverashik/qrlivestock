@@ -198,7 +198,20 @@ var KTFarmsList = function () {
                               ['italic', 'underline', 'strike'],
                               [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
                               [{ align: [] }],
-                         ]
+                         ],
+                         keyboard: {
+                              bindings: {
+                                   // Disable bold (Ctrl+b)
+                                   bold: {
+                                        key: 'b',
+                                        shortKey: true,
+                                        handler: function () {
+                                             // Do nothing — disables bold shortcut
+                                             return false;
+                                        }
+                                   }
+                              }
+                         }
                     },
                     placeholder: 'তথ্যসমূহ লিখুন...',
                     theme: 'snow'
@@ -275,7 +288,7 @@ var KTFarmsList = function () {
                                    button.remove(); // Optional: Remove or disable button
                                    setTimeout(() => {
                                         location.reload();
-                                    }, 2000); // Delay a bit to let user see the toast
+                                   }, 2000); // Delay a bit to let user see the toast
                               })
                               .catch(error => {
                                    toastr.error('অনুমোদন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');

@@ -114,7 +114,7 @@
                         <th class="w-50px">রোল</th>
                         <th class="w-125px">সর্বশেষ লগিন</th>
                         <th class="w-50px">সক্রিয়/নিষ্ক্রিয়</th>
-                        <th class="w-100px">কার্যক্রম</th>
+                        <th class="w-50px">কার্যক্রম</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold fs-5">
@@ -168,21 +168,21 @@
                                     @endif
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if ($user->id == auth()->user()->id)
                                     <a href="{{ route('users.profile') }}" title="আমার প্রোফাইল" data-bs-toggle="tooltip"
-                                        class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                        class="btn btn-icon text-hover-success w-30px h-30px me-3">
                                         <i class="ki-outline ki-pencil fs-2"></i>
                                     </a>
                                 @elseif ($user->id != auth()->user()->id)
                                     <a href="#" title="সংশোধন" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_edit_user" data-user-id="{{ $user->id }}"
-                                        class="btn btn-icon btn-active-light-warning w-30px h-30px me-3">
+                                        class="btn btn-icon text-hover-primary w-30px h-30px">
                                         <i class="ki-outline ki-pencil fs-2"></i>
                                     </a>
 
                                     <a href="#" title="ডিলিট" data-bs-toggle="tooltip"
-                                        class="btn btn-icon btn-active-light-danger w-30px h-30px me-3 delete-user"
+                                        class="btn btn-icon text-hover-danger w-30px h-30px delete-user"
                                         data-user-id="{{ $user->id }}">
                                         <i class="ki-outline ki-trash fs-2"></i>
                                     </a>
@@ -199,11 +199,10 @@
     </div>
     <!--end::Card-->
 
-
     <!--begin::Modal - Add User-->
     <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered mw-800px">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -230,143 +229,160 @@
                             data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
                             data-kt-scroll-dependencies="#kt_modal_add_user_header"
                             data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="d-block fw-semibold fs-6 mb-5">প্রোফাইল ছবি</label>
-                                <!--end::Label-->
-                                <!--begin::Image placeholder-->
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
-                                    }
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
+                                        <!--begin::Label-->
+                                        <label class="d-block fw-semibold fs-6 mb-5">প্রোফাইল ছবি</label>
+                                        <!--end::Label-->
+                                        <!--begin::Image placeholder-->
+                                        <style>
+                                            .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
+                                            }
 
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
-                                    }
-                                </style>
-                                <!--end::Image placeholder-->
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholder"
-                                    data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-125px h-125px"></div>
-                                    <!--end::Preview existing avatar-->
-                                    <!--begin::Label-->
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                        title="Change avatar">
-                                        <i class="ki-outline ki-pencil fs-7">
-                                        </i>
-                                        <!--begin::Inputs-->
-                                        <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="avatar_remove" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Cancel-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                        title="Cancel avatar">
-                                        <i class="ki-outline ki-cross fs-2">
-                                        </i>
-                                    </span>
-                                    <!--end::Cancel-->
-                                    <!--begin::Remove-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                        title="Remove avatar">
-                                        <i class="ki-outline ki-cross fs-2">
-                                        </i>
-                                    </span>
-                                    <!--end::Remove-->
+                                            [data-bs-theme="dark"] .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                                            }
+                                        </style>
+                                        <!--end::Image placeholder-->
+                                        <!--begin::Image input-->
+                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder"
+                                            data-kt-image-input="true">
+                                            <!--begin::Preview existing avatar-->
+                                            <div class="image-input-wrapper w-125px h-125px"></div>
+                                            <!--end::Preview existing avatar-->
+                                            <!--begin::Label-->
+                                            <label
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                title="Change avatar">
+                                                <i class="ki-outline ki-pencil fs-7">
+                                                </i>
+                                                <!--begin::Inputs-->
+                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                                <input type="hidden" name="avatar_remove" />
+                                                <!--end::Inputs-->
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Cancel-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                title="Cancel avatar">
+                                                <i class="ki-outline ki-cross fs-2">
+                                                </i>
+                                            </span>
+                                            <!--end::Cancel-->
+                                            <!--begin::Remove-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                title="Remove avatar">
+                                                <i class="ki-outline ki-cross fs-2">
+                                                </i>
+                                            </span>
+                                            <!--end::Remove-->
+                                        </div>
+                                        <!--end::Image input-->
+                                        <!--begin::Hint-->
+                                        <div class="form-text">Allowed file types: png, jpg, jpeg. Max 200kB</div>
+                                        <!--end::Hint-->
+                                    </div>
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Image input-->
-                                <!--begin::Hint-->
-                                <div class="form-text">Allowed file types: png, jpg, jpeg. Max 200kB</div>
-                                <!--end::Hint-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-2">নাম</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="user_name_add"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" placeholder="সম্পূর্ণ নাম লিখুন"
-                                    value="{{ old('user_name') }}" required />
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-2">ইমেইল</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="email" name="user_email_add"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" placeholder="example@domain.com"
-                                    value="{{ old('user_email') }}" required />
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="mb-5">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-5">রোল</label>
-                                <!--end::Label-->
-                                <!--begin::Roles-->
-                                <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role_add" type="radio"
-                                            value="admin" id="kt_modal_add_role_admin"
-                                            {{ old('user_role', 'staff') == 'admin' ? 'checked' : '' }} />
-                                        <!--end::Input-->
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
                                         <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_add_role_admin">
-                                            <div class="fw-bold text-gray-800">এডমিন</div>
-                                            <div class="text-gray-600">খামার অনুমোদন ও সংশোধন, প্রেস্ক্রিপশন অনুমোদন ও
-                                                সংশোধন, সিস্টেম সেটিংস
+                                        <label class="required fw-semibold fs-6 mb-2">নাম</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="user_name_add"
+                                            class="form-control form-control-solid mb-3 mb-lg-0"
+                                            placeholder="সম্পূর্ণ নাম লিখুন" value="{{ old('user_name') }}" required />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 mb-2">ইমেইল</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="email" name="user_email_add"
+                                            class="form-control form-control-solid mb-3 mb-lg-0"
+                                            placeholder="example@domain.com" value="{{ old('user_email') }}" required />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="mb-5">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 mb-5">রোল</label>
+                                        <!--end::Label-->
+                                        <!--begin::Roles-->
+                                        <!--begin::Input row-->
+                                        <div class="d-flex fv-row">
+                                            <!--begin::Radio-->
+                                            <div class="form-check form-check-custom form-check-solid">
+                                                <!--begin::Input-->
+                                                <input class="form-check-input me-3" name="user_role_add" type="radio"
+                                                    value="admin" id="kt_modal_add_role_admin"
+                                                    {{ old('user_role', 'staff') == 'admin' ? 'checked' : '' }} />
+                                                <!--end::Input-->
+                                                <!--begin::Label-->
+                                                <label class="form-check-label" for="kt_modal_add_role_admin">
+                                                    <div class="fw-bold text-gray-800">এডমিন</div>
+                                                    <div class="text-gray-600">খামার অনুমোদন ও সংশোধন, প্রেস্ক্রিপশন
+                                                        অনুমোদন ও
+                                                        সংশোধন, সিস্টেম সেটিংস
+                                                    </div>
+                                                </label>
+                                                <!--end::Label-->
                                             </div>
-                                        </label>
-                                        <!--end::Label-->
+                                            <!--end::Radio-->
+                                        </div>
+                                        <!--end::Input row-->
+                                        <div class='separator separator-dashed my-5'></div>
+                                        <!--begin::Input row-->
+                                        <div class="d-flex fv-row">
+                                            <!--begin::Radio-->
+                                            <div class="form-check form-check-custom form-check-solid">
+                                                <!--begin::Input-->
+                                                <input class="form-check-input me-3" name="user_role_add" type="radio"
+                                                    value="staff" id="kt_modal_add_role_staff"
+                                                    {{ old('user_role', 'staff') == 'staff' ? 'checked' : '' }} />
+                                                <!--end::Input-->
+                                                <!--begin::Label-->
+                                                <label class="form-check-label" for="kt_modal_add_role_staff">
+                                                    <div class="fw-bold text-gray-800">স্টাফ</div>
+                                                    <div class="text-gray-600">খামার নিবন্ধন, রেজিস্টার এন্ট্রি,
+                                                        প্রেস্ক্রিপশন
+                                                        এন্ট্রি</div>
+                                                </label>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Radio-->
+                                        </div>
+                                        <!--end::Input row-->
+                                        <!--end::Roles-->
                                     </div>
-                                    <!--end::Radio-->
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Input row-->
-                                <div class='separator separator-dashed my-5'></div>
-                                <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role_add" type="radio"
-                                            value="staff" id="kt_modal_add_role_staff"
-                                            {{ old('user_role', 'staff') == 'staff' ? 'checked' : '' }} />
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_add_role_staff">
-                                            <div class="fw-bold text-gray-800">স্টাফ</div>
-                                            <div class="text-gray-600">খামার নিবন্ধন, রেজিস্টার এন্ট্রি, প্রেস্ক্রিপশন
-                                                এন্ট্রি</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                                <!--end::Roles-->
                             </div>
-                            <!--end::Input group-->
+
                         </div>
                         <!--end::Scroll-->
+
                         <!--begin::Actions-->
                         <div class="text-center pt-10">
                             <button type="reset" class="btn btn-light me-3"
@@ -392,7 +408,7 @@
     <!--begin::Modal - Edit User-->
     <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered mw-800px">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -420,139 +436,167 @@
                             data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
                             data-kt-scroll-dependencies="#kt_modal_edit_user_header"
                             data-kt-scroll-wrappers="#kt_modal_edit_user_scroll" data-kt-scroll-offset="300px">
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="d-block fw-semibold fs-6 mb-5">প্রোফাইল ছবি</label>
-                                <!--end::Label-->
-                                <!--begin::Image placeholder-->
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
-                                    }
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
+                                        <!--begin::Label-->
+                                        <label class="d-block fw-semibold fs-6 mb-5">প্রোফাইল ছবি</label>
+                                        <!--end::Label-->
+                                        <!--begin::Image placeholder-->
+                                        <style>
+                                            .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
+                                            }
 
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
-                                    }
-                                </style>
-                                <!--end::Image placeholder-->
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholder"
-                                    data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-125px h-125px" id="kt_modal_edit_user_avatar"></div>
-                                    <!--end::Preview existing avatar-->
-                                    <!--begin::Label-->
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                        title="Change avatar">
-                                        <i class="ki-outline ki-pencil fs-7">
-                                        </i>
-                                        <!--begin::Inputs-->
-                                        <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="avatar_remove" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Cancel-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                        title="Cancel avatar">
-                                        <i class="ki-outline ki-cross fs-2">
-                                        </i>
-                                    </span>
-                                    <!--end::Cancel-->
-                                    <!--begin::Remove-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                        title="Remove avatar">
-                                        <i class="ki-outline ki-cross fs-2">
-                                        </i>
-                                    </span>
-                                    <!--end::Remove-->
+                                            [data-bs-theme="dark"] .image-input-placeholder {
+                                                background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                                            }
+                                        </style>
+                                        <!--end::Image placeholder-->
+                                        <!--begin::Image input-->
+                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder"
+                                            data-kt-image-input="true">
+                                            <!--begin::Preview existing avatar-->
+                                            <div class="image-input-wrapper w-125px h-125px"
+                                                id="kt_modal_edit_user_avatar"></div>
+                                            <!--end::Preview existing avatar-->
+                                            <!--begin::Label-->
+                                            <label
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                title="Change avatar">
+                                                <i class="ki-outline ki-pencil fs-7">
+                                                </i>
+                                                <!--begin::Inputs-->
+                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                                <input type="hidden" name="avatar_remove" />
+                                                <!--end::Inputs-->
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Cancel-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                title="Cancel avatar">
+                                                <i class="ki-outline ki-cross fs-2">
+                                                </i>
+                                            </span>
+                                            <!--end::Cancel-->
+                                            <!--begin::Remove-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                title="Remove avatar">
+                                                <i class="ki-outline ki-cross fs-2">
+                                                </i>
+                                            </span>
+                                            <!--end::Remove-->
+                                        </div>
+                                        <!--end::Image input-->
+                                        <!--begin::Hint-->
+                                        <div class="form-text">Allowed file types: png, jpg, jpeg. Max 200kB</div>
+                                        <!--end::Hint-->
+                                    </div>
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Image input-->
-                                <!--begin::Hint-->
-                                <div class="form-text">Allowed file types: png, jpg, jpeg. Max 200kB</div>
-                                <!--end::Hint-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-2">নাম</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="user_name"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" placeholder="সম্পূর্ণ নাম লিখুন"
-                                    value="{{ old('user_name') }}" required />
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="fv-row mb-7">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-2">ইমেইল</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="email" name="user_email"
-                                    class="form-control form-control-solid mb-3 mb-lg-0" placeholder="test@gmail.com"
-                                    value="{{ old('user_email') }}" required />
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="mb-5">
-                                <!--begin::Label-->
-                                <label class="required fw-semibold fs-6 mb-5">রোল</label>
-                                <!--end::Label-->
-                                <!--begin::Roles-->
-                                <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio"
-                                            value="admin" id="kt_modal_update_role_admin" />
-                                        <!--end::Input-->
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
                                         <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_admin">
-                                            <div class="fw-bold text-gray-800">এডমিন</div>
-                                            <div class="text-gray-600">খামার অনুমোদন ও সংশোধন, প্রেস্ক্রিপশন অনুমোদন ও
-                                                সংশোধন, সিস্টেম সেটিংস
+                                        <label class="required fw-semibold fs-6 mb-2">ব্যবহারকারির নাম</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="user_name" class="form-control mb-3 mb-lg-0"
+                                            placeholder="সম্পূর্ণ নাম লিখুন" value="{{ old('user_name') }}" required />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-7">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 mb-2">ইমেইল</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="email" name="user_email" class="form-control mb-3 mb-lg-0"
+                                            placeholder="test@gmail.com" value="{{ old('user_email') }}" required />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+
+                                <div class="col-lg-12 fv-row mb-7">
+                                    <label class="fw-semibold fs-6 mb-2">নতুন পাসওয়ার্ড সেট করুন &nbsp; <span
+                                            class="text-muted">(প্রযোজ্য হলে)</span></label>
+
+                                    <div class="input-group">
+                                        <input type="password" name="user_password" id="userPassword"
+                                            class="form-control mb-3 mb-lg-0" placeholder="নতুন পাসওয়ার্ড সেট করুন" />
+                                        <span class="input-group-text" id="togglePassword" style="cursor: pointer;"
+                                            title="পাসওয়ার্ড দেখুন" data-bs-toggle="tooltip">
+                                            <i class="ki-outline ki-eye fs-3"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!--begin::Input group-->
+                                    <div class="mb-5">
+                                        <!--begin::Label-->
+                                        <label class="required fw-semibold fs-6 mb-5">রোল</label>
+                                        <!--end::Label-->
+                                        <!--begin::Roles-->
+                                        <!--begin::Input row-->
+                                        <div class="d-flex fv-row">
+                                            <!--begin::Radio-->
+                                            <div class="form-check form-check-custom form-check-solid">
+                                                <!--begin::Input-->
+                                                <input class="form-check-input me-3" name="user_role" type="radio"
+                                                    value="admin" id="kt_modal_update_role_admin" />
+                                                <!--end::Input-->
+                                                <!--begin::Label-->
+                                                <label class="form-check-label" for="kt_modal_update_role_admin">
+                                                    <div class="fw-bold text-gray-800">এডমিন</div>
+                                                    <div class="text-gray-600">খামার অনুমোদন ও সংশোধন, প্রেস্ক্রিপশন
+                                                        অনুমোদন ও
+                                                        সংশোধন, সিস্টেম সেটিংস
+                                                    </div>
+                                                </label>
+                                                <!--end::Label-->
                                             </div>
-                                        </label>
-                                        <!--end::Label-->
+                                            <!--end::Radio-->
+                                        </div>
+                                        <!--end::Input row-->
+                                        <div class='separator separator-dashed my-5'></div>
+                                        <!--begin::Input row-->
+                                        <div class="d-flex fv-row">
+                                            <!--begin::Radio-->
+                                            <div class="form-check form-check-custom form-check-solid">
+                                                <!--begin::Input-->
+                                                <input class="form-check-input me-3" name="user_role" type="radio"
+                                                    value="staff" id="kt_modal_update_role_staff" />
+                                                <!--end::Input-->
+                                                <!--begin::Label-->
+                                                <label class="form-check-label" for="kt_modal_update_role_staff">
+                                                    <div class="fw-bold text-gray-800">স্টাফ</div>
+                                                    <div class="text-gray-600">খামার নিবন্ধন, রেজিস্টার এন্ট্রি,
+                                                        প্রেস্ক্রিপশন
+                                                        এন্ট্রি</div>
+                                                </label>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Radio-->
+                                        </div>
+                                        <!--end::Input row-->
+                                        <!--end::Roles-->
                                     </div>
-                                    <!--end::Radio-->
+                                    <!--end::Input group-->
                                 </div>
-                                <!--end::Input row-->
-                                <div class='separator separator-dashed my-5'></div>
-                                <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio"
-                                            value="staff" id="kt_modal_update_role_staff" />
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_staff">
-                                            <div class="fw-bold text-gray-800">স্টাফ</div>
-                                            <div class="text-gray-600">খামার নিবন্ধন, রেজিস্টার এন্ট্রি, প্রেস্ক্রিপশন
-                                                এন্ট্রি</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                                <!--end::Roles-->
                             </div>
-                            <!--end::Input group-->
                         </div>
                         <!--end::Scroll-->
                         <!--begin::Actions-->
@@ -595,6 +639,7 @@
         document.getElementById("users_link").classList.add("active");
     </script>
 
+    {{-- AJAX Edit User form script --}}
     <script>
         $(document).ready(function() {
             $(document).on("click", "[data-bs-target='#kt_modal_edit_user']", function() {
@@ -633,6 +678,22 @@
                     },
                 });
             });
+        });
+    </script>
+
+    {{-- Toggle show/hide password --}}
+    <script>
+        const toggle = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('userPassword');
+        const icon = toggle.querySelector('i');
+
+        toggle.addEventListener('click', function() {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+
+            // Optional: toggle eye icon class if you have ki-eye / ki-eye-off
+            icon.classList.toggle('ki-eye');
+            icon.classList.toggle('ki-eye-slash');
         });
     </script>
 @endpush

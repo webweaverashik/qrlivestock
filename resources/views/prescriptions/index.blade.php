@@ -175,10 +175,16 @@
                             <td>{!! $prescription->medication !!}</td>
                             <td>
                                 @if (auth()->user()->role == 'admin')
-                                    <button class="btn btn-icon btn-active-success w-30px h-30px me-3 approve-prescription"
+                                    <button class="btn btn-icon text-hover-info w-30px h-30px" title="সংশোধন করুন"
+                                        data-bs-toggle="modal" data-bs-target="#kt_edit_prescription_modal"
+                                        data-prescription-id="{{ $prescription->id }}" data-update-url="{{ route('prescriptions.update', $prescription->id) }}">
+                                        <i class="ki-outline ki-pencil fs-2"></i>
+                                    </button>
+
+                                    <button class="btn btn-icon text-hover-success w-30px h-30px approve-prescription"
                                         title="অনুমোদন করুন" data-bs-toggle="tooltip"
                                         data-prescription-id="{{ $prescription->id }}">
-                                        <i class="ki-outline ki-double-check fs-2"></i>
+                                        <i class="bi bi-check-circle fs-2"></i>
                                     </button>
                                 @endif
                             </td>
@@ -191,6 +197,203 @@
         <!--end::Card body-->
     </div>
     <!--end::Card-->
+
+    <!--begin::Modal - Add Prescription-->
+    <div class="modal fade" id="kt_edit_prescription_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2>প্রেসক্রিপশন সংশোধন ফর্ম</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-outline ki-cross fs-1">
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5">
+                    <!--begin::Content-->
+                    <div class="flex-row-fluid p-lg-5">
+                        <!--begin::Step 1-->
+                        <div>
+                            <form action="#" class="form d-flex flex-column" id="kt_edit_prescription_form">
+                                @csrf
+                                @method('PUT')
+                                <!--begin::Left column-->
+                                <div class="d-flex flex-column">
+                                    <!--begin::Row-->
+                                    <div class="row">
+                                        <input type="hidden" name="service_record_id" id="service_record_id_input">
+
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <label class="form-label required fs-4">গবাদি প্রাণির ধরণ</label>
+                                                <select name="livestock_type_id" class="form-select"
+                                                    data-control="select2" data-hide-search="true"
+                                                    data-placeholder="ধরণ বাছাই করুন" required>
+                                                    <option></option>
+                                                    @foreach ($livestockTypes as $type)
+                                                        <option value="{{ $type->id }}"
+                                                            {{ old('livestock_type_id') == $type->id ? 'selected' : '' }}>
+                                                            {{ $type->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">বয়স
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="livestock_age" class="form-control mb-2"
+                                                    placeholder="প্রাণির বয়স লিখুন" value="{{ old('livestock_age') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">ওজন
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="livestock_weight" class="form-control mb-2"
+                                                    placeholder="প্রাণির ওজন লিখুন"
+                                                    value="{{ old('livestock_weight') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2 required">রোগের বিবরণ
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div id="kt_disease_brief_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="disease_brief" id="disease_brief_input">
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="mb-8 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="form-label fs-4">ডায়াগনোসিস তথ্য &nbsp;
+                                                    <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div class="d-flex gap-3">
+                                                    <input type="text" name="livestock_temp" class="form-control mb-2"
+                                                        placeholder="Temp" value="{{ old('livestock_temp') }}"
+                                                        min="1" />
+                                                    <input type="text" name="livestock_pulse"
+                                                        class="form-control mb-2" placeholder="Pulse"
+                                                        value="{{ old('livestock_pulse') }}" min="1" />
+                                                    <input type="text" name="livestock_rumen_motility"
+                                                        class="form-control mb-2" placeholder="Rumen Motility"
+                                                        value="{{ old('livestock_rumen_motility') }}" min="1" />
+                                                    <input type="text" name="livestock_respiratory"
+                                                        class="form-control mb-2" placeholder="Respiratory Rate"
+                                                        value="{{ old('livestock_respiratory') }}" min="1" />
+                                                    <input type="text" name="livestock_other"
+                                                        class="form-control mb-2" placeholder="Other"
+                                                        value="{{ old('livestock_other') }}" min="1" />
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2 required">চিকিৎসাপত্র
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <div id="kt_medication_editor" class="min-h-150px mb-2"></div>
+                                                <input type="hidden" name="medication" id="medication_input">
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <!--begin::Input group-->
+                                            <div class="d-flex flex-column mb-5 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="fs-4 fw-semibold mb-2">মন্তব্য
+                                                    &nbsp; <span class="text-muted fs-6">(প্রযোজ্য হলে)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="additional_notes" class="form-control mb-2"
+                                                    placeholder="অন্য কোনো সাজেশন থাকলে লিখুন"
+                                                    value="{{ old('additional_notes') }}" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                    </div>
+                                    <!--end::Row-->
+
+                                    <div class="d-flex justify-content-end">
+                                        <!--begin::Button-->
+                                        <button type="button" class="btn btn-secondary me-5" data-bs-dismiss="modal">বাতিল</button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_add_record_submit" class="btn btn-primary">
+                                            <span class="indicator-label">আপডেট করুন</span>
+                                            <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+
+                                </div>
+                                <!--end::Left column-->
+                            </form>
+                        </div>
+                        <!--end::Step 1-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Stepper-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - Add Prescription-->
 @endsection
 
 

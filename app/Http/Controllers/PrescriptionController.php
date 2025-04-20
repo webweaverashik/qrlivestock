@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\LivestockType;
 use App\Models\Prescription;
 use App\Models\ServiceRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
 
 class PrescriptionController extends Controller
@@ -22,7 +24,9 @@ class PrescriptionController extends Controller
             ->orderby('created_at', 'desc')
             ->get();
 
-        return view('prescriptions.index', compact('prescriptions'));
+        $livestockTypes = LivestockType::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
+
+        return view('prescriptions.index', compact('prescriptions', 'livestockTypes'));
     }
 
     /**
@@ -97,14 +101,7 @@ class PrescriptionController extends Controller
     public function show(string $id)
     {
         $prescription = Prescription::findOrFail($id);
-
-        return response()->json([
-            'id'               => $prescription->id,
-            'disease_brief'    => $prescription->disease_brief,
-            'medication'       => $prescription->medication,
-            'additional_notes' => $prescription->additional_notes,
-            'status'           => $prescription->status,
-        ]);
+        return response()->json($prescription);
     }
 
     /**
@@ -118,9 +115,14 @@ class PrescriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Prescription $prescription)
     {
-        //
+        $prescription->update($request->all());
+
+        return response()->json([
+            'message'      => 'Updated successfully',
+            'prescription' => $prescription,
+        ]);
     }
 
     /**
@@ -173,18 +175,25 @@ class PrescriptionController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output('prescription_'. $prescription->serviceRecord->farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
+        return $pdf->Output('prescription_' . $prescription->serviceRecord->farm->unique_id . '.pdf', 'I'); // I = Inline view, D = Download
     }
 
     // Prescription Approval
-    public function approve(Prescription $prescription)
+    public function approvePrescription(string $id)
     {
-        $prescription->update([
-            'status'      => 'approved',
-            'approved_by' => auth()->id(),
-        ]);
+        try {
+            $prescription = Prescription::findOrFail($id);
 
-        return response()->json(['message' => 'Prescription approved successfully.']);
+            $prescription->update([
+                'status'      => 'approved',
+                'approved_by' => auth()->id(),
+            ]);
+
+            return redirect()->route('records.index')->with('success', 'প্রসক্রিপশনটি সফলভাবে অনুমোদিত হয়েছে।');
+        } catch (\Exception $e) {
+            Log::error('Prescriptions Approval Error: ' . $e->getMessage()); // Debug line
+            return redirect()->route('prescriptons.index')->with('error', 'প্রসক্রিপশনটি অনুমোদন করা যায়নি।');
+        }
     }
 
 }

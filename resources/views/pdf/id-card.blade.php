@@ -27,11 +27,11 @@
         }
 
         .card-container {
+            background-color: #f0f4fa;
             height: 85.6mm;
             width: 54mm;
             border: 1px solid #4f4f4f;
-            /* border-radius: 5px; */
-            padding: 15px;
+            padding: 15px 10px;
             box-sizing: border-box;
             margin: 0 auto 2mm;
             display: block;
@@ -46,6 +46,7 @@
 
         .header {
             font-size: 18px;
+            line-height: 1.2;
             font-weight: bold;
             margin-bottom: 6px;
         }
@@ -93,7 +94,7 @@
     {{-- FRONT SIDE --}}
     <div class="card-container">
         <img src="{{ public_path('assets/img/icon.png') }}" class="logo" alt="logo">
-        <div class="header">উপজেলা প্রাণিসম্পদ অফিস, হরিণাকুণ্ডু, ঝিনাইদহ</div>
+        <div class="header">উপজেলা প্রাণিসম্পদ দপ্তর ও ভেটেরিনারি হাসপাতাল, হরিণাকুণ্ডু, ঝিনাইদহ</div>
 
         <img class="qr" src="{{ public_path($farm->qr_code) }}" alt="QR Code">
 

@@ -256,7 +256,20 @@ var KTFarmView = function () {
                               ['italic', 'underline', 'strike'],
                               [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
                               [{ align: [] }],
-                         ]
+                         ],
+                         keyboard: {
+                              bindings: {
+                                   // Disable bold (Ctrl+b)
+                                   bold: {
+                                        key: 'b',
+                                        shortKey: true,
+                                        handler: function () {
+                                             // Do nothing — disables bold shortcut
+                                             return false;
+                                        }
+                                   }
+                              }
+                         }
                     },
                     placeholder: 'তথ্যসমূহ লিখুন...',
                     theme: 'snow'
