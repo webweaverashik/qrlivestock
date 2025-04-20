@@ -14,6 +14,7 @@ class Farm extends Model
         'farm_name',
         'owner_name',
         'phone_number',
+        'union_id',
         'address',
         'unique_id',
         'status',
@@ -30,6 +31,11 @@ class Farm extends Model
         'approved_at' => 'datetime',
         'is_active' => 'boolean',
     ];
+
+    public function union()
+    {
+        return $this->belongsTo(Union::class);
+    }
 
     public function createdBy()
     {

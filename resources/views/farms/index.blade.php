@@ -54,7 +54,7 @@
                     <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
                     </i>
                     <input type="text" data-kt-farm-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-13" placeholder="খামার অনুসন্ধান করুন" />
+                        class="form-control form-control-solid w-lg-450px ps-13" placeholder="খামার অনুসন্ধান করুন" />
                 </div>
                 <!--end::Search-->
             </div>
@@ -83,7 +83,20 @@
                         <div class="px-7 py-5" data-kt-farm-table-filter="form">
                             <!--begin::Input group-->
                             <div class="mb-10">
-                                <label class="form-label fs-6 fw-semibold">একটিভেশন অবস্থা:</label>
+                                <label class="form-label fs-6 fw-semibold">ইউনিয়ন/পৌরসভা</label>
+                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
+                                    data-placeholder="সিলেক্ট করুন" data-allow-clear="true"
+                                    data-kt-farm-table-filter="two-step" data-hide-search="true">
+                                    <option></option>
+                                    @foreach ($unions as $union)
+                                        <option value="{{ $union->name }}">{{ $union->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <label class="form-label fs-6 fw-semibold">খামার সক্রিয়তার অবস্থা:</label>
                                 <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
                                     data-placeholder="সক্রিয়তা সিলেক্ট করুন" data-allow-clear="true"
                                     data-kt-farm-table-filter="two-step" data-hide-search="true">
@@ -126,29 +139,33 @@
             <table class="table table-hover table-row-dashed align-middle fs-6 gy-5 qrlivestock-table" id="kt_farms_table">
                 <thead>
                     <tr class="fw-bold fs-5 gs-0">
-                        <th class="w-50px text-center">ক্রঃ</th>
+                        <th class="w-50px">ক্রঃ</th>
                         <th class="">খামারের নাম</th>
                         <th class="min-w-125px">খামারির তথ্য</th>
-                        <th class="text-center w-250px">গবাদি প্রাণির তথ্য</th>
-                        <th class="min-w-125px text-center">সর্বশেষ সেবা নিয়েছে</th>
-                        <th class="min-w-125px text-center">অনুমোদনের অবস্থা</th>
+                        <th class="w-250px">গবাদি প্রাণির তথ্য</th>
+                        <th class="min-w-125px">সর্বশেষ সেবা নিয়েছে</th>
+                        <th class="min-w-125px">অনুমোদনের অবস্থা</th>
                         <th class="d-none">সক্রিয়/নিষ্ক্রিয় (filter)</th>
-                        <th class="min-w-125px text-center">সক্রিয়/নিষ্ক্রিয়</th>
+                        <th class="min-w-125px">সক্রিয়/নিষ্ক্রিয়</th>
                         <th class="text-center">কার্ড ডাউনলোড</th>
-                        <th class="min-w-100px text-center">কার্যক্রম</th>
+                        <th class="min-w-100px">কার্যক্রম</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold fs-5">
                     @foreach ($farms as $farm)
                         {{-- <tr @if ($farm->is_active == 0) class="bg-light-warning" @endif> --}}
                         <tr>
-                            <td class="text-center">{{ en2bn($loop->index + 1) }}</td>
+                            <td>{{ en2bn($loop->index + 1) }}</td>
                             <td class="text-start">
                                 <!--begin::Farm details-->
                                 <div class="d-flex flex-column">
                                     <a href="{{ route('farms.show', $farm->id) }}"
                                         class="text-gray-800 text-hover-primary mb-1">{{ $farm->farm_name }}</a>
                                     <span>ID: <strong>{{ $farm->unique_id }}</strong></span>
+                                    <span>
+                                        <i class="las la-map-marker"></i>
+                                        <strong>{{ $farm->union->name }}</strong>
+                                    </span>
                                 </div>
                                 <!--begin::Farm details-->
                             </td>
@@ -168,8 +185,11 @@
                                     <div class="d-flex flex-column">
                                         <a href="{{ route('farms.show', $farm->id) }}"
                                             class="text-gray-800 text-hover-primary mb-1">{{ $farm->owner_name }}</a>
-                                        <span><i class="las la-phone"></i><strong>
-                                                {{ en2bn($farm->phone_number) }}</strong></span>
+                                        <span>
+                                            <i class="las la-phone"></i>
+                                            <strong>{{ en2bn($farm->phone_number) }}</strong>
+                                        </span>
+
                                     </div>
                                     <!--begin::Owner details-->
                                 </div>

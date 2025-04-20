@@ -45,7 +45,6 @@ class DiseaseFactory extends Factory
 
         return [
             'name' => $name,
-            'description' => $this->faker->sentence(),
         ];
     }
 }

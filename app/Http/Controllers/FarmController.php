@@ -6,6 +6,7 @@ use App\Models\Farm;
 use App\Models\LivestockCount;
 use App\Models\LivestockType;
 use App\Models\ServiceCategory;
+use App\Models\Union;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -20,11 +21,11 @@ class FarmController extends Controller
      */
     public function index()
     {
-        $farms = Farm::where('status', 'approved')->withoutTrashed()->orderby('updated_at', 'desc')->get();
+        $farms  = Farm::where('status', 'approved')->withoutTrashed()->orderby('updated_at', 'desc')->get();
+        $unions = Union::all();
 
-        // return response()->json($farms);
         // return count($farms);
-        return view('farms.index', compact('farms'));
+        return view('farms.index', compact('farms', 'unions'));
     }
 
     /**
@@ -43,8 +44,9 @@ class FarmController extends Controller
     public function create()
     {
         $livestock_types = LivestockType::withoutTrashed()->get();
+        $unions          = Union::all();
 
-        return view('farms.create', compact('livestock_types'));
+        return view('farms.create', compact('livestock_types', 'unions'));
     }
 
     /**
@@ -59,7 +61,8 @@ class FarmController extends Controller
             [
                 'farm_name'          => 'required|string|max:255',
                 'owner_name'         => 'required|string|max:255',
-                'phone_number'       => 'required|string|max:11',
+                'phone_number'       => 'required|string|max:11|unique:farms,phone_number',
+                'farm_union_id'      => 'required|exists:unions,id',
                 'address'            => 'nullable|string|max:500',
                 'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
                 'livestock_counts'   => 'array',
@@ -67,8 +70,10 @@ class FarmController extends Controller
                 'remarks'            => 'nullable|string',
             ],
             [
-                'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
-                'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
+                'phone_number.max'    => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
+                'phone_number.unique' => 'এই মোবাইল নং ইতিমধ্যে ব্যবহার করা হয়েছে।',
+                'photo_url.max'       => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
+
             ],
         );
 
@@ -82,6 +87,7 @@ class FarmController extends Controller
             'farm_name'    => $request->farm_name,
             'owner_name'   => $request->owner_name,
             'phone_number' => $request->phone_number,
+            'union_id'     => $request->farm_union_id,
             'address'      => $request->address,
             'unique_id'    => $uniqueId,
             'qr_code'      => null, // Will generate later
@@ -153,11 +159,12 @@ class FarmController extends Controller
     public function edit(Farm $farm)
     {
         $livestock_types = LivestockType::withoutTrashed()->get();
+        $unions          = Union::all();
 
         // Create an associative array: [livestock_type_id => total]
         $livestock_counts = LivestockCount::where('farm_id', $farm->id)->withoutTrashed()->pluck('total', 'livestock_type_id')->toArray();
 
-        return view('farms.edit', compact('farm', 'livestock_types', 'livestock_counts'));
+        return view('farms.edit', compact('farm', 'livestock_types', 'livestock_counts', 'unions'));
     }
 
     /**
@@ -170,7 +177,8 @@ class FarmController extends Controller
             [
                 'farm_name'          => 'required|string|max:255',
                 'owner_name'         => 'required|string|max:255',
-                'phone_number'       => 'required|string|max:11',
+                'phone_number'       => 'required|string|max:11|unique:farms,phone_number,' . $id . ',id',
+                'farm_union_id'      => 'required|exists:unions,id',
                 'address'            => 'nullable|string|max:500',
                 'photo_url'          => 'nullable|image|mimes:jpg,jpeg,png|max:200',
                 'livestock_counts'   => 'array',
@@ -178,8 +186,9 @@ class FarmController extends Controller
                 'remarks'            => 'nullable|string',
             ],
             [
-                'phone_number.max' => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
-                'photo_url.max'    => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
+                'phone_number.max'    => 'মোবাইল নং ১১ ডিজিটের বেশি হওয়া যাবে না।',
+                'phone_number.unique' => 'এই মোবাইল নং ইতিমধ্যে ব্যবহার করা হয়েছে।',
+                'photo_url.max'       => 'ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে হবে।',
             ],
         );
 
@@ -194,6 +203,7 @@ class FarmController extends Controller
             'farm_name'    => $request->farm_name,
             'owner_name'   => $request->owner_name,
             'phone_number' => $request->phone_number,
+            'union_id'     => $request->farm_union_id,
             'address'      => $request->address,
         ]);
 
@@ -338,7 +348,7 @@ class FarmController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output($farm->unique_id . '.pdf', 'I'); // I = Inline view, D = Download
+        return $pdf->Output($farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
     }
 
     // Farm load AJAX for service create form

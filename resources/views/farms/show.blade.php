@@ -109,7 +109,11 @@
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
-                                ঠিকানা: &nbsp;<span class="text-gray-800">{{ $farm->address }}</span>
+                                ইউনিয়ন/পৌরসভা: &nbsp;<span class="text-gray-800">{{ $farm->union->name }}</span>
+                            </div>
+
+                            <div class="d-flex flex-wrap fw-semibold mb-2 fs-5 text-gray-500">
+                                গ্রাম/রাস্তা: &nbsp;<span class="text-gray-800">{{ $farm->address }}</span>
                             </div>
 
                             <div class="d-flex flex-wrap fw-semibold mb-0 fs-5 text-gray-500">
@@ -391,7 +395,7 @@
                                     @if ($record->prescription && $record->prescription->status == 'approved')
                                         <a href="{{ route('prescriptions.download', $record->prescription_id) }}"
                                             class="btn btn-icon text-hover-info" data-bs-toggle="tooltip"
-                                            title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="ki-outline ki-file-down fs-2x"></i>
+                                            title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="bi bi-download fs-2x"></i>
                                         </a>
                                     @elseif ($record->prescription && $record->prescription->status == 'pending')
                                         <span class="badge badge-warning">পেন্ডিং</span>

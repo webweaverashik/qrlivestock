@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
+use App\Models\Union;
 use App\Models\Disease;
 use Illuminate\Http\Request;
 use App\Models\LivestockType;
@@ -24,8 +25,11 @@ class ServiceRecordController extends Controller
             ->get();
 
         $livestockTypes = LivestockType::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
+        $unions = Union::all();
+        $service_categories = ServiceCategory::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
+        $diseases = Disease::withoutTrashed()->select('id', 'name')->orderby('name', 'asc')->get();
 
-        return view('records.index', compact('serviceRecords', 'livestockTypes'));
+        return view('records.index', compact('serviceRecords', 'livestockTypes', 'unions', 'service_categories', 'diseases'));
     }
 
     /**

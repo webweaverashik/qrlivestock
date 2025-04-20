@@ -44,7 +44,6 @@ class ServiceCategoryFactory extends Factory
 
         return [
             'name'        => $name,
-            'description' => $this->faker->sentence(),
         ];
     }
 }

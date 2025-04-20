@@ -20,6 +20,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            UnionSeeder::class,
+        ]);
+
+        
         // Create one admin user
         User::factory()->create([
             'name'     => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
@@ -45,6 +50,7 @@ class DatabaseSeeder extends Seeder
         LivestockCount::factory(10)->create();
         ServiceCategory::factory(20)->create();
         Disease::factory(20)->create();
+        Prescription::factory(20)->create();
 
         ServiceRecord::factory(20)
             ->create(['created_by' => 2])
@@ -59,7 +65,7 @@ class DatabaseSeeder extends Seeder
                     $serviceRecord->save();
                 }
             });
-            
-        SMSLog::factory(10)->create();
+        SMSLog::factory(20)->create();
+
     }
 }

@@ -16,6 +16,11 @@
             border-collapse: collapse;
         }
 
+        .rx-table {
+            width: 95%;
+            border-collapse: collapse;
+        }
+
         .header-table td {
             vertical-align: top;
             padding: 20px;
@@ -105,10 +110,10 @@
                 গবাদি প্রাণি: {{ $prescription->livestockType->name }}
             </td>
             <td style="">
-                বয়স: {{ $prescription->livestock_age }}
+                বয়স: {{ en2bn($prescription->livestock_age) }}
             </td>
             <td style="">
-                ওজন: {{ $prescription->livestock_weight }}
+                ওজন: {{ en2bn($prescription->livestock_weight) }}
             </td>
             <td style="">
                 তারিখ: {{ en2bn($prescription->created_at->format('d/m/Y')) }}
@@ -136,21 +141,32 @@
             </td>
             <td width="2%" style="border-left: 1px solid #999;"></td>
             <td width="63%">
-                <div class="rx-title">Rx</div>
-                {{-- Add prescription items dynamically if needed --}}
-                {!! ($prescription->medication) !!}
+                <div style="position: relative;">
+                    <div class="rx-title">Rx</div>
+                    {{-- Add prescription items dynamically if needed --}}
+                    {!! $prescription->medication !!}
 
-                @if ($prescription->additional_notes)
-                    <br><br>
-                    <div style="background-color: yellow;">{{ $prescription->additional_notes }}</div>
-                @endif
+                    @if ($prescription->additional_notes)
+                        <br><br>
+                        <div style="background-color: yellow;">{{ $prescription->additional_notes }}</div>
+                    @endif
+                    
+                    <div style="position: absolute; right: 10%; bottom: 10%; font-size: 15px; text-align: center">
+                        <img src="{{ public_path('uploads/signature/signature.png') }}" style="width: 60px;">
+                        <div>{{ en2bn($prescription->created_at->format('d/m/Y')) }}</div>
+                        <div>(ডাঃ উজ্জ্বল কুমার কুন্ডু)</div>
+                        <div>উপজেলা প্রাণিসম্পদ অফিসার ও ভেটেরিনারি সার্জন</div>
+                        <div>হরিণাকুন্ডু, ঝিনাইদহ</div>
+                    </div>
+                </div>
+
             </td>
         </tr>
     </table>
 
     <hr>
 
-    <table width="100%" style="font-size: 10pt; text-align: center; margin-top: 10px">
+    <table style="font-size: 10pt; text-align: center; margin-top: 10px">
         <tr>
             <td style="width: 50%;">বিঃদ্রঃ ঔষধ পরিবর্তন নিষেধ।</td>
             <td style="width: 50%;">পুনরায় সাক্ষাতের দিন ব্যবস্থাপত্র অবশ্যই সঙ্গে নিয়ে আসবেন।</td>

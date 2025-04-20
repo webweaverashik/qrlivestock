@@ -37,16 +37,14 @@ var KTPendingFarmsList = function () {
 
      // Farm Approval popup
      var handleFarmApproval = function () {
-          const approveButtons = document.querySelectorAll('.approve-farm');
+          document.addEventListener('click', function (event) {
+               if (event.target.closest('.approve-farm')) {
+                    event.preventDefault();
 
-          approveButtons.forEach(button => {
-               button.addEventListener('click', function (event) {
-                    event.preventDefault(); // Prevent the default action of the link
-
-                    const farmId = this.dataset.farmId; // Get the farm ID
+                    const button = event.target.closest('.approve-farm');
+                    const farmId = button.dataset.farmId;
                     console.log('Farm ID: ', farmId);
 
-                    // Show SweetAlert confirmation
                     Swal.fire({
                          title: 'নিশ্চিত?',
                          text: "আপনি কি নিশ্চিত এই খামার অনুমোদন করতে চান?",
@@ -58,34 +56,30 @@ var KTPendingFarmsList = function () {
                          cancelButtonText: 'ক্যানসেল',
                     }).then((result) => {
                          if (result.isConfirmed) {
-                              // Create a hidden form element dynamically
                               const form = document.createElement('form');
                               form.method = 'POST';
                               form.action = `/farms/${farmId}/approve`;
 
-                              // Add CSRF token input
                               const csrfTokenInput = document.createElement('input');
                               csrfTokenInput.type = 'hidden';
                               csrfTokenInput.name = '_token';
-                              csrfTokenInput.value = document.querySelector(
-                                   'meta[name="csrf-token"]').getAttribute('content');
+                              csrfTokenInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                               form.appendChild(csrfTokenInput);
 
-                              // Add method field for POST (since we are using resource routes)
                               const methodInput = document.createElement('input');
                               methodInput.type = 'hidden';
                               methodInput.name = '_method';
                               methodInput.value = 'POST';
                               form.appendChild(methodInput);
 
-                              // Append the form to the body and submit it
                               document.body.appendChild(form);
                               form.submit();
                          }
                     });
-               });
+               }
           });
      };
+
 
      return {
           // Public functions  

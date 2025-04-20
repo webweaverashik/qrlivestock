@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('farm_name');
             $table->string('owner_name');
-            $table->string('phone_number');
-            $table->text('address');
+            $table->string('phone_number')->unique();
+            $table->foreignId('union_id');
+            $table->string('address')->nullable();
             $table->string('unique_id')->unique();
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->boolean('is_active')->default(true);

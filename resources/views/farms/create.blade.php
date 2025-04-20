@@ -73,12 +73,11 @@
     @endif
 
     <!--begin::Form-->
-    <form action="{{ route('farms.store') }}" class="form d-flex flex-column flex-lg-row" method="POST"
-        enctype="multipart/form-data">
+    <form action="{{ route('farms.store') }}" class="form d-flex flex-column" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-column flex-xl-row">
             <!--begin::Aside column-->
-            <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-xxl-400px mb-7 me-lg-7">
+            <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-xl-400px mb-7 me-lg-7">
                 <!--begin::Thumbnail settings-->
                 <div class="card card-flush py-4 flex-grow-1">
                     <!--begin::Card header-->
@@ -207,11 +206,15 @@
                                 <!--end::Input group-->
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <!--begin::Input group-->
                                 <div class="mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="required form-label fs-4">মোবাইল নং</label>
+                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                        title="এই মোবাইল নাম্বারটি ইতোমধ্যে নিবন্ধিত থাকলে অনুগ্রহ করে অন্য নাম্বার ব্যবহার করুন।">
+                                        <i class="ki-outline ki-information fs-7"></i>
+                                    </span>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <input type="text" name="phone_number" class="form-control mb-2" id="phone_number"
@@ -225,23 +228,37 @@
                                 <!--end::Input group-->
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
+                                <!--begin::Input group-->
+                                <div class="mb-8 fv-row">
+                                    <label class="form-label required fs-4">ইউনিয়ন/পৌরসভা</label>
+                                    <select name="farm_union_id" class="form-select" data-control="select2"
+                                        data-placeholder="ইউনিয়ন বাছাই করুন" required>
+                                        <option></option>
+                                        @foreach ($unions as $union)
+                                            <option value="{{ $union->id }}"
+                                                {{ old('farm_union_id') == $union->id ? 'selected' : '' }}>
+                                                {{ $union->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+
+                            <div class="col-lg-4">
                                 <!--begin::Input group-->
                                 <div class="fv-row">
                                     <!--begin::Label-->
-                                    <label class="form-label fs-4 required">খামারের ঠিকানা</label>
-                                    <span class="ms-1" data-bs-toggle="tooltip"
-                                        title="খামারের পরিপূর্ণ ঠিকানা এন্ট্রি দিন">
+                                    <label class="form-label fs-4">গ্রাম/রাস্তা</label>
+                                    <span class="ms-1" data-bs-toggle="tooltip" title="প্রযোজ্য ক্ষেত্রে তথ্য দিন">
                                         <i class="ki-outline ki-information fs-7"></i>
                                     </span>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <input type="text" name="address" class="form-control mb-2"
-                                        placeholder="যেমন: রাস্তা, গ্রাম, ইউনিয়ন, উপজেলা, জেলা"
-                                        value="{{ old('address') }}" required />
-                                    @error('address')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                        placeholder="গ্রাম বা রাস্তার তথ্য দিন" value="{{ old('address') }}" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
@@ -259,8 +276,7 @@
                             </span>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" name="remarks" class="form-control mb-2"
-                                placeholder="মন্তব্য লিখুন"
+                            <input type="text" name="remarks" class="form-control mb-2" placeholder="মন্তব্য লিখুন"
                                 value="{{ old('remarks') }}" />
                             @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -274,62 +290,61 @@
                 <!--end::খামারের তথ্য-->
             </div>
             <!--end::Right column-->
-
-            <!--begin::Bottom Row-->
-            <div class="d-flex flex-column w-100 mb-7">
-                <!--begin::গবাদি প্রাণির তথ্য-->
-                <div class="card card-flush py-4 mb-7">
-                    <!--begin::Card header-->
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h2 class="required">পশুপাখির বিবরণ</h2>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Card body-->
-                    <div class="card-body pt-0">
-                        <!--begin::Input group-->
-                        <div class="row">
-                            @foreach ($livestock_types as $livestock_type)
-                                <div class="col-4 col-xl-3 mb-3">
-                                    <!--begin::Label-->
-                                    <label class="form-label fs-4"
-                                        for="livestock_counts[{{ $livestock_type->id }}]">{{ $livestock_type->name }}
-                                        (সংখ্যা)
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input type="number" name="livestock_counts[{{ $livestock_type->id }}]"
-                                        class="form-control mb-2"
-                                        placeholder="{{ $livestock_type->name }} এর সংখ্যা লিখুন"
-                                        id="livestock_counts[{{ $livestock_type->id }}]"
-                                        value="{{ old('livestock_counts.' . $livestock_type->id) }}" min="1"
-                                        step="1" />
-                                    <!--end::Input-->
-                                </div>
-                            @endforeach
-                        </div>
-                        <!--end::Input group-->
-                    </div>
-                    <!--end::Card header-->
-                </div>
-                <!--end::গবাদি প্রাণির তথ্য-->
-
-                <div class="d-flex justify-content-end">
-                    <!--begin::Button-->
-                    <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
-                    <!--end::Button-->
-                    <!--begin::Button-->
-                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-                        <span class="indicator-label">সাবমিট</span>
-                        <span class="indicator-progress">Please wait...
-                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                    </button>
-                    <!--end::Button-->
-                </div>
-            </div>
-            <!--end::Bottom Row-->
         </div>
+
+        <!--begin::Bottom Row-->
+        <div class="d-flex flex-column w-100 mb-7">
+            <!--begin::গবাদি প্রাণির তথ্য-->
+            <div class="card card-flush py-4 mb-7">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2 class="required">পশুপাখির বিবরণ</h2>
+                    </div>
+                </div>
+                <!--end::Card header-->
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <!--begin::Input group-->
+                    <div class="row">
+                        @foreach ($livestock_types as $livestock_type)
+                            <div class="col-4 col-xl-3 mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fs-4"
+                                    for="livestock_counts[{{ $livestock_type->id }}]">{{ $livestock_type->name }}
+                                    (সংখ্যা)
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="number" name="livestock_counts[{{ $livestock_type->id }}]"
+                                    class="form-control mb-2" placeholder="{{ $livestock_type->name }} এর সংখ্যা লিখুন"
+                                    id="livestock_counts[{{ $livestock_type->id }}]"
+                                    value="{{ old('livestock_counts.' . $livestock_type->id) }}" min="1"
+                                    step="1" />
+                                <!--end::Input-->
+                            </div>
+                        @endforeach
+                    </div>
+                    <!--end::Input group-->
+                </div>
+                <!--end::Card header-->
+            </div>
+            <!--end::গবাদি প্রাণির তথ্য-->
+
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <button type="reset" class="btn btn-secondary me-5">রিসেট</button>
+                <!--end::Button-->
+                <!--begin::Button-->
+                <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                    <span class="indicator-label">সাবমিট</span>
+                    <span class="indicator-progress">Please wait...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                </button>
+                <!--end::Button-->
+            </div>
+        </div>
+        <!--end::Bottom Row-->
     </form>
     <!--end::Form-->
 @endsection
@@ -344,5 +359,18 @@
         document.getElementById("farm_registration_link").classList.add("active");
     </script>
 
-    {{-- Form Validation --}}
+    {{-- Form Reset - Select2 --}}
+    <script>
+        $(document).ready(function() {
+            // Reset select2 fields on form reset
+            $('form').on('reset', function() {
+                // Slight delay to allow form reset to complete
+                setTimeout(function() {
+                    $('select[data-control="select2"]').each(function() {
+                        $(this).val('').trigger('change'); // or null based on your use-case
+                    });
+                }, 50);
+            });
+        });
+    </script>
 @endpush

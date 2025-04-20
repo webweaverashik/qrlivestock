@@ -2,8 +2,9 @@
 namespace Database\Factories;
 
 use App\Models\Farm;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Union;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Farm>
@@ -47,6 +48,7 @@ class FarmFactory extends Factory
             'farm_name'    => Arr::random(self::$farmNames),
             'owner_name'   => Arr::random(self::$ownerNames),
             'phone_number' => '01' . $this->faker->numberBetween(100000000, 999999999),
+            'union_id'     => Union::inRandomOrder()->value('id'),  
             'address'      => $this->faker->address(),
             'unique_id'    => function () {
                 do {

@@ -39,55 +39,49 @@ var KTPendingPrescriptionsList = function () {
      // Farm Approval popup
      // ------------------- handlePrescriptionApprovalAJAX --------------
      var handlePrescriptionApprovalAJAX = function () {
-          const approveButtons = document.querySelectorAll('.approve-prescription');
+          document.addEventListener('click', function (event) {
+               const button = event.target.closest('.approve-prescription');
+               if (!button) return;
 
-          approveButtons.forEach(button => {
-               button.addEventListener('click', function (event) {
-                    event.preventDefault(); // Prevent the default action of the link
+               event.preventDefault();
 
-                    const prescriptionId = this.getAttribute('data-prescription-id'); // Get the farm ID
-                    console.log('Prescription ID: ', prescriptionId);
+               const prescriptionId = button.getAttribute('data-prescription-id');
+               console.log('Prescription ID: ', prescriptionId);
 
-                    // Show SweetAlert confirmation
-                    Swal.fire({
-                         title: 'নিশ্চিত?',
-                         text: "আপনি কি নিশ্চিত এই প্রেসক্রিপশনটি অনুমোদন করবেন?",
-                         icon: 'warning',
-                         showCancelButton: true,
-                         confirmButtonColor: '#3085d6',
-                         cancelButtonColor: '#d33',
-                         confirmButtonText: 'হ্যাঁ, অনুমোদন করবো',
-                         cancelButtonText: 'ক্যানসেল',
-                    }).then((result) => {
-                         if (result.isConfirmed) {
-                              // Create a hidden form element dynamically
-                              const form = document.createElement('form');
-                              form.method = 'POST';
-                              form.action = `/prescriptions/${prescriptionId}/approve`;
+               Swal.fire({
+                    title: 'নিশ্চিত?',
+                    text: "আপনি কি নিশ্চিত এই প্রেসক্রিপশনটি অনুমোদন করবেন?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'হ্যাঁ, অনুমোদন করবো',
+                    cancelButtonText: 'ক্যানসেল',
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         const form = document.createElement('form');
+                         form.method = 'POST';
+                         form.action = `/prescriptions/${prescriptionId}/approve`;
 
-                              // Add CSRF token input
-                              const csrfTokenInput = document.createElement('input');
-                              csrfTokenInput.type = 'hidden';
-                              csrfTokenInput.name = '_token';
-                              csrfTokenInput.value = document.querySelector(
-                                   'meta[name="csrf-token"]').getAttribute('content');
-                              form.appendChild(csrfTokenInput);
+                         const csrfTokenInput = document.createElement('input');
+                         csrfTokenInput.type = 'hidden';
+                         csrfTokenInput.name = '_token';
+                         csrfTokenInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                         form.appendChild(csrfTokenInput);
 
-                              // Add method field for POST (since we are using resource routes)
-                              const methodInput = document.createElement('input');
-                              methodInput.type = 'hidden';
-                              methodInput.name = '_method';
-                              methodInput.value = 'POST';
-                              form.appendChild(methodInput);
+                         const methodInput = document.createElement('input');
+                         methodInput.type = 'hidden';
+                         methodInput.name = '_method';
+                         methodInput.value = 'POST';
+                         form.appendChild(methodInput);
 
-                              // Append the form to the body and submit it
-                              document.body.appendChild(form);
-                              form.submit();
-                         }
-                    });
+                         document.body.appendChild(form);
+                         form.submit();
+                    }
                });
           });
      };
+
 
 
      // ------------------ kt_add_prescription_form ----------------

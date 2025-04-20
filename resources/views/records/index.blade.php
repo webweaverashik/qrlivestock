@@ -85,7 +85,7 @@
                     <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5">
                     </i>
                     <input type="text" data-kt-service-records-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-13" placeholder="সেবা অনুসন্ধান করুন" />
+                        class="form-control form-control-solid w-lg-450px ps-13" placeholder="সেবা অনুসন্ধান করুন" />
                 </div>
                 <!--end::Search-->
             </div>
@@ -114,16 +114,46 @@
                         <div class="px-7 py-5" data-kt-service-records-table-filter="form">
                             <!--begin::Input group-->
                             <div class="mb-10">
-                                <label class="form-label fs-6 fw-semibold">একটিভেশন অবস্থা:</label>
+                                <label class="form-label fs-6 fw-semibold">সেবার ধরণ</label>
                                 <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
-                                    data-placeholder="সক্রিয়তা সিলেক্ট করুন" data-allow-clear="true"
-                                    data-kt-service-records-table-filter="two-step" data-hide-search="true">
+                                    data-placeholder="সেবার ধরণ সিলেক্ট করুন" data-allow-clear="true"
+                                    >
                                     <option></option>
-                                    <option value="ActiveFarm">সক্রিয়</option>
-                                    <option value="PausedFarm">নিষ্ক্রিয়</option>
+                                    @foreach ($service_categories as $category)
+                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <label class="form-label fs-6 fw-semibold">সম্ভাব্য রোগ</label>
+                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
+                                    data-placeholder="রোগ সিলেক্ট করুন" data-allow-clear="true"
+                                    >
+                                    <option></option>
+                                    @foreach ($diseases as $diseases)
+                                        <option value="{{ $diseases->name }}">{{ $diseases->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <label class="form-label fs-6 fw-semibold">ইউনিয়ন/পৌরসভা</label>
+                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true"
+                                    data-placeholder="ইউনিয়ন সিলেক্ট করুন" data-allow-clear="true"
+                                     data-hide-search="true">
+                                    <option></option>
+                                    @foreach ($unions as $union)
+                                        <option value="{{ $union->name }}">{{ $union->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!--end::Input group-->
+
                             <!--begin::Actions-->
                             <div class="d-flex justify-content-end">
                                 <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
@@ -196,6 +226,10 @@
                                     <a href="{{ route('farms.show', $record->farm_id) }}"
                                         class="text-gray-800 text-hover-primary mb-1">{{ $record->farm->farm_name }}</a>
                                     <span>ID: <strong>{{ $record->farm->unique_id }}</strong></span>
+                                    <span>
+                                        <i class="las la-map-marker"></i>
+                                        <strong>{{ $record->farm->union->name }}</strong>
+                                    </span>
                                 </div>
                                 <!--begin::Farm details-->
                             </td>
@@ -225,7 +259,7 @@
                                 @if ($record->prescription && $record->prescription->status == 'approved')
                                     <a href="{{ route('prescriptions.download', $record->prescription_id) }}"
                                         class="btn btn-icon text-hover-info" data-bs-toggle="tooltip"
-                                        title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="ki-outline ki-file-down fs-2x"></i>
+                                        title="প্রেসক্রিপশন ডাউনলোড করুন"><i class="bi bi-download fs-2x"></i>
                                     </a>
                                 @elseif ($record->prescription && $record->prescription->status == 'pending')
                                     <span class="badge badge-warning">পেন্ডিং</span>

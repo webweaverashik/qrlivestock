@@ -21,7 +21,6 @@ class LivestockTypeFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement(['গরু', 'মুরগি', 'মহিষ', 'হাঁস', 'ছাগল' , 'ভেড়া']),
-            'description' => $this->faker->sentence(),
         ];
     }
 }

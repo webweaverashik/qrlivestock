@@ -115,7 +115,7 @@
 
         {{-- Main Info --}}
         <div class="info info-back">
-            <div class="row"><span class="label">ঠিকানা:</span> {{ $farm->address }}</div>
+            <div class="row"><span class="label">ঠিকানা:</span> {{ $farm->address }}, {{ $farm->union->name }}, হরিণাকুন্ডু, ঝিনাইদহ</div>
             <div class="row"><span class="label">মোবাইল:</span> {{ en2bn($farm->phone_number) }}</div>
             <div class="row"><span class="label">অনুমোদনের তারিখ:</span>
                 {{ en2bn($farm->approved_at->format('d-m-Y')) }}</div>
