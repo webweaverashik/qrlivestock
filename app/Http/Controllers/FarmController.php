@@ -154,6 +154,23 @@ class FarmController extends Controller
     }
 
     /**
+     * When farm owner scan QR code, he will be redirected to this page
+     */
+    public function publicView(string $unique_id)
+    {
+        $farm = Farm::with([
+            'serviceRecords' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'livestockCounts',
+        ])->where('unique_id', $unique_id)->firstOrFail();
+
+        return response()->json($farm);  
+
+        // return view('farms.public', compact('farm'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Farm $farm)
@@ -292,8 +309,8 @@ class FarmController extends Controller
                 return redirect()->route('farms.pending')->with('info', 'এই খামারটি ইতোমধ্যে অনুমোদিত রয়েছে।');
             }
 
-            $qrCodeContent = $farm->unique_id;
-            $fileName      = 'qr_' . $qrCodeContent . '.svg'; // Use .svg extension
+            $qrCodeContent = url('view/' . $farm->unique_id);
+            $fileName      = 'qr_' . $farm->unique_id . '.svg'; // Use .svg extension
             $qrPath        = public_path('uploads/farm-qr-codes/');
 
             // Create folder if not exists
@@ -348,7 +365,7 @@ class FarmController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output($farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
+        return $pdf->Output($farm->unique_id . '.pdf', 'I'); // I = Inline view, D = Download
     }
 
     // Farm load AJAX for service create form

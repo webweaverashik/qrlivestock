@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FarmController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FarmController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ServiceRecordController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showLogin'])->name('home');
 
@@ -32,11 +32,10 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::get('farms/{id}/id-card', [FarmController::class, 'downloadIdCard'])->name('farms.id-card');
     Route::get('get-farm-details/{id}', [FarmController::class, 'getFarmDetails']);
     Route::post('farms/search', [FarmController::class, 'search'])->name('farms.search');
-    
+
     // Custom routes form prescription
     Route::post('prescriptions/{id}/approve', [PrescriptionController::class, 'approvePrescription']);
     Route::get('prescriptions/{id}/download', [PrescriptionController::class, 'downloadPrescription'])->name('prescriptions.download');
-
 
     // Custom routes for recrords
     Route::post('/records/{id}/storeFromShow', [ServiceRecordController::class, 'storeFromShow'])->name('records.storeFromShow');
@@ -54,8 +53,9 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
 
     // Route for settings
     Route::resource('settings', SettingController::class);
-
 });
+
+Route::get('view/{unique_id}', [FarmController::class, 'publicView'])->name('farms.publicView');
 
 // Handle GET /logout for logged-out users (redirect to login)
 Route::get('/logout', function () {

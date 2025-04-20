@@ -35,6 +35,23 @@
         console.log(`Scan result: ${decodedText}`, decodedResult);
         scanMessage.innerText = "প্রসেস করা হচ্ছে...";
 
+
+        // Extract the numeric ID from the URL
+        let farmUniqueId = null;
+        try {
+            // This will match the last numeric part of the URL
+            const matches = decodedText.match(/\/(\d+)\/?$/);
+            if (matches && matches[1]) {
+                farmUniqueId = matches[1];
+            } else {
+                throw new Error("Invalid QR code format");
+            }
+        } catch (error) {
+            toastr.error("কার্ডটি সঠিক নয়।");
+            scanMessage.innerText = "আবার চেষ্টা করুন";
+            return;
+        }
+
         fetch(`/farms/search`, {
                 method: 'POST',
                 headers: {
@@ -42,7 +59,7 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 },
                 body: JSON.stringify({
-                    farm_unique_id: decodedText
+                    farm_unique_id: farmUniqueId  // Using the extracted ID
                 }),
             })
             .then(response => {
@@ -67,7 +84,7 @@
                     toastr.success("খামারটি সফলভাবে খুঁজে পাওয়া গেছে!");
 
                     scanMessage.innerText = "রিডাইরেক্ট করা হচ্ছে...";
-                    
+
                     // Delay slightly so user sees the success message before redirect
                     setTimeout(() => {
                         window.location.href = `/farms/${data.farm.id}`;
