@@ -165,9 +165,9 @@ class FarmController extends Controller
             'livestockCounts',
         ])->where('unique_id', $unique_id)->firstOrFail();
 
-        return response()->json($farm);  
+        // return response()->json($farm);  
 
-        // return view('farms.public', compact('farm'));
+        return view('farms.public', compact('farm'));
     }
 
     /**

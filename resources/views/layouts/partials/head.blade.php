@@ -2,14 +2,15 @@
     <title>@yield('title', 'Dashboard') | প্রাণি-সেবা সারথী</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8" />
-    <meta name="description" content="Unique Coaching Management System (UCMS) is an all-in-one solution for academic coaching centers, streamlining student admissions, attendance tracking, tuition and notes payment management, teacher scheduling, and sheet distribution. Designed for efficiency, UCMS ensures seamless operations with role-based access for Super Admins, Branch Managers, Accountants, Teachers, Guardians, and Students." />
-    <meta name="keywords" content="coaching management system, academic management software, student management system, tuition management system, coaching center software, attendance tracking, payment management, teacher scheduling, notes distribution, sheet distribution system, role-based access, education ERP, UCMS, coaching automation, student fee management, guardian portal, online coaching management, school management system" />
+    <meta name="title" content="PraniShebaSharothi - Digital Livestock Service Management System">
+    <meta name="description" content="PraniShebaSharothi is an innovative digital platform designed to streamline livestock service delivery and tracking. It enables livestock officers to record services, generate QR-based farm ID cards, and allows farm owners to access their data seamlessly through a mobile app.">
+    <meta name="keywords" content="PraniShebaSharothi, livestock service management, farm QR ID, animal health tracking, digital livestock system, veterinary service software, farm management system, Livestock Office Bangladesh, farm data tracking, PraniSheba app, animal service record">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Unique Coaching Management System (UCMS) - Complete Coaching Center Management Solution">
+    <meta property="og:locale" content="bn_BD" />
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PraniShebaSharothi - Livestock Digital Service Platform">
     <meta property="og:url" content="https://ashikur-rahman.com" />
-    <meta property="og:site_name" content="UCMS by Ashikur Rahman" />
+    <meta property="og:site_name" content="ParniShebaSharothi by Ashikur Rahman" />
     <link rel="canonical" href="https://ashikur-rahman.com" />
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.ico') }}" />
 
