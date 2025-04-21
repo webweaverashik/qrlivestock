@@ -17,8 +17,8 @@ class PrescriptionController extends Controller
     public function index()
     {
         $prescriptions = Prescription::where('status', 'pending')
-            ->whereHas('serviceRecord', function ($query) {
-                $query->whereNull('deleted_at');
+            ->whereHas('serviceRecord.farm', function ($query) {
+                $query->where('status', 'approved')->whereNull('deleted_at');
             })
             ->withoutTrashed()
             ->orderby('created_at', 'desc')
@@ -32,10 +32,7 @@ class PrescriptionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -45,50 +42,54 @@ class PrescriptionController extends Controller
         // return $request;
         // Validate request
         $request->validate([
-            'service_record_id'        => 'required|integer|exists:service_records,id',
-            'livestock_type_id'        => 'nullable|exists:livestock_types,id',
-            'livestock_age'            => 'nullable|string|max:255',
-            'livestock_weight'         => 'nullable|string|max:255',
-            'disease_brief'            => 'required|string',
-            'medication'               => 'required|string',
-            'livestock_temp'           => 'nullable|string|max:255',
-            'livestock_pulse'          => 'nullable|string|max:255',
+            'service_record_id' => 'required|integer|exists:service_records,id',
+            'livestock_type_id' => 'nullable|exists:livestock_types,id',
+            'livestock_age' => 'nullable|string|max:255',
+            'livestock_weight' => 'nullable|string|max:255',
+            'disease_brief' => 'required|string',
+            'medication' => 'required|string',
+            'livestock_temp' => 'nullable|string|max:255',
+            'livestock_pulse' => 'nullable|string|max:255',
             'livestock_rumen_motility' => 'nullable|string|max:255',
-            'livestock_respiratory'    => 'nullable|string|max:255',
-            'livestock_other'          => 'nullable|string|max:255',
-            'additional_notes'         => 'nullable|string',
+            'livestock_respiratory' => 'nullable|string|max:255',
+            'livestock_other' => 'nullable|string|max:255',
+            'additional_notes' => 'nullable|string',
         ]);
 
         // Clean text from HTML to ensure it's not just empty tags
         $diseaseBriefText = trim(strip_tags($request->disease_brief));
-        $medicationText   = trim(strip_tags($request->medication));
+        $medicationText = trim(strip_tags($request->medication));
 
         if (empty($diseaseBriefText)) {
-            return back()->withErrors(['disease_brief' => 'রোগের বিবরণ প্রয়োজন।'])->withInput();
+            return back()
+                ->withErrors(['disease_brief' => 'রোগের বিবরণ প্রয়োজন।'])
+                ->withInput();
         }
 
         if (empty($medicationText)) {
-            return back()->withErrors(['medication' => 'ঔষধের বিবরণ প্রয়োজন।'])->withInput();
+            return back()
+                ->withErrors(['medication' => 'ঔষধের বিবরণ প্রয়োজন।'])
+                ->withInput();
         }
 
         // Create the prescription
         $prescription = Prescription::create([
-            'livestock_type_id'        => $request->livestock_type_id,
-            'livestock_age'            => $request->livestock_age,
-            'livestock_weight'         => $request->livestock_weight,
-            'disease_brief'            => $request->disease_brief,
-            'medication'               => $request->medication,
-            'livestock_temp'           => $request->livestock_temp,
-            'livestock_pulse'          => $request->livestock_pulse,
+            'livestock_type_id' => $request->livestock_type_id,
+            'livestock_age' => $request->livestock_age,
+            'livestock_weight' => $request->livestock_weight,
+            'disease_brief' => $request->disease_brief,
+            'medication' => $request->medication,
+            'livestock_temp' => $request->livestock_temp,
+            'livestock_pulse' => $request->livestock_pulse,
             'livestock_rumen_motility' => $request->livestock_rumen_motility,
-            'livestock_respiratory'    => $request->livestock_respiratory,
-            'livestock_other'          => $request->livestock_other,
-            'additional_notes'         => $request->additional_notes,
-            'created_by'               => Auth::id(),
+            'livestock_respiratory' => $request->livestock_respiratory,
+            'livestock_other' => $request->livestock_other,
+            'additional_notes' => $request->additional_notes,
+            'created_by' => Auth::id(),
         ]);
 
         // Update the related ServiceRecord with the new prescription_id
-        $serviceRecord                  = ServiceRecord::find($request->service_record_id);
+        $serviceRecord = ServiceRecord::find($request->service_record_id);
         $serviceRecord->prescription_id = $prescription->id;
         $serviceRecord->save();
 
@@ -120,7 +121,7 @@ class PrescriptionController extends Controller
         $prescription->update($request->all());
 
         return response()->json([
-            'message'      => 'Updated successfully',
+            'message' => 'Updated successfully',
             'prescription' => $prescription,
         ]);
     }
@@ -147,23 +148,23 @@ class PrescriptionController extends Controller
         // Create a custom temp directory in your storage folder
         $tempDir = storage_path('app/mpdf');
 
-        if (! file_exists($tempDir)) {
+        if (!file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
 
         $pdf = new Mpdf([
-            'mode'             => 'utf-8',
-            'format'           => 'A4-L',
-            'tempDir'          => $tempDir,
-            'default_font'     => 'solaimanlipi',
+            'mode' => 'utf-8',
+            'format' => 'A4-L',
+            'tempDir' => $tempDir,
+            'default_font' => 'solaimanlipi',
             'autoScriptToLang' => true,
-            'autoLangToFont'   => true,
-            'margin_top'       => 0,
-            'margin_bottom'    => 0,
-            'margin_left'      => 0,
-            'margin_right'     => 0,
-            'margin_header'    => 0,
-            'margin_footer'    => 0,
+            'autoLangToFont' => true,
+            'margin_top' => 0,
+            'margin_bottom' => 0,
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_header' => 0,
+            'margin_footer' => 0,
         ]);
 
         $pdf->SetWatermarkImage(public_path('assets/img/icon.png'), 0.05, 'F'); // Adjust opacity (0.0 to 1.0)
@@ -175,7 +176,7 @@ class PrescriptionController extends Controller
 
         $pdf->WriteHTML($html);
 
-        return $pdf->Output('prescription_' . $prescription->serviceRecord->farm->unique_id . '.pdf', 'D'); // I = Inline view, D = Download
+        return $pdf->Output('prescription_' . $prescription->serviceRecord->farm->unique_id . '.pdf', 'I'); // I = Inline view, D = Download
     }
 
     // Prescription Approval
@@ -185,7 +186,7 @@ class PrescriptionController extends Controller
             $prescription = Prescription::findOrFail($id);
 
             $prescription->update([
-                'status'      => 'approved',
+                'status' => 'approved',
                 'approved_by' => auth()->id(),
             ]);
 
@@ -195,5 +196,4 @@ class PrescriptionController extends Controller
             return redirect()->route('prescriptons.index')->with('error', 'প্রসক্রিপশনটি অনুমোদন করা যায়নি।');
         }
     }
-
 }

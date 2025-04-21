@@ -12,10 +12,25 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $registered_farms      = Farm::where('status', 'approved')->withoutTrashed()->count();
-        $pending_farms         = Farm::where('status', 'pending')->withoutTrashed()->count();
-        $service_records       = ServiceRecord::withoutTrashed()->count();
-        $pending_prescriptions = Prescription::where('status', 'pending')->withoutTrashed()->count();
+        $registered_farms = Farm::where('status', 'approved')->withoutTrashed()->count();
+        
+        $pending_farms = Farm::where('status', 'pending')->withoutTrashed()->count();
+
+        $service_records = ServiceRecord::selectRaw('farm_id, COUNT(*) as total')
+            ->whereHas('farm', function ($query) {
+                $query->where('status', '!=', 'pending')->whereNull('deleted_at');
+            })
+            ->withoutTrashed()
+            ->count();
+
+        $pending_prescriptions = Prescription::where('status', 'pending')
+            ->whereHas('serviceRecord.farm', function ($query) {
+                $query
+                    ->where('status', 'approved') // Or whatever status means "not pending"
+                    ->whereNull('deleted_at'); // Exclude soft-deleted farms
+            })
+            ->withoutTrashed() // Exclude soft-deleted prescriptions if using SoftDeletes
+            ->count();
 
         $livestockCountByType = LivestockCount::selectRaw('livestock_type_id, SUM(total) as total')
             ->whereHas('farm', function ($query) {
@@ -26,34 +41,34 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($row) {
                 return [
-                    'type'  => $row->livestockType->name ?? 'Unknown',
+                    'type' => $row->livestockType->name ?? 'Unknown',
                     'total' => (int) $row->total,
                 ];
             });
 
         // ------------------
-        $currentMonthDates  = [];
-        $lastMonthDates     = [];
+        $currentMonthDates = [];
+        $lastMonthDates = [];
         $currentMonthCounts = [];
-        $lastMonthCounts    = [];
+        $lastMonthCounts = [];
 
-        $today        = now();
+        $today = now();
         $currentMonth = $today->format('Y-m');
-        $lastMonth    = $today->copy()->subMonth()->format('Y-m');
+        $lastMonth = $today->copy()->subMonth()->format('Y-m');
 
         $daysInCurrentMonth = $today->daysInMonth;
-        $daysInLastMonth    = $today->copy()->subMonth()->daysInMonth;
+        $daysInLastMonth = $today->copy()->subMonth()->daysInMonth;
 
         for ($day = 1; $day <= max($daysInCurrentMonth, $daysInLastMonth); $day++) {
             $dateCurrent = Carbon::parse("$currentMonth-" . str_pad($day, 2, '0', STR_PAD_LEFT))->toDateString();
-            $dateLast    = Carbon::parse("$lastMonth-" . str_pad($day, 2, '0', STR_PAD_LEFT))->toDateString();
+            $dateLast = Carbon::parse("$lastMonth-" . str_pad($day, 2, '0', STR_PAD_LEFT))->toDateString();
 
             $currentCount = ServiceRecord::whereDate('created_at', $dateCurrent)->count();
-            $lastCount    = ServiceRecord::whereDate('created_at', $dateLast)->count();
+            $lastCount = ServiceRecord::whereDate('created_at', $dateLast)->count();
 
-            $currentMonthDates[]  = $day . ' তারিখ';
+            $currentMonthDates[] = $day . ' তারিখ';
             $currentMonthCounts[] = $currentCount;
-            $lastMonthCounts[]    = $lastCount;
+            $lastMonthCounts[] = $lastCount;
         }
         // ------------------
 

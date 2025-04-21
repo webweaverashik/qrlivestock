@@ -156,8 +156,8 @@
                                 <span class="menu-badge">
                                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">
                                         {{ en2bn(
-                                            \App\Models\Prescription::where('status', 'pending')->whereHas('serviceRecord', function ($query) {
-                                                    $query->whereNull('deleted_at');
+                                            \App\Models\Prescription::where('status', 'pending')->whereHas('serviceRecord.farm', function ($query) {
+                                                    $query->where('status', 'approved')->whereNull('deleted_at');
                                                 })->withoutTrashed()->count(),
                                         ) }}</span>
                                 </span>

@@ -153,9 +153,8 @@
                     
                     <div style="position: absolute; right: 10%; bottom: 10%; font-size: 15px; text-align: center">
                         <img src="{{ public_path('uploads/signature/signature.png') }}" style="width: 60px;">
-                        <div>{{ en2bn($prescription->created_at->format('d/m/Y')) }}</div>
-                        <div>(ডাঃ উজ্জ্বল কুমার কুন্ডু)</div>
-                        <div>উপজেলা প্রাণিসম্পদ অফিসার ও ভেটেরিনারি সার্জন</div>
+                        <div>ডাঃ উজ্জ্বল কুমার কুন্ডু</div>
+                        <div>উপজেলা প্রাণিসম্পদ অফিসার</div>
                         <div>হরিণাকুন্ডু, ঝিনাইদহ</div>
                     </div>
                 </div>
