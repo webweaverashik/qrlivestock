@@ -22,33 +22,31 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             UnionSeeder::class,
+            LivestockTypeSeeder::class
         ]);
 
         // Now populate all other tables with 'created_by' = 2 (staff user)
-        Farm::factory(40)->create(['created_by' => 2]);
-        LivestockType::factory()
-            ->count(6)
-            ->sequence(['name' => 'গরু'], ['name' => 'মুরগি'], ['name' => 'মহিষ'], ['name' => 'হাঁস'], ['name' => 'ছাগল'], ['name' => 'ভেড়া'])
-            ->create();
-        LivestockCount::factory(10)->create();
+        // Farm::factory(40)->create(['created_by' => 2]);
+
+        // LivestockCount::factory(10)->create();
         ServiceCategory::factory(20)->create();
         Disease::factory(20)->create();
-        Prescription::factory(20)->create();
+        // Prescription::factory(20)->create();
 
-        ServiceRecord::factory(20)
-            ->create(['created_by' => 2])
-            ->each(function ($serviceRecord) {
-                if (fake()->boolean(50)) { // 50% chance
-                    $prescription = Prescription::factory()->create([
-                        'created_by' => $serviceRecord->created_by,
-                    ]);
+        // ServiceRecord::factory(20)
+        //     ->create(['created_by' => 2])
+        //     ->each(function ($serviceRecord) {
+        //         if (fake()->boolean(50)) { // 50% chance
+        //             $prescription = Prescription::factory()->create([
+        //                 'created_by' => $serviceRecord->created_by,
+        //             ]);
 
-                    // Attach the prescription to this service record
-                    $serviceRecord->prescription_id = $prescription->id;
-                    $serviceRecord->save();
-                }
-            });
-        SMSLog::factory(20)->create();
+        //             // Attach the prescription to this service record
+        //             $serviceRecord->prescription_id = $prescription->id;
+        //             $serviceRecord->save();
+        //         }
+        //     });
+        // SMSLog::factory(20)->create();
 
     }
 }
