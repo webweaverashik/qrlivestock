@@ -10,7 +10,6 @@ use App\Models\Prescription;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRecord;
 use App\Models\SMSLog;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,24 +20,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            UserSeeder::class,
             UnionSeeder::class,
-        ]);
-
-        
-        // Create one admin user
-        User::factory()->create([
-            'name'     => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
-            'email'    => 'admin@mail.com',
-            'password' => bcrypt('password'),
-            'role'     => 'admin',
-        ]);
-
-        // Create one staff user
-        User::factory()->create([
-            'name'     => 'এ এম ইউনুস আলী',
-            'email'    => 'staff@mail.com',
-            'password' => bcrypt('password'),
-            'role'     => 'staff',
         ]);
 
         // Now populate all other tables with 'created_by' = 2 (staff user)
