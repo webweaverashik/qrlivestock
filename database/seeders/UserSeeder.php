@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         // Create one staff user
         User::factory()->create([
             'name'     => 'এ এম ইউনুস আলী',
-            'email'    => 'staff@mail.com',
+            'email'    => 'staff@mail.com', 
             'password' => bcrypt('password'),
             'role'     => 'staff',
         ]);
