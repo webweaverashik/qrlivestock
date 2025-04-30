@@ -16,16 +16,16 @@ class UserSeeder extends Seeder
         // Create one admin user
         User::factory()->create([
             'name'     => 'ডাঃ উজ্জ্বল কুমার কুন্ডু',
-            'email'    => 'admin@mail.com',
-            'password' => bcrypt('password'),
+            'email'    => 'ulohorinakondo@gmail.com',
+            'password' => bcrypt('Bx30SOV)Uxt1'),
             'role'     => 'admin',
         ]);
 
         // Create one staff user
         User::factory()->create([
             'name'     => 'এ এম ইউনুস আলী',
-            'email'    => 'staff@mail.com', 
-            'password' => bcrypt('password'),
+            'email'    => 'humaon.kabir09@gmail.com', 
+            'password' => bcrypt('Bx30SOV)Uxt1'),
             'role'     => 'staff',
         ]);
     }
