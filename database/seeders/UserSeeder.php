@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
 
         // Create one staff user
         User::factory()->create([
-            'name'     => 'এ এম ইউনুস আলী',
+            'name'     => 'মো: হুমায়ন কবির',
             'email'    => 'humaon.kabir09@gmail.com', 
             'password' => bcrypt('Bx30SOV)Uxt1'),
             'role'     => 'staff',
