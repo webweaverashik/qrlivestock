@@ -49,6 +49,7 @@ Route::middleware(['auth', 'isLoggedIn'])->group(function () {
     Route::post('users/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggleActive');
     Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
     Route::post('users/profile', [UserController::class, 'profileUpdate'])->name('users.profile.update');
+    Route::post('users/password', [UserController::class, 'passwordUpdate'])->name('users.password.update');
     Route::resource('users', UserController::class);
 
     // Route for settings

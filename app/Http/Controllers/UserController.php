@@ -199,7 +199,6 @@ class UserController extends Controller
         $request->validate([
             'user_name'     => 'required|string|max:255',
             'user_email'    => 'required|string|max:50|unique:users,email,' . $user->id,
-            'user_password' => 'nullable|string|min:6',
             'avatar'        => 'nullable|image|mimes:jpg,jpeg,png|max:200', // Max 2MB
         ], [
             'user_email.unique' => 'এই ইমেইলটি ইতোমধ্যে সিস্টেমে নিবন্ধিত।',
@@ -210,9 +209,6 @@ class UserController extends Controller
             'email' => $request->user_email,
         ]);
 
-        if ($request->has('user_password')) {
-            $user->password = Hash::make($request->user_password);
-        }
 
         // ✅ Handle file upload (if a new file is provided)
         if ($request->hasFile('avatar')) {
@@ -240,5 +236,24 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('users.profile')->with('success', 'প্রোফাইল সফলভাবে আপডেট করা হয়েছে।');
+    }
+
+    public function passwordUpdate(Request $request)
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        $request->validate([
+            'old_password' => 'required|string',
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        if (! Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->with('error', 'বর্তমান পাসওয়ার্ড সঠিক নয়।');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে।');
     }
 }

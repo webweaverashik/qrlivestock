@@ -529,7 +529,7 @@
                                     <!--end::Input group-->
                                 </div>
 
-                                <div class="col-lg-12 fv-row mb-7">
+                                {{-- <div class="col-lg-12 fv-row mb-7">
                                     <label class="fw-semibold fs-6 mb-2">নতুন পাসওয়ার্ড সেট করুন &nbsp; <span
                                             class="text-muted">(প্রযোজ্য হলে)</span></label>
 
@@ -541,7 +541,7 @@
                                             <i class="ki-outline ki-eye fs-3"></i>
                                         </span>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-lg-12">
                                     <!--begin::Input group-->

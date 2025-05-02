@@ -73,12 +73,18 @@
     @endif
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-7">
             <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>প্রোফাইল সংশোধন</h2>
+                    </div>
+                </div>
+
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form id="kt_modal_add_user_form" class="form" action="{{ route('users.profile.update') }}"
-                        enctype="multipart/form-data" method="POST">
+                    <form class="form" action="{{ route('users.profile.update') }}" enctype="multipart/form-data"
+                        method="POST">
                         @csrf
                         <!--begin::Scroll-->
                         <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll"
@@ -180,7 +186,7 @@
                                     <!--end::Input group-->
                                 </div>
 
-                                <div class="col-lg-12">
+                                {{-- <div class="col-lg-12">
                                     <div class="fv-row mb-7">
                                         <label class="fw-semibold fs-6 mb-2">নতুন পাসওয়ার্ড সেট করুন &nbsp; <span
                                                 class="text-muted">(প্রযোজ্য হলে)</span>
@@ -191,6 +197,70 @@
                                                 class="form-control mb-3 mb-lg-0" placeholder="নতুন পাসওয়ার্ড সেট করুন" />
                                             <span class="input-group-text" id="togglePassword" style="cursor: pointer;"
                                                 title="পাসওয়ার্ড দেখুন" data-bs-toggle="tooltip">
+                                                <i class="ki-outline ki-eye fs-3"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                        <!--end::Scroll-->
+
+                        <!--begin::Actions-->
+                        <div class="text-center pt-10">
+                            <button type="reset" class="btn btn-light me-3">রিসেট</button>
+                            <button type="submit" class="btn btn-primary">আপডেট করুন</button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>পাসওয়ার্ড পরিবর্তন</h2>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!--begin::Form-->
+                    <form class="form" action="{{ route('users.password.update') }}" method="POST">
+                        @csrf
+                        <!--begin::Scroll-->
+                        <div class="d-flex flex-column scroll-y px-5 px-lg-10">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="fv-row mb-7">
+                                        <label class="fw-semibold fs-6 mb-2 required">বর্তমান পাসওয়ার্ড দিন
+                                        </label>
+
+                                        <div class="input-group">
+                                            <input type="password" name="old_password" id="userPasswordOld" class="form-control mb-3 mb-lg-0"
+                                                placeholder="বর্তমান পাসওয়ার্ডটি দিন" required />
+                                            <span class="input-group-text toggle-password" data-target="userPasswordOld"
+                                                style="cursor: pointer;" title="পাসওয়ার্ড দেখুন"
+                                                data-bs-toggle="tooltip">
+                                                <i class="ki-outline ki-eye fs-3"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="fv-row mb-7">
+                                        <label class="fw-semibold fs-6 mb-2 required">নতুন পাসওয়ার্ড দিন
+                                        </label>
+
+                                        <div class="input-group">
+                                            <input type="password" name="new_password" id="userPasswordNew" class="form-control mb-3 mb-lg-0"
+                                                placeholder="নতুন পাসওয়ার্ড দিন" required />
+                                            <span class="input-group-text toggle-password" data-target="userPasswordNew"
+                                                style="cursor: pointer;" title="পাসওয়ার্ড দেখুন"
+                                                data-bs-toggle="tooltip">
                                                 <i class="ki-outline ki-eye fs-3"></i>
                                             </span>
                                         </div>
@@ -210,11 +280,6 @@
                     <!--end::Form-->
                 </div>
             </div>
-
-        </div>
-
-        <div class="col-lg-6">
-            
         </div>
     </div>
 @endsection
@@ -226,19 +291,21 @@
 @push('page-js')
     {{-- Toggle show/hide password --}}
     <script>
-        const toggle = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('userPassword');
-        const icon = toggle.querySelector('i');
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const inputId = this.getAttribute('data-target');
+                const input = document.getElementById(inputId);
+                const icon = this.querySelector('i');
 
-        toggle.addEventListener('click', function() {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
 
-            // Optional: toggle eye icon class if you have ki-eye / ki-eye-off
-            icon.classList.toggle('ki-eye');
-            icon.classList.toggle('ki-eye-slash');
+                icon.classList.toggle('ki-eye');
+                icon.classList.toggle('ki-eye-slash');
+            });
         });
     </script>
+
 
     <script>
         document.getElementById("users_link").classList.add("active");
