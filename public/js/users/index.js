@@ -224,10 +224,47 @@ var KTUsersAddUser = function () {
          }
      };
  }();
+ 
+ var KTUsersEditPassword = function () {
+     // Shared variables
+     const element = document.getElementById('kt_modal_edit_password');
+     const form = element.querySelector('#kt_modal_edit_password_form');
+     const modal = new bootstrap.Modal(element);
+ 
+     // Init add schedule modal
+     var initEditPassword = () => {
+ 
+         // Cancel button handler
+         const cancelButton = element.querySelector('[data-kt-edit-password-modal-action="cancel"]');
+         cancelButton.addEventListener('click', e => {
+             e.preventDefault();
+ 
+             form.reset(); // Reset form			
+             modal.hide();
+         });
+ 
+         // Close button handler
+         const closeButton = element.querySelector('[data-kt-edit-password-modal-action="close"]');
+         closeButton.addEventListener('click', e => {
+             e.preventDefault();
+ 
+             form.reset(); // Reset form			
+             modal.hide();
+         });
+     }
+ 
+     return {
+         // Public functions
+         init: function () {
+          initEditPassword();
+         }
+     };
+ }();
 
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
      KTUsersList.init();
      KTUsersAddUser.init();
      KTUsersEditUser.init();
+     KTUsersEditPassword.init();
 });

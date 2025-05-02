@@ -228,7 +228,7 @@
 
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form class="form" action="{{ route('users.password.update') }}" method="POST">
+                    <form class="form" action="{{ route('users.profile.password.update') }}" method="POST">
                         @csrf
                         <!--begin::Scroll-->
                         <div class="d-flex flex-column scroll-y px-5 px-lg-10">

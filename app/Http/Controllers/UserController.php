@@ -238,7 +238,7 @@ class UserController extends Controller
         return redirect()->route('users.profile')->with('success', 'প্রোফাইল সফলভাবে আপডেট করা হয়েছে।');
     }
 
-    public function passwordUpdate(Request $request)
+    public function profilePasswordUpdate(Request $request)
     {
         $user = User::findOrFail(auth()->user()->id);
 
@@ -255,5 +255,23 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে।');
+    }
+
+    public function userPasswordReset(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        $request->validate([
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        if (! $user) {
+            return redirect()->back()->with('error', 'ইউজার পাওয়া যায়নি');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'পাসওয়ার্ড সফলভাবে রিসেট করা হয়েছে।');
     }
 }
